@@ -1,0 +1,702 @@
+[
+  {
+    "product_id": 1,
+    "product_name": "Product 1",
+    "category": "Footwear",
+    "price": 1217.7,
+    "currency": "USD"
+  },
+  {
+    "product_id": 2,
+    "product_name": "Product 2",
+    "category": "Electronics",
+    "price": 69.57,
+    "currency": "USD"
+  },
+  {
+    "product_id": 3,
+    "product_name": "Product 3",
+    "category": "Footwear",
+    "price": 1329.69,
+    "currency": "USD"
+  },
+  {
+    "product_id": 4,
+    "product_name": "Product 4",
+    "category": "Home & Kitchen",
+    "price": 805.46,
+    "currency": "USD"
+  },
+  {
+    "product_id": 5,
+    "product_name": "Product 5",
+    "category": "Furniture",
+    "price": 1257.17,
+    "currency": "USD"
+  },
+  {
+    "product_id": 6,
+    "product_name": "Product 6",
+    "category": "Toys",
+    "price": 735.72,
+    "currency": "USD"
+  },
+  {
+    "product_id": 7,
+    "product_name": "Product 7",
+    "category": "Furniture",
+    "price": 432.78,
+    "currency": "USD"
+  },
+  {
+    "product_id": 8,
+    "product_name": "Product 8",
+    "category": "Electronics",
+    "price": 352.46,
+    "currency": "USD"
+  },
+  {
+    "product_id": 9,
+    "product_name": "Product 9",
+    "category": "Automotive",
+    "price": 722.74,
+    "currency": "USD"
+  },
+  {
+    "product_id": 10,
+    "product_name": "Product 10",
+    "category": "Furniture",
+    "price": 1344.24,
+    "currency": "USD"
+  },
+  {
+    "product_id": 11,
+    "product_name": "Product 11",
+    "category": "Automotive",
+    "price": 1248.4,
+    "currency": "USD"
+  },
+  {
+    "product_id": 12,
+    "product_name": "Product 12",
+    "category": "Books",
+    "price": 65.93,
+    "currency": "USD"
+  },
+  {
+    "product_id": 13,
+    "product_name": "Product 13",
+    "category": "Furniture",
+    "price": 190.81,
+    "currency": "USD"
+  },
+  {
+    "product_id": 14,
+    "product_name": "Product 14",
+    "category": "Automotive",
+    "price": 713.51,
+    "currency": "USD"
+  },
+  {
+    "product_id": 15,
+    "product_name": "Product 15",
+    "category": "Grocery",
+    "price": 103.46,
+    "currency": "USD"
+  },
+  {
+    "product_id": 16,
+    "product_name": "Product 16",
+    "category": "Automotive",
+    "price": 1390.53,
+    "currency": "USD"
+  },
+  {
+    "product_id": 17,
+    "product_name": "Product 17",
+    "category": "Toys",
+    "price": 1432.31,
+    "currency": "USD"
+  },
+  {
+    "product_id": 18,
+    "product_name": "Product 18",
+    "category": "Toys",
+    "price": 1474.73,
+    "currency": "USD"
+  },
+  {
+    "product_id": 19,
+    "product_name": "Product 19",
+    "category": "Furniture",
+    "price": 154.79,
+    "currency": "USD"
+  },
+  {
+    "product_id": 20,
+    "product_name": "Product 20",
+    "category": "Sports & Outdoors",
+    "price": 715.76,
+    "currency": "USD"
+  },
+  {
+    "product_id": 21,
+    "product_name": "Product 21",
+    "category": "Computers",
+    "price": 163.13,
+    "currency": "USD"
+  },
+  {
+    "product_id": 22,
+    "product_name": "Product 22",
+    "category": "Home & Kitchen",
+    "price": 1228.18,
+    "currency": "USD"
+  },
+  {
+    "product_id": 23,
+    "product_name": "Product 23",
+    "category": "Home & Kitchen",
+    "price": 797.71,
+    "currency": "USD"
+  },
+  {
+    "product_id": 24,
+    "product_name": "Product 24",
+    "category": "Toys",
+    "price": 1123.96,
+    "currency": "USD"
+  },
+  {
+    "product_id": 25,
+    "product_name": "Product 25",
+    "category": "Automotive",
+    "price": 1391.27,
+    "currency": "USD"
+  },
+  {
+    "product_id": 26,
+    "product_name": "Product 26",
+    "category": "Sports & Outdoors",
+    "price": 547.45,
+    "currency": "USD"
+  },
+  {
+    "product_id": 27,
+    "product_name": "Product 27",
+    "category": "Books",
+    "price": 946.74,
+    "currency": "USD"
+  },
+  {
+    "product_id": 28,
+    "product_name": "Product 28",
+    "category": "Home & Kitchen",
+    "price": 1365.59,
+    "currency": "USD"
+  },
+  {
+    "product_id": 29,
+    "product_name": "Product 29",
+    "category": "Computers",
+    "price": 1237.98,
+    "currency": "USD"
+  },
+  {
+    "product_id": 30,
+    "product_name": "Product 30",
+    "category": "Home & Kitchen",
+    "price": 399.43,
+    "currency": "USD"
+  },
+  {
+    "product_id": 31,
+    "product_name": "Product 31",
+    "category": "Electronics",
+    "price": 141.58,
+    "currency": "USD"
+  },
+  {
+    "product_id": 32,
+    "product_name": "Product 32",
+    "category": "Footwear",
+    "price": 417.78,
+    "currency": "USD"
+  },
+  {
+    "product_id": 33,
+    "product_name": "Product 33",
+    "category": "Grocery",
+    "price": 463.88,
+    "currency": "USD"
+  },
+  {
+    "product_id": 34,
+    "product_name": "Product 34",
+    "category": "Automotive",
+    "price": 952.16,
+    "currency": "USD"
+  },
+  {
+    "product_id": 35,
+    "product_name": "Product 35",
+    "category": "Furniture",
+    "price": 453.39,
+    "currency": "USD"
+  },
+  {
+    "product_id": 36,
+    "product_name": "Product 36",
+    "category": "Electronics",
+    "price": 998.31,
+    "currency": "USD"
+  },
+  {
+    "product_id": 37,
+    "product_name": "Product 37",
+    "category": "Home & Kitchen",
+    "price": 342.93,
+    "currency": "USD"
+  },
+  {
+    "product_id": 38,
+    "product_name": "Product 38",
+    "category": "Grocery",
+    "price": 22.93,
+    "currency": "USD"
+  },
+  {
+    "product_id": 39,
+    "product_name": "Product 39",
+    "category": "Footwear",
+    "price": 395.06,
+    "currency": "USD"
+  },
+  {
+    "product_id": 40,
+    "product_name": "Product 40",
+    "category": "Home & Kitchen",
+    "price": 872.26,
+    "currency": "USD"
+  },
+  {
+    "product_id": 41,
+    "product_name": "Product 41",
+    "category": "Grocery",
+    "price": 654.59,
+    "currency": "USD"
+  },
+  {
+    "product_id": 42,
+    "product_name": "Product 42",
+    "category": "Computers",
+    "price": 172.72,
+    "currency": "USD"
+  },
+  {
+    "product_id": 43,
+    "product_name": "Product 43",
+    "category": "Electronics",
+    "price": 216.06,
+    "currency": "USD"
+  },
+  {
+    "product_id": 44,
+    "product_name": "Product 44",
+    "category": "Home & Kitchen",
+    "price": 562.81,
+    "currency": "USD"
+  },
+  {
+    "product_id": 45,
+    "product_name": "Product 45",
+    "category": "Computers",
+    "price": 1080.48,
+    "currency": "USD"
+  },
+  {
+    "product_id": 46,
+    "product_name": "Product 46",
+    "category": "Automotive",
+    "price": 779.06,
+    "currency": "USD"
+  },
+  {
+    "product_id": 47,
+    "product_name": "Product 47",
+    "category": "Electronics",
+    "price": 1192.13,
+    "currency": "USD"
+  },
+  {
+    "product_id": 48,
+    "product_name": "Product 48",
+    "category": "Computers",
+    "price": 673.9,
+    "currency": "USD"
+  },
+  {
+    "product_id": 49,
+    "product_name": "Product 49",
+    "category": "Automotive",
+    "price": 5.71,
+    "currency": "USD"
+  },
+  {
+    "product_id": 50,
+    "product_name": "Product 50",
+    "category": "Sports & Outdoors",
+    "price": 475.57,
+    "currency": "USD"
+  },
+  {
+    "product_id": 51,
+    "product_name": "Product 51",
+    "category": "Grocery",
+    "price": 749.08,
+    "currency": "USD"
+  },
+  {
+    "product_id": 52,
+    "product_name": "Product 52",
+    "category": "Automotive",
+    "price": 12.11,
+    "currency": "USD"
+  },
+  {
+    "product_id": 53,
+    "product_name": "Product 53",
+    "category": "Sports & Outdoors",
+    "price": 1311.68,
+    "currency": "USD"
+  },
+  {
+    "product_id": 54,
+    "product_name": "Product 54",
+    "category": "Furniture",
+    "price": 1354.96,
+    "currency": "USD"
+  },
+  {
+    "product_id": 55,
+    "product_name": "Product 55",
+    "category": "Books",
+    "price": 676.12,
+    "currency": "USD"
+  },
+  {
+    "product_id": 56,
+    "product_name": "Product 56",
+    "category": "Electronics",
+    "price": 1425.99,
+    "currency": "USD"
+  },
+  {
+    "product_id": 57,
+    "product_name": "Product 57",
+    "category": "Automotive",
+    "price": 165.19,
+    "currency": "USD"
+  },
+  {
+    "product_id": 58,
+    "product_name": "Product 58",
+    "category": "Grocery",
+    "price": 380.99,
+    "currency": "USD"
+  },
+  {
+    "product_id": 59,
+    "product_name": "Product 59",
+    "category": "Toys",
+    "price": 926.12,
+    "currency": "USD"
+  },
+  {
+    "product_id": 60,
+    "product_name": "Product 60",
+    "category": "Sports & Outdoors",
+    "price": 231.97,
+    "currency": "USD"
+  },
+  {
+    "product_id": 61,
+    "product_name": "Product 61",
+    "category": "Computers",
+    "price": 722.61,
+    "currency": "USD"
+  },
+  {
+    "product_id": 62,
+    "product_name": "Product 62",
+    "category": "Home & Kitchen",
+    "price": 1377.21,
+    "currency": "USD"
+  },
+  {
+    "product_id": 63,
+    "product_name": "Product 63",
+    "category": "Home & Kitchen",
+    "price": 527.03,
+    "currency": "USD"
+  },
+  {
+    "product_id": 64,
+    "product_name": "Product 64",
+    "category": "Computers",
+    "price": 816.79,
+    "currency": "USD"
+  },
+  {
+    "product_id": 65,
+    "product_name": "Product 65",
+    "category": "Furniture",
+    "price": 261.65,
+    "currency": "USD"
+  },
+  {
+    "product_id": 66,
+    "product_name": "Product 66",
+    "category": "Books",
+    "price": 116.25,
+    "currency": "USD"
+  },
+  {
+    "product_id": 67,
+    "product_name": "Product 67",
+    "category": "Electronics",
+    "price": 808.01,
+    "currency": "USD"
+  },
+  {
+    "product_id": 68,
+    "product_name": "Product 68",
+    "category": "Footwear",
+    "price": 97.94,
+    "currency": "USD"
+  },
+  {
+    "product_id": 69,
+    "product_name": "Product 69",
+    "category": "Toys",
+    "price": 68.4,
+    "currency": "USD"
+  },
+  {
+    "product_id": 70,
+    "product_name": "Product 70",
+    "category": "Electronics",
+    "price": 1408.12,
+    "currency": "USD"
+  },
+  {
+    "product_id": 71,
+    "product_name": "Product 71",
+    "category": "Furniture",
+    "price": 737.31,
+    "currency": "USD"
+  },
+  {
+    "product_id": 72,
+    "product_name": "Product 72",
+    "category": "Computers",
+    "price": 136.5,
+    "currency": "USD"
+  },
+  {
+    "product_id": 73,
+    "product_name": "Product 73",
+    "category": "Books",
+    "price": 1230.32,
+    "currency": "USD"
+  },
+  {
+    "product_id": 74,
+    "product_name": "Product 74",
+    "category": "Footwear",
+    "price": 124.66,
+    "currency": "USD"
+  },
+  {
+    "product_id": 75,
+    "product_name": "Product 75",
+    "category": "Home & Kitchen",
+    "price": 934.43,
+    "currency": "USD"
+  },
+  {
+    "product_id": 76,
+    "product_name": "Product 76",
+    "category": "Automotive",
+    "price": 170.92,
+    "currency": "USD"
+  },
+  {
+    "product_id": 77,
+    "product_name": "Product 77",
+    "category": "Grocery",
+    "price": 126.2,
+    "currency": "USD"
+  },
+  {
+    "product_id": 78,
+    "product_name": "Product 78",
+    "category": "Grocery",
+    "price": 1049.46,
+    "currency": "USD"
+  },
+  {
+    "product_id": 79,
+    "product_name": "Product 79",
+    "category": "Automotive",
+    "price": 230.61,
+    "currency": "USD"
+  },
+  {
+    "product_id": 80,
+    "product_name": "Product 80",
+    "category": "Automotive",
+    "price": 1452.3,
+    "currency": "USD"
+  },
+  {
+    "product_id": 81,
+    "product_name": "Product 81",
+    "category": "Computers",
+    "price": 1226.86,
+    "currency": "USD"
+  },
+  {
+    "product_id": 82,
+    "product_name": "Product 82",
+    "category": "Footwear",
+    "price": 214.04,
+    "currency": "USD"
+  },
+  {
+    "product_id": 83,
+    "product_name": "Product 83",
+    "category": "Toys",
+    "price": 1201.55,
+    "currency": "USD"
+  },
+  {
+    "product_id": 84,
+    "product_name": "Product 84",
+    "category": "Books",
+    "price": 1430.33,
+    "currency": "USD"
+  },
+  {
+    "product_id": 85,
+    "product_name": "Product 85",
+    "category": "Toys",
+    "price": 146.96,
+    "currency": "USD"
+  },
+  {
+    "product_id": 86,
+    "product_name": "Product 86",
+    "category": "Computers",
+    "price": 50.68,
+    "currency": "USD"
+  },
+  {
+    "product_id": 87,
+    "product_name": "Product 87",
+    "category": "Home & Kitchen",
+    "price": 1028.51,
+    "currency": "USD"
+  },
+  {
+    "product_id": 88,
+    "product_name": "Product 88",
+    "category": "Computers",
+    "price": 853.35,
+    "currency": "USD"
+  },
+  {
+    "product_id": 89,
+    "product_name": "Product 89",
+    "category": "Footwear",
+    "price": 1298.18,
+    "currency": "USD"
+  },
+  {
+    "product_id": 90,
+    "product_name": "Product 90",
+    "category": "Home & Kitchen",
+    "price": 645.61,
+    "currency": "USD"
+  },
+  {
+    "product_id": 91,
+    "product_name": "Product 91",
+    "category": "Electronics",
+    "price": 722.94,
+    "currency": "USD"
+  },
+  {
+    "product_id": 92,
+    "product_name": "Product 92",
+    "category": "Books",
+    "price": 72.66,
+    "currency": "USD"
+  },
+  {
+    "product_id": 93,
+    "product_name": "Product 93",
+    "category": "Furniture",
+    "price": 1270.6,
+    "currency": "USD"
+  },
+  {
+    "product_id": 94,
+    "product_name": "Product 94",
+    "category": "Toys",
+    "price": 1131.74,
+    "currency": "USD"
+  },
+  {
+    "product_id": 95,
+    "product_name": "Product 95",
+    "category": "Footwear",
+    "price": 935.08,
+    "currency": "USD"
+  },
+  {
+    "product_id": 96,
+    "product_name": "Product 96",
+    "category": "Sports & Outdoors",
+    "price": 584.24,
+    "currency": "USD"
+  },
+  {
+    "product_id": 97,
+    "product_name": "Product 97",
+    "category": "Computers",
+    "price": 532.94,
+    "currency": "USD"
+  },
+  {
+    "product_id": 98,
+    "product_name": "Product 98",
+    "category": "Automotive",
+    "price": 142.11,
+    "currency": "USD"
+  },
+  {
+    "product_id": 99,
+    "product_name": "Product 99",
+    "category": "Automotive",
+    "price": 508.96,
+    "currency": "USD"
+  },
+  {
+    "product_id": 100,
+    "product_name": "Product 100",
+    "category": "Toys",
+    "price": 1266.66,
+    "currency": "USD"
+  }
+]
