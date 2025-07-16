@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "name": "Gabrielle Reed",
+    "username": "richard82",
+    "email": "timothy05@example.net"
+  },
+  {
+    "id": 2,
+    "name": "Teresa Stanton",
+    "username": "larryhebert",
+    "email": "nelsonkenneth@example.org"
+  },
+  {
+    "id": 3,
+    "name": "Michael Khan",
+    "username": "stephen04",
+    "email": "veronica93@example.net"
+  },
+  {
+    "id": 4,
+    "name": "Rachael Nelson",
+    "username": "heatherkelly",
+    "email": "kimberly16@example.net"
+  },
+  {
+    "id": 5,
+    "name": "Kyle Jackson",
+    "username": "curtisbrian",
+    "email": "tflores@example.org"
+  },
+  {
+    "id": 6,
+    "name": "Amanda Ortega",
+    "username": "edward60",
+    "email": "obush@example.org"
+  },
+  {
+    "id": 7,
+    "name": "Karen Buchanan",
+    "username": "dudleyshane",
+    "email": "jenniferhudson@example.net"
+  },
+  {
+    "id": 8,
+    "name": "Tamara Vega",
+    "username": "gcase",
+    "email": "angelahowell@example.com"
+  },
+  {
+    "id": 9,
+    "name": "Charles Moore",
+    "username": "laura67",
+    "email": "clopez@example.com"
+  },
+  {
+    "id": 10,
+    "name": "John Farrell",
+    "username": "ajordan",
+    "email": "rachael29@example.org"
+  },
+  {
+    "id": 11,
+    "name": "Craig Vaughan",
+    "username": "danielle27",
+    "email": "pricejohn@example.com"
+  },
+  {
+    "id": 12,
+    "name": "Bruce Sherman II",
+    "username": "francisco92",
+    "email": "dbarnett@example.net"
+  },
+  {
+    "id": 13,
+    "name": "Elizabeth Lee",
+    "username": "meyersthomas",
+    "email": "gregorywilson@example.org"
+  },
+  {
+    "id": 14,
+    "name": "Xavier Perry",
+    "username": "daniel82",
+    "email": "marksnyder@example.com"
+  },
+  {
+    "id": 15,
+    "name": "Christopher Turner",
+    "username": "wgalloway",
+    "email": "petersenjackie@example.org"
+  },
+  {
+    "id": 16,
+    "name": "Andrew Nguyen",
+    "username": "miranda32",
+    "email": "christopher36@example.com"
+  },
+  {
+    "id": 17,
+    "name": "William Sanchez",
+    "username": "ljohnson",
+    "email": "philipramsey@example.com"
+  },
+  {
+    "id": 18,
+    "name": "Holly Schneider",
+    "username": "markweiss",
+    "email": "dustinsmith@example.org"
+  },
+  {
+    "id": 19,
+    "name": "Samantha Henderson",
+    "username": "pmyers",
+    "email": "audreysmith@example.org"
+  },
+  {
+    "id": 20,
+    "name": "Adrian Wallace",
+    "username": "allenjay",
+    "email": "brookeoliver@example.com"
+  },
+  {
+    "id": 21,
+    "name": "Christina Blackburn",
+    "username": "raycasey",
+    "email": "goldenstacey@example.com"
+  },
+  {
+    "id": 22,
+    "name": "Marcus Aguilar",
+    "username": "hcollier",
+    "email": "johnsonchristopher@example.net"
+  },
+  {
+    "id": 23,
+    "name": "Sally Macdonald",
+    "username": "michael97",
+    "email": "vcain@example.org"
+  },
+  {
+    "id": 24,
+    "name": "Carla Silva",
+    "username": "schmidtjohn",
+    "email": "ballardashley@example.net"
+  },
+  {
+    "id": 25,
+    "name": "Jasmin Salazar",
+    "username": "osalazar",
+    "email": "vrodriguez@example.com"
+  }
+]

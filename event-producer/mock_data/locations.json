@@ -1,0 +1,202 @@
+[
+  {
+    "user_id": 1,
+    "country": "Comoros",
+    "state": "Minnesota",
+    "city": "Jamesville",
+    "latitude": -30.9819375,
+    "longitude": -91.565599
+  },
+  {
+    "user_id": 2,
+    "country": "North Macedonia",
+    "state": "North Dakota",
+    "city": "Normanview",
+    "latitude": -67.154644,
+    "longitude": -164.55938
+  },
+  {
+    "user_id": 3,
+    "country": "Togo",
+    "state": "Oklahoma",
+    "city": "East Glenmouth",
+    "latitude": 77.1069475,
+    "longitude": 154.907837
+  },
+  {
+    "user_id": 4,
+    "country": "French Southern Territories",
+    "state": "Kansas",
+    "city": "West Kevinfurt",
+    "latitude": 53.6197365,
+    "longitude": -160.359961
+  },
+  {
+    "user_id": 5,
+    "country": "Switzerland",
+    "state": "New York",
+    "city": "East Elizabeth",
+    "latitude": 82.1393955,
+    "longitude": 11.008437
+  },
+  {
+    "user_id": 6,
+    "country": "Mauritius",
+    "state": "New Mexico",
+    "city": "New William",
+    "latitude": -25.7094165,
+    "longitude": 138.523732
+  },
+  {
+    "user_id": 7,
+    "country": "Dominica",
+    "state": "Tennessee",
+    "city": "New Edwinchester",
+    "latitude": -61.0899515,
+    "longitude": -130.893187
+  },
+  {
+    "user_id": 8,
+    "country": "Brunei Darussalam",
+    "state": "Illinois",
+    "city": "Richardfurt",
+    "latitude": 58.323668,
+    "longitude": -37.381884
+  },
+  {
+    "user_id": 9,
+    "country": "Korea",
+    "state": "Arizona",
+    "city": "North Mark",
+    "latitude": 50.2266085,
+    "longitude": -4.165127
+  },
+  {
+    "user_id": 10,
+    "country": "Holy See (Vatican City State)",
+    "state": "Wisconsin",
+    "city": "Briantown",
+    "latitude": 35.6622965,
+    "longitude": 104.28104
+  },
+  {
+    "user_id": 11,
+    "country": "Albania",
+    "state": "Minnesota",
+    "city": "Petersontown",
+    "latitude": -38.058194,
+    "longitude": 22.842695
+  },
+  {
+    "user_id": 12,
+    "country": "Anguilla",
+    "state": "Michigan",
+    "city": "Woodardfurt",
+    "latitude": -60.664977,
+    "longitude": 0.433103
+  },
+  {
+    "user_id": 13,
+    "country": "Tonga",
+    "state": "South Carolina",
+    "city": "Jacobtown",
+    "latitude": -21.068559,
+    "longitude": -118.596178
+  },
+  {
+    "user_id": 14,
+    "country": "Tajikistan",
+    "state": "Washington",
+    "city": "Jeffersonview",
+    "latitude": 31.8584875,
+    "longitude": -103.863845
+  },
+  {
+    "user_id": 15,
+    "country": "Guinea",
+    "state": "Rhode Island",
+    "city": "Ashleystad",
+    "latitude": -80.4081055,
+    "longitude": -73.955084
+  },
+  {
+    "user_id": 16,
+    "country": "Bouvet Island (Bouvetoya)",
+    "state": "Georgia",
+    "city": "South Jamesfort",
+    "latitude": 89.6225745,
+    "longitude": 165.828584
+  },
+  {
+    "user_id": 17,
+    "country": "Tokelau",
+    "state": "Missouri",
+    "city": "North Andrewborough",
+    "latitude": -7.942569,
+    "longitude": -121.3121
+  },
+  {
+    "user_id": 18,
+    "country": "Saint Pierre and Miquelon",
+    "state": "West Virginia",
+    "city": "Beckyborough",
+    "latitude": 69.5292585,
+    "longitude": 49.854451
+  },
+  {
+    "user_id": 19,
+    "country": "Iraq",
+    "state": "New Hampshire",
+    "city": "South Beth",
+    "latitude": 30.80481,
+    "longitude": 61.941721
+  },
+  {
+    "user_id": 20,
+    "country": "French Guiana",
+    "state": "Mississippi",
+    "city": "East Nancychester",
+    "latitude": 29.4544355,
+    "longitude": 179.227047
+  },
+  {
+    "user_id": 21,
+    "country": "Tajikistan",
+    "state": "South Carolina",
+    "city": "Erikafurt",
+    "latitude": 66.9832125,
+    "longitude": 90.159549
+  },
+  {
+    "user_id": 22,
+    "country": "Honduras",
+    "state": "Washington",
+    "city": "New Jackson",
+    "latitude": 22.173493,
+    "longitude": -89.784613
+  },
+  {
+    "user_id": 23,
+    "country": "Lesotho",
+    "state": "California",
+    "city": "West Johnnyberg",
+    "latitude": -2.479287,
+    "longitude": -123.804234
+  },
+  {
+    "user_id": 24,
+    "country": "Armenia",
+    "state": "Pennsylvania",
+    "city": "Charlesfurt",
+    "latitude": 47.726646,
+    "longitude": 0.695029
+  },
+  {
+    "user_id": 25,
+    "country": "El Salvador",
+    "state": "Missouri",
+    "city": "Reesefort",
+    "latitude": 57.916414,
+    "longitude": -70.183518
+  }
+]
