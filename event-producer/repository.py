@@ -31,18 +31,11 @@ class Repository:
         location = self.locations[user.id]
         return user, location
 
-    def get_products_per_category_sample(
-        self,
-        category_a: int = 0,
-        category_b: int = 5,
-        product_a: int = 0,
-        product_b: int = 5
-    ) -> dict[str, list[Product]]:
-        num_categories = min(len(self.categories), random.randint(category_a, category_b))
-        categories = random.sample(self.categories, num_categories)
-        result = {}
-        for category in categories:
-            products_in_category = [p for p in self.products.values() if p.category == category]
-            num_products = min(len(products_in_category), random.randint(product_a, product_b))
-            result[category] = random.sample(products_in_category, num_products) if products_in_category else []
-        return result
+    def get_categories_sample(self, a: int = 0, b: int = 5) -> list[str]:
+        num_categories = min(len(self.categories), random.randint(a, b))
+        return random.sample(self.categories, num_categories)
+
+    def get_products_sample_by_category(self, category: str, a: int = 0, b: int = 5) -> list[Product]:
+        products_in_category = [p for p in self.products.values() if p.category == category]
+        num_products = min(len(products_in_category), random.randint(a, b))
+        return random.sample(products_in_category, num_products) if products_in_category else []

@@ -11,14 +11,15 @@ def generate_users_en(n=25):
     users = []
     locations = []
     for i in range(n):
+        user_id = f"u_{i + 1}"
         users.append({
-            "id": i + 1,
+            "id": user_id,
             "name": fake.name(),
             "username": fake.user_name(),
             "email": fake.email(),
         })
         locations.append({
-            "user_id": i + 1,
+            "user_id": user_id,
             "country": fake.country(),
             "state": fake.state(),
             "city": fake.city(),
@@ -32,7 +33,7 @@ def generate_products_en(n=100):
     products = []
     for i in range(n):
         products.append({
-            "id": i + 1,
+            "id": f"p_{i + 1}",
             "name": fake.sentence(nb_words=random.randint(2, 8)),
             "category": random.choice(CATEGORIES),
             "price": round(random.uniform(10, 300), 2),
