@@ -1,5 +1,4 @@
-import random
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Union
 
@@ -29,20 +28,7 @@ class Product(BaseModel):
     currency: str
 
 
-class UserSession(BaseModel):
-    session_id: str
-    timestamp: datetime
-    user_id: str
-    location: Location
-    cart: dict[int, dict[Product, int]] = {}
-
-    def get_timestamp_and_increment(self):
-        now = self.timestamp
-        self.timestamp = now + timedelta(minutes=random.randint(1, 5))
-        return now
-
-
-class EventType(str, Enum):
+class EventType(Enum):
     SESSION_STARTED = "session_started"
     SESSION_ENDED = "session_ended"
     CATEGORY_VIEWED = "category_viewed"
@@ -53,11 +39,11 @@ class EventType(str, Enum):
 
 
 class StartSessionMetadata(BaseModel):
-    user_agent: str  # device type or browser
+    user_agent: str
 
 
 class EndSessionMetadata(BaseModel):
-    duration: int  # in seconds or minutes
+    seconds_duration: int
 
 
 class CategoryMetadata(BaseModel):
@@ -89,16 +75,20 @@ class PurchaseMetadata(BaseModel):
     estimated_delivery_date: datetime
 
 
+EventMetadata = Union[
+    StartSessionMetadata,
+    EndSessionMetadata,
+    CategoryMetadata,
+    ProductMetadata,
+    CartMetadata,
+    PurchaseMetadata
+]
+
+
 class Event(BaseModel):
-    event_type: str
+    event_type: EventType
     session_id: str
     timestamp: datetime
     user_id: str
     location: Location
-    metadata: Union[
-                  CategoryMetadata,
-                  ProductMetadata,
-                  CartMetadata,
-                  PurchaseItem,
-                  PurchaseMetadata
-              ] | None = None
+    metadata: EventMetadata | None = None

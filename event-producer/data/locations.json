@@ -1,0 +1,202 @@
+[
+  {
+    "user_id": "61d9fc08-513e-4e28-a3e8-ecff192bcdda",
+    "country": "Ethiopia",
+    "state": "Indiana",
+    "city": "Williamhaven",
+    "latitude": -34.6118525,
+    "longitude": -85.104524
+  },
+  {
+    "user_id": "974f5b6d-bb58-47ec-9f38-41069d6a0d25",
+    "country": "Bahamas",
+    "state": "New Jersey",
+    "city": "Taylorberg",
+    "latitude": 88.111739,
+    "longitude": -71.905235
+  },
+  {
+    "user_id": "b74bfadd-d914-4cf3-ba11-8d095d930905",
+    "country": "Cook Islands",
+    "state": "West Virginia",
+    "city": "New Edward",
+    "latitude": 13.873674,
+    "longitude": -37.752281
+  },
+  {
+    "user_id": "d65c8679-eb4d-427d-9966-ac7f2f9c07cc",
+    "country": "Lebanon",
+    "state": "Texas",
+    "city": "Masseytown",
+    "latitude": -41.2842835,
+    "longitude": 146.648083
+  },
+  {
+    "user_id": "39acf42a-ff96-4e77-a5e1-f5a5dcf8b351",
+    "country": "Maldives",
+    "state": "North Dakota",
+    "city": "Sheilaton",
+    "latitude": 71.9499465,
+    "longitude": 62.517378
+  },
+  {
+    "user_id": "e69189e5-a8d9-480c-afc0-bd7c777bbcc7",
+    "country": "Tokelau",
+    "state": "Maine",
+    "city": "Ryanberg",
+    "latitude": 12.3831915,
+    "longitude": 157.900608
+  },
+  {
+    "user_id": "43153035-8a51-4eef-93a2-17edc8955761",
+    "country": "Croatia",
+    "state": "Maryland",
+    "city": "Williamton",
+    "latitude": 31.5526415,
+    "longitude": -138.65725
+  },
+  {
+    "user_id": "5835a901-f3d8-441b-85df-956523e2d764",
+    "country": "Jordan",
+    "state": "Maine",
+    "city": "Port Christine",
+    "latitude": 3.71947,
+    "longitude": -77.078715
+  },
+  {
+    "user_id": "b9daccea-ed63-4b04-9135-75c61c49cd72",
+    "country": "Korea",
+    "state": "New Jersey",
+    "city": "Joneston",
+    "latitude": -88.180493,
+    "longitude": 98.818395
+  },
+  {
+    "user_id": "11f645e2-b8e7-4d56-80f5-34791603fdea",
+    "country": "Marshall Islands",
+    "state": "West Virginia",
+    "city": "Danielshaven",
+    "latitude": 11.146331,
+    "longitude": 18.227775
+  },
+  {
+    "user_id": "37649291-a7b8-4ad3-a97c-f3d571e4a53a",
+    "country": "Slovenia",
+    "state": "Florida",
+    "city": "New Victoriafurt",
+    "latitude": 83.6102345,
+    "longitude": -1.52481
+  },
+  {
+    "user_id": "6704164e-e7ab-4cc9-bc93-16132becdf42",
+    "country": "Swaziland",
+    "state": "Michigan",
+    "city": "North Joelton",
+    "latitude": 28.492092,
+    "longitude": 32.828846
+  },
+  {
+    "user_id": "78e3cf2f-3461-40f2-b7b0-ec70b9476bab",
+    "country": "Barbados",
+    "state": "California",
+    "city": "Nicholasstad",
+    "latitude": 21.7302615,
+    "longitude": 121.031475
+  },
+  {
+    "user_id": "ac3f0cd0-cc19-4374-8d1d-e49c2dcef003",
+    "country": "Western Sahara",
+    "state": "Missouri",
+    "city": "Mcbridefort",
+    "latitude": 74.4454845,
+    "longitude": -178.268102
+  },
+  {
+    "user_id": "3c5d91db-5eaa-49d3-acdd-328315b815f4",
+    "country": "Bhutan",
+    "state": "Virginia",
+    "city": "East Bettyburgh",
+    "latitude": 75.003504,
+    "longitude": 79.576644
+  },
+  {
+    "user_id": "651cf234-34f7-48af-a0ea-45954240c538",
+    "country": "Saint Helena",
+    "state": "Colorado",
+    "city": "Smithfort",
+    "latitude": -87.3986855,
+    "longitude": -128.912808
+  },
+  {
+    "user_id": "df359532-fc7e-4c37-932c-7869a0a9a465",
+    "country": "Denmark",
+    "state": "Pennsylvania",
+    "city": "South Jill",
+    "latitude": -49.453545,
+    "longitude": 159.451477
+  },
+  {
+    "user_id": "c4ad3f8e-92bc-4c5c-953a-e15f459bd94b",
+    "country": "Grenada",
+    "state": "Maryland",
+    "city": "Lake Karinaside",
+    "latitude": -43.77173,
+    "longitude": -32.909926
+  },
+  {
+    "user_id": "700a2863-c501-4de2-b13d-4ee712315abb",
+    "country": "Antarctica (the territory South of 60 deg S)",
+    "state": "Nevada",
+    "city": "Masonmouth",
+    "latitude": -11.864474,
+    "longitude": 103.452066
+  },
+  {
+    "user_id": "68fcc852-4ac5-4f14-8b08-fa0163ae901a",
+    "country": "Croatia",
+    "state": "Oklahoma",
+    "city": "Mayershire",
+    "latitude": -27.225316,
+    "longitude": 129.966523
+  },
+  {
+    "user_id": "0fe2a640-719e-48be-9f1f-76aedf4f6551",
+    "country": "Brunei Darussalam",
+    "state": "Washington",
+    "city": "Thomasburgh",
+    "latitude": 82.451307,
+    "longitude": -95.08436
+  },
+  {
+    "user_id": "89695d25-07c6-48a6-a93f-5cea58e2a6e7",
+    "country": "Romania",
+    "state": "Vermont",
+    "city": "Petersonmouth",
+    "latitude": 47.3144275,
+    "longitude": -99.836047
+  },
+  {
+    "user_id": "e12ba811-6740-4b01-bd34-4cd7b536bb94",
+    "country": "El Salvador",
+    "state": "Iowa",
+    "city": "Colemanstad",
+    "latitude": 41.270514,
+    "longitude": 34.552153
+  },
+  {
+    "user_id": "0d58d072-2cdc-4c6d-843f-c06257da9792",
+    "country": "Rwanda",
+    "state": "Hawaii",
+    "city": "Myersstad",
+    "latitude": -70.833021,
+    "longitude": 23.846554
+  },
+  {
+    "user_id": "b3c65702-eb6c-4777-aa38-ff600658c56a",
+    "country": "Cameroon",
+    "state": "Pennsylvania",
+    "city": "Rebeccaland",
+    "latitude": -40.1376985,
+    "longitude": 86.499809
+  }
+]
