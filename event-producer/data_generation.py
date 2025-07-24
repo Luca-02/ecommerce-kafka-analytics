@@ -28,13 +28,11 @@ user_agents_path = os.path.join(data_path, "user_agents.json")
 payments_methods_path = os.path.join(data_path, "payment_methods.json")
 categories_path = os.path.join(data_path, "categories.json")
 users_path = os.path.join(data_path, "users.json")
-locations_path = os.path.join(data_path, "locations.json")
 products_path = os.path.join(data_path, "products.json")
 
 
 def generate_users_en(n=25):
     users = []
-    locations = []
     for i in range(n):
         user_id = str(uuid.uuid4())
         users.append({
@@ -42,16 +40,15 @@ def generate_users_en(n=25):
             "name": fake.name(),
             "username": fake.user_name(),
             "email": fake.email(),
+            "location": {
+                "country": fake.country(),
+                "state": fake.state(),
+                "city": fake.city(),
+                "latitude": float(fake.latitude()),
+                "longitude": float(fake.longitude())
+            }
         })
-        locations.append({
-            "user_id": user_id,
-            "country": fake.country(),
-            "state": fake.state(),
-            "city": fake.city(),
-            "latitude": float(fake.latitude()),
-            "longitude": float(fake.longitude())
-        })
-    return users, locations
+    return users
 
 
 def generate_products_en(n=100):
@@ -74,12 +71,11 @@ def write_json(file_path, data):
 
 
 if __name__ == '__main__':
-    generated_users, generated_locations = generate_users_en(25)
+    generated_users = generate_users_en(25)
     generated_products = generate_products_en(100)
 
     write_json(categories_path, CATEGORIES)
     write_json(user_agents_path, USER_AGENTS)
     write_json(payments_methods_path, PAYMENTS_METHODS)
     write_json(users_path, generated_users)
-    write_json(locations_path, generated_locations)
     write_json(products_path, generated_products)

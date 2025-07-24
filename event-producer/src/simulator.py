@@ -1,14 +1,21 @@
 import random
+import time
 import uuid
 from datetime import datetime, timedelta
+
+from loguru import logger
 
 from config import (
     ADD_TO_CART_PROBABILITY,
     DELIVERY_DAYS_RANGE,
     DISCOUNT_PROBABILITY,
     MAX_CART_QUANTITY,
+    MAX_EVENT_INTERVAL_SECONDS,
+    MAX_SESSION_INTERVAL_SECONDS,
     MAX_SHIPPING_COST,
     MIN_CART_QUANTITY,
+    MIN_EVENT_INTERVAL_SECONDS,
+    MIN_SESSION_INTERVAL_SECONDS,
     MIN_SHIPPING_COST,
     PURCHASE_PROBABILITY,
     REMOVE_FROM_CART_PROBABILITY
@@ -31,14 +38,32 @@ from .repository import Repository
 from .user_session import UserSession
 
 
+def sleep(min_seconds: float, max_seconds: float):
+    sleep_time = random.uniform(min_seconds, max_seconds)
+    time.sleep(sleep_time)
+
+
 class Simulator:
     def __init__(
         self,
-        repository: Repository = Repository(),
-        producer: Producer = Producer()
+        repository: Repository,
+        producer: Producer
     ):
         self.repository = repository
         self.producer = producer
+
+    def run(self):
+        self.producer.connect_to_kafka()
+        logger.info("Starting event simulator...")
+        try:
+            while True:
+                self.simulate_user_session()
+                sleep(MIN_SESSION_INTERVAL_SECONDS, MAX_SESSION_INTERVAL_SECONDS)
+        except KeyboardInterrupt:
+            logger.info("Simulation stopped by user.")
+        finally:
+            logger.info("Finishing event simulator...")
+            self.producer.close()
 
     def simulate_user_session(self):
         user, location = self.repository.get_random_user()
@@ -50,6 +75,8 @@ class Simulator:
             user_id=user.id,
             location=location
         )
+
+        logger.info(f"[Simulator] Simulating user session {session.session_id} for user {user.id}...")
 
         # Start session
         self._produce_event(
@@ -175,4 +202,5 @@ class Simulator:
             location=session.location,
             metadata=metadata
         )
+        sleep(MIN_EVENT_INTERVAL_SECONDS, MAX_EVENT_INTERVAL_SECONDS)
         self.producer.produce(event)
