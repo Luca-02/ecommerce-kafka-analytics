@@ -1,4 +1,3 @@
-import json
 import sys
 import time
 
@@ -6,21 +5,39 @@ from kafka import KafkaProducer
 from kafka.errors import KafkaError
 from loguru import logger
 
-from config import KAFKA_BROKERS, KAFKA_TOPIC
 from .models import Event
 
 CONNECTION_MAX_ATTEMPTS = 10
 CONNECTION_RETRY_DELAY_SECONDS = 5
 
+lambda_encoder = lambda x: x.encode('utf-8') if x else None
+
+
+def _on_send_success(record_metadata, event_data):
+    logger.info(
+        f"[Kafka] Event sent: topic={record_metadata.topic}, "
+        f"partition={record_metadata.partition}, "
+        f"offset={record_metadata.offset}, "
+        f"message={event_data}"
+    )
+
+
+def _on_send_error(excp, event_data):
+    logger.error(f"Kafka error for event {event_data}: {excp}")
+
 
 class Producer:
-    def __init__(self):
-        self.bootstrap_servers = KAFKA_BROKERS.split(',')
-        self.topic = KAFKA_TOPIC
+    def __init__(
+        self,
+        bootstrap_servers: str,
+        topic: str
+    ):
+        self.bootstrap_servers = bootstrap_servers
+        self.topic = topic
         self.producer_config = {
             'bootstrap_servers': self.bootstrap_servers,
-            'key_serializer': lambda x: x.encode('utf-8') if x else None,
-            'value_serializer': lambda x: json.dumps(x).encode('utf-8'),
+            'key_serializer': lambda_encoder,
+            'value_serializer': lambda_encoder,
             'acks': 'all',
             'retries': 3,
             'compression_type': 'gzip'
@@ -56,21 +73,16 @@ class Producer:
                     sys.exit(1)
 
     def produce(self, event: Event):
+        logger.info(f"[Kafka] Producing event: {event}")
         try:
-            # With user_id as key all the events for the same user will be in the same partition
+            event_data = event.model_dump_json()
             future = self.producer.send(
-                topic=KAFKA_TOPIC,
+                topic=self.topic,
                 key=event.user_id,
-                value=event.model_dump()
+                value=event_data
             )
-            # Wait for the event to be sent
-            record_metadata = future.get(timeout=10)
-            logger.info(
-                f"[Kafka] Event sent: topic={record_metadata.topic}, "
-                f"partition={record_metadata.partition}, "
-                f"offset={record_metadata.offset}, "
-                f"message={event}"
-            )
+            future.add_callback(_on_send_success, event_data)
+            future.add_errback(_on_send_error, event_data)
         except KafkaError as e:
             logger.error(f"Kafka error: {e}")
         except Exception as e:
