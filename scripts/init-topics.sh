@@ -22,7 +22,7 @@ echo "🚀 All brokers are up. Proceeding to create topics..."
 
 IFS=',' read -ra TOPIC_LIST <<< "$KAFKA_INIT_TOPICS"
 for topic in "${TOPIC_LIST[@]}"; do
-  echo "📦 Creating topic $NAME with $KAFKA_TOPIC_PARTITIONS partitions and $KAFKA_TOPIC_RF replicas"
+  echo "📦 Creating topic $topic with $KAFKA_TOPIC_PARTITIONS partitions and $KAFKA_TOPIC_RF replicas"
   kafka-topics --create --if-not-exists \
     --bootstrap-server "${KAFKA_BOOTSTRAP_SERVERS}" \
     --topic "$topic" \

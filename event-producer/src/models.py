@@ -38,23 +38,23 @@ class EventType(Enum):
     PURCHASE = "purchase"
 
 
-class StartSessionMetadata(BaseModel):
+class StartSessionParameters(BaseModel):
     user_agent: str
 
 
-class EndSessionMetadata(BaseModel):
+class EndSessionParameters(BaseModel):
     seconds_duration: int
 
 
-class CategoryMetadata(BaseModel):
+class CategoryParameters(BaseModel):
     category: str
 
 
-class ProductMetadata(BaseModel):
+class ProductParameters(BaseModel):
     product: Product
 
 
-class CartMetadata(BaseModel):
+class CartParameters(BaseModel):
     product: Product
     quantity: int
 
@@ -65,7 +65,7 @@ class PurchaseItem(BaseModel):
     subtotal: float
 
 
-class PurchaseMetadata(BaseModel):
+class PurchaseParameters(BaseModel):
     items: list[PurchaseItem]
     total_amount: float
     discount_amount: float
@@ -75,13 +75,13 @@ class PurchaseMetadata(BaseModel):
     estimated_delivery_date: datetime
 
 
-EventMetadata = Union[
-    StartSessionMetadata,
-    EndSessionMetadata,
-    CategoryMetadata,
-    ProductMetadata,
-    CartMetadata,
-    PurchaseMetadata
+EventParameters = Union[
+    StartSessionParameters,
+    EndSessionParameters,
+    CategoryParameters,
+    ProductParameters,
+    CartParameters,
+    PurchaseParameters
 ]
 
 
@@ -91,4 +91,4 @@ class Event(BaseModel):
     timestamp: datetime
     user_id: str
     location: Location
-    metadata: EventMetadata | None = None
+    parameters: EventParameters | None = None

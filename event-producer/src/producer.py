@@ -13,19 +13,6 @@ CONNECTION_RETRY_DELAY_SECONDS = 5
 lambda_encoder = lambda x: x.encode('utf-8') if x else None
 
 
-def _on_send_success(record_metadata, event_data):
-    logger.info(
-        f"[Kafka] Event sent: topic={record_metadata.topic}, "
-        f"partition={record_metadata.partition}, "
-        f"offset={record_metadata.offset}, "
-        f"message={event_data}"
-    )
-
-
-def _on_send_error(excp, event_data):
-    logger.error(f"Kafka error for event {event_data}: {excp}")
-
-
 class Producer:
     def __init__(
         self,
@@ -35,12 +22,18 @@ class Producer:
         self.bootstrap_servers = bootstrap_servers
         self.topic = topic
         self.producer_config = {
+            'client_id': 'event-producer',
             'bootstrap_servers': self.bootstrap_servers,
             'key_serializer': lambda_encoder,
             'value_serializer': lambda_encoder,
             'acks': 'all',
-            'retries': 3,
-            'compression_type': 'gzip'
+            'retries': 5,
+            'retry_backoff_ms': 1000,
+            'batch_size': 32 * 1024, # 32KB
+            'linger_ms': 10,
+            'compression_type': 'gzip',
+            'request_timeout_ms': 30000,
+            'delivery_timeout_ms': 120000
             # TODO Uncomment and configure for SSL/SASL authentication
             # security_protocol="SASL_SSL",
             # ssl_cafile=SSL_CAFILE,
@@ -76,20 +69,22 @@ class Producer:
         logger.info(f"[Kafka] Producing event: {event}")
         try:
             event_data = event.model_dump_json()
-            future = self.producer.send(
+            self.producer.send(
                 topic=self.topic,
                 key=event.user_id,
                 value=event_data
             )
-            future.add_callback(_on_send_success, event_data)
-            future.add_errback(_on_send_error, event_data)
         except KafkaError as e:
-            logger.error(f"Kafka error: {e}")
+            logger.error(f"Kafka error during event production: {e}")
         except Exception as e:
-            logger.error(f"General error: {e}")
+            logger.error(f"General error during event production: {e}")
 
     def close(self):
-        logger.info("[Kafka] Flushing producer messages...")
-        self.producer.flush()
-        self.producer.close()
+        logger.info("[Kafka] Closing producer...")
+        if self.producer:
+            try:
+                self.producer.flush(timeout=30)
+                self.producer.close(timeout=10)
+            except Exception as e:
+                logger.error(f"Error during producer close: {e}")
         logger.info("[Kafka] Producer closed cleanly!")

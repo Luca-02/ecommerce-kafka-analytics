@@ -2,9 +2,17 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from src.models import Location
+from src.models import Location, Product
 from src.user_session import UserSession
 
+
+product = Product(
+    id="abc123",
+    name="Test Product",
+    category="Test Category",
+    price=10.99,
+    currency="USD"
+)
 
 class TestUserSession(unittest.TestCase):
     def setUp(self):
@@ -29,6 +37,26 @@ class TestUserSession(unittest.TestCase):
         self.assertEqual(self.session.location, self.mock_location)
         self.assertEqual(self.session.last_op_timestamp, self.started_at)
         self.assertEqual(self.session.cart, {})
+
+    def test_cart(self):
+        quantity = 5
+        self.session.add_to_cart(product, quantity)
+        self.assertEqual(self.session.cart[product.id]["product"], product)
+        self.assertEqual(self.session.cart[product.id]["quantity"], quantity)
+
+        to_remove = 2
+        self.session.remove_from_cart(product, to_remove)
+        self.assertEqual(self.session.cart[product.id]["product"], product)
+        self.assertEqual(self.session.cart[product.id]["quantity"], quantity - to_remove)
+
+        self.session.remove_from_cart(product, quantity - to_remove)
+        self.assertNotIn(product.id, self.session.cart)
+
+    def test_purchase(self):
+        quantity = 5
+        self.session.add_to_cart(product, quantity)
+        self.session.purchase()
+        self.assertEqual(self.session.cart, dict())
 
     def test_get_last_op_timestamp_and_increment(self):
         before = self.session.last_op_timestamp
