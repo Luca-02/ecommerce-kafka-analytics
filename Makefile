@@ -8,3 +8,4 @@ docker-compose-down:
 
 docker-compose-clean:
 	docker-compose down --volumes --remove-orphans
+	docker system prune --volumes -f
