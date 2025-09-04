@@ -6,23 +6,35 @@ services:
     ports:
       - "19092:19092"
     environment:
+      # Kafka without Zookeeper with KRaft
       KAFKA_KRAFT_MODE: "true"
       CLUSTER_ID: ${KAFKA_CLUSTER_ID}
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: 'broker,controller'
+      # Defines listeners
       KAFKA_LISTENERS: 'INTERNAL://kafka1:9092,CONTROLLER://kafka1:9093,EXTERNAL://0.0.0.0:19092'
+      # What clients should use to reach this broker
       KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka1:9092,EXTERNAL://localhost:19092'
+      # Security protocol for each listener
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      # Listener used for broker-to-broker communication
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
       KAFKA_LOG_DIRS: /var/lib/kafka/data
+      # How long Kafka keeps logs before deletion
       KAFKA_LOG_RETENTION_HOURS: 168
+      # Initial delay for consumer group rebalancing
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      # Replication factor for the internal consumer offset topic that Kafka automatically creates to manage consumer group state
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      # Default replication factor for newly created topics
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      # Minimum number of replicas that must acknowledge writes
       KAFKA_MIN_INSYNC_REPLICAS: 2
+      # Replication factor for transactional state topic
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      # Minimum in-sync replicas for transactional state topic
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
     volumes:
       - kafka1-data:/var/lib/kafka/data

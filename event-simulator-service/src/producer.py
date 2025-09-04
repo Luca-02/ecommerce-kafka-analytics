@@ -22,7 +22,7 @@ class Producer:
         self.bootstrap_servers = bootstrap_servers
         self.topic = topic
         self.producer_config = {
-            'client_id': 'event-producer',
+            'client_id': 'event-simulator-service',
             'bootstrap_servers': self.bootstrap_servers,
             'key_serializer': lambda_encoder,
             'value_serializer': lambda_encoder,
