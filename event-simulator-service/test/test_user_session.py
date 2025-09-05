@@ -14,6 +14,7 @@ product = Product(
     currency="USD"
 )
 
+
 class TestUserSession(unittest.TestCase):
     def setUp(self):
         self.mock_location = MagicMock(spec=Location)

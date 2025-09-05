@@ -29,19 +29,11 @@ class Producer:
             'acks': 'all',
             'retries': 5,
             'retry_backoff_ms': 1000,
-            'batch_size': 32 * 1024, # 32KB
+            'batch_size': 32 * 1024,
             'linger_ms': 10,
             'compression_type': 'gzip',
             'request_timeout_ms': 30000,
             'delivery_timeout_ms': 120000
-            # TODO Uncomment and configure for SSL/SASL authentication
-            # security_protocol="SASL_SSL",
-            # ssl_cafile=SSL_CAFILE,
-            # ssl_certfile=SSL_CERTFILE,
-            # ssl_keyfile=SSL_KEYFILE,
-            # sasl_mechanism="PLAIN",
-            # sasl_plain_username=KAFKA_USERNAME,
-            # sasl_plain_password=KAFKA_PASSWORD,
         }
         self.producer = None
 

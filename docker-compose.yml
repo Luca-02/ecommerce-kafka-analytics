@@ -10,6 +10,7 @@ services:
       KAFKA_KRAFT_MODE: "true"
       CLUSTER_ID: ${KAFKA_CLUSTER_ID}
       KAFKA_NODE_ID: 1
+      TOPIC_AUTO_CREATE: "false"
       KAFKA_PROCESS_ROLES: 'broker,controller'
       # Defines listeners
       KAFKA_LISTENERS: 'INTERNAL://kafka1:9092,CONTROLLER://kafka1:9093,EXTERNAL://0.0.0.0:19092'
@@ -56,6 +57,7 @@ services:
       KAFKA_KRAFT_MODE: "true"
       CLUSTER_ID: ${KAFKA_CLUSTER_ID}
       KAFKA_NODE_ID: 2
+      TOPIC_AUTO_CREATE: "false"
       KAFKA_PROCESS_ROLES: 'broker,controller'
       KAFKA_LISTENERS: 'INTERNAL://kafka2:9092,CONTROLLER://kafka2:9093,EXTERNAL://0.0.0.0:29092'
       KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka2:9092,EXTERNAL://localhost:29092'
@@ -91,6 +93,7 @@ services:
       KAFKA_KRAFT_MODE: "true"
       CLUSTER_ID: ${KAFKA_CLUSTER_ID}
       KAFKA_NODE_ID: 3
+      TOPIC_AUTO_CREATE: "false"
       KAFKA_PROCESS_ROLES: 'broker,controller'
       KAFKA_LISTENERS: 'INTERNAL://kafka3:9092,CONTROLLER://kafka3:9093,EXTERNAL://0.0.0.0:39092'
       KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka3:9092,EXTERNAL://localhost:39092'

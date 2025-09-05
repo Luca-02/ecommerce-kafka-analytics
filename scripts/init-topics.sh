@@ -15,7 +15,7 @@ for broker in "${BROKERS[@]}"; do
     echo "🔁 $broker not ready yet, retrying in $WAIT_TIME sec..."
     sleep $WAIT_TIME
   done
-  echo "✅   $broker is ready"
+  echo "✅ $broker is ready"
 done
 
 echo "🚀 All brokers are up. Proceeding to create topics..."
