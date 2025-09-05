@@ -1,0 +1,327 @@
+[
+  {
+    "id": "300891aa-8d15-4992-bad9-b71460305008",
+    "name": "Lorraine Martin",
+    "username": "jamesjackson",
+    "email": "susanhernandez@example.net",
+    "location": {
+      "country": "Canada",
+      "state": "Iowa",
+      "city": "Ericaton",
+      "latitude": 83.4925405,
+      "longitude": -23.015237
+    }
+  },
+  {
+    "id": "d1332a4a-946f-403e-97cd-3c604a06bced",
+    "name": "Samuel Kelly",
+    "username": "donna12",
+    "email": "buckanne@example.com",
+    "location": {
+      "country": "Suriname",
+      "state": "Illinois",
+      "city": "Murrayborough",
+      "latitude": 5.9415525,
+      "longitude": 22.910158
+    }
+  },
+  {
+    "id": "f11cad11-b06b-4120-b202-6fd9bb553a9c",
+    "name": "Kathryn Davila",
+    "username": "josephruiz",
+    "email": "laura45@example.com",
+    "location": {
+      "country": "Holy See (Vatican City State)",
+      "state": "Alaska",
+      "city": "Connieville",
+      "latitude": -40.196198,
+      "longitude": 96.285348
+    }
+  },
+  {
+    "id": "37d1d7f6-d751-442e-9e03-7aae652fe58f",
+    "name": "Carlos Sanchez Jr.",
+    "username": "kevin90",
+    "email": "jasonkim@example.com",
+    "location": {
+      "country": "United States Virgin Islands",
+      "state": "Minnesota",
+      "city": "Rodriguezstad",
+      "latitude": 78.410481,
+      "longitude": 80.890719
+    }
+  },
+  {
+    "id": "f51da47a-da21-46f6-83c8-0efcf78cde03",
+    "name": "Douglas Roy",
+    "username": "john50",
+    "email": "bsheppard@example.com",
+    "location": {
+      "country": "Guernsey",
+      "state": "Massachusetts",
+      "city": "Lake Amandachester",
+      "latitude": 61.121862,
+      "longitude": 94.445071
+    }
+  },
+  {
+    "id": "9a4c5032-9159-4909-93ad-06d35da81be9",
+    "name": "Erica Mullen",
+    "username": "summersmary",
+    "email": "xwilson@example.org",
+    "location": {
+      "country": "Venezuela",
+      "state": "Texas",
+      "city": "West Brett",
+      "latitude": -40.023998,
+      "longitude": -152.866229
+    }
+  },
+  {
+    "id": "29b9d725-bee5-4710-97a4-6adfb09d5cc2",
+    "name": "Marc Richardson",
+    "username": "zacharyweeks",
+    "email": "stephaniesolis@example.org",
+    "location": {
+      "country": "Guernsey",
+      "state": "Minnesota",
+      "city": "West Lance",
+      "latitude": 5.6567745,
+      "longitude": -34.225587
+    }
+  },
+  {
+    "id": "c22d4453-c13c-4128-a1dd-7689625e143d",
+    "name": "Dawn Guzman",
+    "username": "lawrencesharon",
+    "email": "hernandezdarren@example.org",
+    "location": {
+      "country": "Andorra",
+      "state": "Kentucky",
+      "city": "Dannyfurt",
+      "latitude": -17.8454205,
+      "longitude": -52.110927
+    }
+  },
+  {
+    "id": "d2cf8696-b340-4a4e-9093-99ec1b7d63d7",
+    "name": "John Brown",
+    "username": "rodriguezwilliam",
+    "email": "michael74@example.com",
+    "location": {
+      "country": "Azerbaijan",
+      "state": "Kentucky",
+      "city": "Sparksberg",
+      "latitude": -0.592878,
+      "longitude": 120.522108
+    }
+  },
+  {
+    "id": "51f40d48-4894-4f76-844b-b847320645b7",
+    "name": "Paula Morgan",
+    "username": "hubbardchristine",
+    "email": "daniel63@example.org",
+    "location": {
+      "country": "Puerto Rico",
+      "state": "Florida",
+      "city": "Romeromouth",
+      "latitude": -67.9620235,
+      "longitude": -65.745897
+    }
+  },
+  {
+    "id": "2dc539e8-c6b4-4dc1-9375-34a777ba4dc9",
+    "name": "Kathryn Acosta",
+    "username": "lorisanders",
+    "email": "nathan34@example.net",
+    "location": {
+      "country": "Comoros",
+      "state": "Rhode Island",
+      "city": "Thorntonborough",
+      "latitude": 34.2438695,
+      "longitude": -121.620874
+    }
+  },
+  {
+    "id": "cc829ecf-357f-4116-a126-181c4e1b2ac5",
+    "name": "Thomas Hobbs",
+    "username": "jonathonbennett",
+    "email": "hendersonbriana@example.com",
+    "location": {
+      "country": "French Guiana",
+      "state": "Washington",
+      "city": "Zunigafurt",
+      "latitude": -86.2640655,
+      "longitude": 43.480859
+    }
+  },
+  {
+    "id": "8d94e341-d347-4986-97aa-177a21345f76",
+    "name": "Kevin Wang",
+    "username": "iharper",
+    "email": "gdelacruz@example.com",
+    "location": {
+      "country": "Slovenia",
+      "state": "Nebraska",
+      "city": "Christopherhaven",
+      "latitude": -71.136045,
+      "longitude": -12.880961
+    }
+  },
+  {
+    "id": "594516ca-02c2-45fd-82e8-edd43762cdfc",
+    "name": "Sarah Wells",
+    "username": "gonzalezjessica",
+    "email": "kathypope@example.com",
+    "location": {
+      "country": "Lesotho",
+      "state": "Florida",
+      "city": "Kevinland",
+      "latitude": -67.6487685,
+      "longitude": -163.687812
+    }
+  },
+  {
+    "id": "60db5d6d-26d7-463d-a0b1-f2d9d8427cce",
+    "name": "Shelia Davis",
+    "username": "rtaylor",
+    "email": "xbishop@example.org",
+    "location": {
+      "country": "Antigua and Barbuda",
+      "state": "Minnesota",
+      "city": "West Ashleyburgh",
+      "latitude": -65.749778,
+      "longitude": 61.414256
+    }
+  },
+  {
+    "id": "96c76218-c3b9-4a34-802c-c6cd549679ca",
+    "name": "Kimberly Johnson",
+    "username": "ayalayvette",
+    "email": "coxruth@example.com",
+    "location": {
+      "country": "Albania",
+      "state": "Arkansas",
+      "city": "Port Elizabeth",
+      "latitude": -71.001656,
+      "longitude": 178.537671
+    }
+  },
+  {
+    "id": "7a800e06-2d94-4389-b3e7-c4689044ccaf",
+    "name": "Michael Clark",
+    "username": "rachelbarrera",
+    "email": "jamiehawkins@example.org",
+    "location": {
+      "country": "Sri Lanka",
+      "state": "New Jersey",
+      "city": "Scottchester",
+      "latitude": -29.313605,
+      "longitude": -5.646297
+    }
+  },
+  {
+    "id": "de379e14-4a01-4946-8d0a-42e3e3ba4a4e",
+    "name": "Christopher Wright",
+    "username": "melinda48",
+    "email": "jimmy01@example.com",
+    "location": {
+      "country": "Greece",
+      "state": "New Hampshire",
+      "city": "Taylorland",
+      "latitude": 5.970373,
+      "longitude": 76.932397
+    }
+  },
+  {
+    "id": "54d9ecb5-df34-4dc7-9dff-1b15d75b2c2e",
+    "name": "James Potter",
+    "username": "stevengreene",
+    "email": "cgarner@example.org",
+    "location": {
+      "country": "Vietnam",
+      "state": "Illinois",
+      "city": "Baileybury",
+      "latitude": 23.4581705,
+      "longitude": -77.048872
+    }
+  },
+  {
+    "id": "772828f0-f5ef-4e0c-ad36-008e7d8cfa5d",
+    "name": "Jessica Merritt",
+    "username": "allison19",
+    "email": "rhodesluis@example.net",
+    "location": {
+      "country": "Kazakhstan",
+      "state": "Arkansas",
+      "city": "Michaelstad",
+      "latitude": -49.36424,
+      "longitude": -142.491718
+    }
+  },
+  {
+    "id": "f73d9a2f-10c9-494c-8233-3fbd00b69d4b",
+    "name": "Ashley Vang",
+    "username": "perezashley",
+    "email": "jason50@example.org",
+    "location": {
+      "country": "Isle of Man",
+      "state": "Kansas",
+      "city": "Victorialand",
+      "latitude": -1.6336515,
+      "longitude": -23.633521
+    }
+  },
+  {
+    "id": "65ce9f65-bd84-4b00-a21b-20fb2bf9adaf",
+    "name": "Melissa Johnson",
+    "username": "hannarachael",
+    "email": "bianca27@example.net",
+    "location": {
+      "country": "Aruba",
+      "state": "New York",
+      "city": "Lake Samantha",
+      "latitude": 33.782024,
+      "longitude": 170.882965
+    }
+  },
+  {
+    "id": "df0248af-edf0-4c14-8fae-2578d6a40da8",
+    "name": "Matthew Powers",
+    "username": "randolphholly",
+    "email": "matthewcollins@example.org",
+    "location": {
+      "country": "Guadeloupe",
+      "state": "Oklahoma",
+      "city": "New Alyssaville",
+      "latitude": -82.204412,
+      "longitude": -134.402841
+    }
+  },
+  {
+    "id": "92d84715-1ea9-45d0-aedc-e1d4eb7c8480",
+    "name": "Monica Carter",
+    "username": "jilliansmith",
+    "email": "wrighttanya@example.com",
+    "location": {
+      "country": "Tunisia",
+      "state": "Indiana",
+      "city": "Perezton",
+      "latitude": 14.9553755,
+      "longitude": -152.384479
+    }
+  },
+  {
+    "id": "f1bd01f4-235c-4ed4-8a15-4e2a623c5f44",
+    "name": "Thomas Foley",
+    "username": "dale02",
+    "email": "josephsmith@example.com",
+    "location": {
+      "country": "Hungary",
+      "state": "North Carolina",
+      "city": "Pagehaven",
+      "latitude": -34.041774,
+      "longitude": 30.854579
+    }
+  }
+]
