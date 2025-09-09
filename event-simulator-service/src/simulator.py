@@ -3,7 +3,6 @@ import time
 import uuid
 from datetime import datetime, timedelta
 
-from loguru import logger
 from pydantic import BaseModel
 
 from .models import (
@@ -18,6 +17,7 @@ from .models import (
     PurchaseParameters,
     StartSessionParameters
 )
+from .logger_utils import get_logger
 from .producer import Producer
 from .repository import Repository
 from .user_session import UserSession
@@ -30,7 +30,7 @@ def sleep(min_seconds: float, max_seconds: float):
     :param min_seconds: Minimum duration in seconds.
     :param max_seconds: Maximum duration in seconds.
     """
-    if max_seconds > min_seconds > 0:
+    if max_seconds >= min_seconds > 0:
         sleep_time = random.uniform(min_seconds, max_seconds)
         time.sleep(sleep_time)
 
@@ -55,10 +55,12 @@ class Simulator:
 
     def __init__(
         self,
+        process_id: int,
         repository: Repository,
         producer: Producer,
         config: SimulatorConfig
     ):
+        self.logger = get_logger(component=f'simulator-{process_id}')
         self.repository = repository
         self.producer = producer
         self.config = config
@@ -68,16 +70,16 @@ class Simulator:
         Starts the event simulation. Connects to Kafka and continuously
         simulates user sessions.
         """
+        self.logger.info(f"Simulator started...")
         self.producer.connect_to_kafka()
-        logger.info("Starting event simulator...")
         try:
             while True:
-                self.simulate_user_session()
                 sleep(*self.config.session_interval_seconds_range)
+                self.simulate_user_session()
         except KeyboardInterrupt:
-            logger.info("Simulation stopped by user.")
+            self.logger.info(f"Simulator stopped by user.")
         finally:
-            logger.info("Finishing event simulator...")
+            self.logger.info(f"Finishing simulator...")
             self.producer.close()
 
     def _start_session_event(self, session: UserSession):
@@ -192,7 +194,7 @@ class Simulator:
             location=location
         )
 
-        logger.info(f"[Simulator] Simulating user session {session.session_id} for user {user.id}...")
+        self.logger.info(f"Simulating user session {session.session_id} for user {user.id}...")
         self._start_session_event(session)
         self._simulate_browse(session)
         self._simulate_cart_modifications(session)
@@ -213,5 +215,5 @@ class Simulator:
             location=session.location,
             parameters=metadata
         )
-        sleep(*self.config.event_interval_seconds_range)
         self.producer.produce(event)
+        sleep(*self.config.event_interval_seconds_range)

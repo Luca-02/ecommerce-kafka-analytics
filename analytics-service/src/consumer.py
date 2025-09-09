@@ -2,10 +2,7 @@ import sys
 import time
 
 from kafka import KafkaConsumer
-from kafka.errors import KafkaError
 from loguru import logger
-
-from .models import Event
 
 CONNECTION_MAX_ATTEMPTS = 10
 CONNECTION_RETRY_DELAY_SECONDS = 5
@@ -15,11 +12,13 @@ lambda_encoder = lambda x: x.encode('utf-8') if x else None
 
 class Consumer:
     def __init__(
-        self,
-        bootstrap_servers: str,
-        group_id: str,
-        topic: str
+            self,
+            bootstrap_servers: str,
+            group_id: str,
+            topic: str
     ):
+        self.consumer: KafkaConsumer | None = None
+        self.consuming = False
         self.bootstrap_servers = bootstrap_servers
         self.group_id = group_id
         self.topic = topic
@@ -29,11 +28,12 @@ class Consumer:
             'bootstrap_servers': self.bootstrap_servers,
             'key_serializer': lambda_encoder,
             'value_serializer': lambda_encoder,
-            'auto_offset_reset': 'earliest'
+            'auto_offset_reset': 'earliest',
+            'enable_auto_commit': False,
+            'max_poll_records': 100
         }
-        self.consumer = None
 
-    def connect_to_kafka(self):
+    def connect_and_subscribe_to_kafka(self):
         if self.consumer is not None:
             logger.info("Already connected to Kafka.")
             return
@@ -41,8 +41,9 @@ class Consumer:
         logger.info("Connecting to Kafka...")
         for attempt in range(CONNECTION_MAX_ATTEMPTS):
             try:
-                self.consumer = KafkaConsumer(**self.consumer_config)
+                self.consumer = KafkaConsumer(self.topic, **self.consumer_config)
                 logger.info(f"Connected to Kafka through: {self.bootstrap_servers}")
+                logger.info(f"Subscribed to topic: {self.topic}")
                 return
             except Exception as e:
                 logger.error(f"Attempt {attempt + 1} failed: {e}")
@@ -58,16 +59,22 @@ class Consumer:
             logger.error("Consumer is not connected to Kafka.")
             return
 
-        # TODO
-        pass
-
+        logger.info(f"Consuming from topic {self.topic}")
+        while self.consumer.bootstrap_connected():
+            try:
+                message_batch = self.consumer.poll(1000.0)
+                if message_batch:
+                    print(message_batch)
+                self.consumer.commit()
+            except KeyboardInterrupt:
+                break
+        self.close()
 
     def close(self):
         logger.info("[Kafka] Closing consumer...")
         if self.consumer:
             try:
-                self.consumer.flush(timeout=30)
-                self.consumer.close(timeout=10)
+                self.consumer.close()
             except Exception as e:
                 logger.error(f"Error during consumer close: {e}")
         logger.info("[Kafka] Consumer closed cleanly!")

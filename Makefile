@@ -1,11 +1,9 @@
-.PHONY: up down clean
-
-docker-compose-up:
+up:
 	docker-compose up -d
 
-docker-compose-down:
+down:
 	docker-compose down --volumes --remove-orphans
 
-docker-compose-clean:
+clean:
 	docker-compose down --volumes --remove-orphans
 	docker system prune --volumes -f

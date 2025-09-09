@@ -3,8 +3,8 @@ import time
 
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
-from loguru import logger
 
+from .logger_utils import get_logger
 from .models import Event
 
 CONNECTION_MAX_ATTEMPTS = 10
@@ -16,9 +16,12 @@ lambda_encoder = lambda x: x.encode('utf-8') if x else None
 class Producer:
     def __init__(
         self,
+        process_id: int,
         bootstrap_servers: str,
         topic: str
     ):
+        self.producer: KafkaProducer | None = None
+        self.logger = get_logger(component=f'producer-{process_id}')
         self.bootstrap_servers = bootstrap_servers
         self.topic = topic
         self.producer_config = {
@@ -35,34 +38,33 @@ class Producer:
             'request_timeout_ms': 30000,
             'delivery_timeout_ms': 120000
         }
-        self.producer = None
 
     def connect_to_kafka(self):
         if self.producer is not None:
-            logger.info("Already connected to Kafka.")
+            self.logger.info(f"Already connected to Kafka.")
             return
 
-        logger.info("Connecting to Kafka...")
+        self.logger.info(f"Connecting to Kafka...")
         for attempt in range(CONNECTION_MAX_ATTEMPTS):
             try:
                 self.producer = KafkaProducer(**self.producer_config)
-                logger.info(f"Connected to Kafka through: {self.bootstrap_servers}")
+                self.logger.info(f"Connected to Kafka through: {self.bootstrap_servers}")
                 return
             except Exception as e:
-                logger.error(f"Attempt {attempt + 1} failed: {e}")
+                self.logger.error(f"Attempt {attempt + 1} failed: {e}")
                 if attempt < CONNECTION_MAX_ATTEMPTS - 1:
-                    logger.info(f"Retrying in {CONNECTION_RETRY_DELAY_SECONDS} seconds...")
+                    self.logger.info(f"Retrying in {CONNECTION_RETRY_DELAY_SECONDS} seconds...")
                     time.sleep(CONNECTION_RETRY_DELAY_SECONDS)
                 else:
-                    logger.error(f"Impossible to connect to Kafka after {CONNECTION_MAX_ATTEMPTS} attempts.")
+                    self.logger.error(f"Impossible to connect to Kafka after {CONNECTION_MAX_ATTEMPTS} attempts.")
                     sys.exit(1)
 
     def produce(self, event: Event):
         if self.producer is None:
-            logger.error("Producer is not connected to Kafka.")
+            self.logger.error(f"Producer is not connected to Kafka.")
             return
 
-        logger.info(f"[Kafka] Producing event: {event}")
+        self.logger.info(f"Producing event: {event}")
         try:
             event_data = event.model_dump_json()
             self.producer.send(
@@ -71,16 +73,16 @@ class Producer:
                 value=event_data
             )
         except KafkaError as e:
-            logger.error(f"Kafka error during event production: {e}")
+            self.logger.error(f"Kafka error during event production: {e}")
         except Exception as e:
-            logger.error(f"General error during event production: {e}")
+            self.logger.error(f"General error during event production: {e}")
 
     def close(self):
-        logger.info("[Kafka] Closing producer...")
+        self.logger.info(f"Closing producer...")
         if self.producer:
             try:
                 self.producer.flush(timeout=30)
-                self.producer.close(timeout=10)
+                self.producer.close()
             except Exception as e:
-                logger.error(f"Error during producer close: {e}")
-        logger.info("[Kafka] Producer closed cleanly!")
+                self.logger.error(f"Error during producer close: {e}")
+        self.logger.info(f"Producer closed cleanly!")

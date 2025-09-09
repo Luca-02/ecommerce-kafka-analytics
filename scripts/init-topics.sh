@@ -26,8 +26,8 @@ for topic in "${TOPIC_LIST[@]}"; do
   kafka-topics --create --if-not-exists \
     --bootstrap-server "${KAFKA_BOOTSTRAP_SERVERS}" \
     --topic "$topic" \
-    --partitions $KAFKA_TOPIC_PARTITIONS \
-    --replication-factor $KAFKA_TOPIC_RF
+    --partitions "$KAFKA_TOPIC_PARTITIONS" \
+    --replication-factor "$KAFKA_TOPIC_RF"
 done
 
 echo "Topics created"
