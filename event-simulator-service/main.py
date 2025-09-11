@@ -19,11 +19,11 @@ def run_simulator(process_id: int):
     logger.info(f"Starting simulator process {process_id}...")
     simulator = Simulator(
         process_id=process_id,
+        event_topic=config.KAFKA_EVENT_TOPIC,
         repository=Repository(data_path=config.DATA_PATH),
         producer=Producer(
             process_id=process_id,
             bootstrap_servers=config.KAFKA_BROKERS,
-            topic=config.KAFKA_TOPIC
         ),
         config=SimulatorConfig(
             add_to_cart_probability=config.ADD_TO_CART_PROBABILITY,

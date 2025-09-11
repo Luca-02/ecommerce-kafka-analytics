@@ -52,35 +52,19 @@ class Simulator:
     Simulates user behavior on an e-commerce platform, generating events
     and sending them to Kafka.
     """
-
     def __init__(
         self,
         process_id: int,
+        event_topic: str,
         repository: Repository,
         producer: Producer,
         config: SimulatorConfig
     ):
         self.logger = get_logger(component=f'simulator-{process_id}')
+        self.event_topic = event_topic
         self.repository = repository
         self.producer = producer
         self.config = config
-
-    def run(self):
-        """
-        Starts the event simulation. Connects to Kafka and continuously
-        simulates user sessions.
-        """
-        self.logger.info(f"Simulator started...")
-        self.producer.connect_to_kafka()
-        try:
-            while True:
-                sleep(*self.config.session_interval_seconds_range)
-                self.simulate_user_session()
-        except KeyboardInterrupt:
-            self.logger.info(f"Simulator stopped by user.")
-        finally:
-            self.logger.info(f"Finishing simulator...")
-            self.producer.close()
 
     def _start_session_event(self, session: UserSession):
         self._produce_event(
@@ -179,6 +163,24 @@ class Simulator:
             EndSessionParameters(seconds_duration=session.end())
         )
 
+    def run(self):
+        """
+        Starts the event simulation. Connects to Kafka and continuously
+        simulates user sessions.
+        """
+        self.logger.info(f"Simulator started...")
+        self.producer.connect_to_kafka()
+        try:
+            while True:
+                sleep(*self.config.session_interval_seconds_range)
+                self.simulate_user_session()
+        except KeyboardInterrupt:
+            self.logger.info(f"Simulator stopped by user.")
+        finally:
+            self.logger.info(f"Finishing simulator...")
+            self.producer.close()
+            self.logger.info(f"Simulator finished.")
+
     def simulate_user_session(self):
         """
         Simulates a single user session, including viewing categories/products,
@@ -215,5 +217,5 @@ class Simulator:
             location=session.location,
             parameters=metadata
         )
-        self.producer.produce(event)
+        self.producer.produce(self.event_topic, event)
         sleep(*self.config.event_interval_seconds_range)

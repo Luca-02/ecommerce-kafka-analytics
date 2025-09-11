@@ -9,7 +9,7 @@ DATA_PATH = os.getenv('DATA_PATH', './data')
 
 # Kafka
 KAFKA_BROKERS = os.getenv('KAFKA_BROKERS', 'localhost:9093')
-KAFKA_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
+KAFKA_EVENT_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
 
 # Number of simulation processes
 NUMBER_SIMULATION_PROCESSES = int(os.getenv('NUMBER_SIMULATION_PROCESSES', 1))
