@@ -20,6 +20,11 @@ def _parse_message(message: Message) -> Event:
     event_json = json.loads(message.value())
     return Event(**event_json)
 
+# TODO i messaggi arrivano in ordine, però vorrei aggiungere parallelismo tra gli eventi delle sessioni, ad esempio
+#  potrei suddividere gli eventi delle sessioni (che possono essere mischiati tra sessioni) in più thread worker tramite
+#  hash partitioning, così che gli eventi ordinati di una stessa sessione vadano nello stesso worker. Un po come funziona già kafka,
+#  che tramite la key che uso nel messaggio spartisce i messaggi kafka tra i nodi consumer che fanno parte dello stesso group_id, in
+#  modo che gli eventi di una stessa sessione vadano nello stesso nodo consumer.
 
 class MessageHandler:
     """
@@ -44,7 +49,7 @@ class MessageHandler:
 
         :param event: Event object.
         """
-        self.logger.info(f"Processing: {event}")
+        self.logger.info(f"Processing event {event.event_type} with id: {event.event_id}")
         event_handler = self.event_handlers_map.get(event.event_type)
         if event_handler:
             event_handler.handle(event)

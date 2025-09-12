@@ -86,6 +86,7 @@ EventParameters = Union[
 
 
 class Event(BaseModel):
+    event_id: str
     event_type: EventType
     session_id: str
     timestamp: datetime

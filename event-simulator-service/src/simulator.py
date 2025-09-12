@@ -213,6 +213,7 @@ class Simulator:
         metadata: EventParameters = None
     ):
         event = Event(
+            event_id=str(uuid.uuid4()),
             event_type=event_type,
             session_id=session.session_id,
             timestamp=session.get_last_op_timestamp_and_increment(),
