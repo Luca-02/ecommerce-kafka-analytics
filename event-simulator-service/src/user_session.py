@@ -8,6 +8,7 @@ class UserSession:
     """
     A class representing a user session.
     """
+
     def __init__(
         self,
         session_id: str,

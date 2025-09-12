@@ -1,30 +1,23 @@
 import json
-
 from json import JSONDecodeError
-from kafka.consumer.fetcher import ConsumerRecord
 
-from .event_handler import (
-    EventHandler,
-    SessionStartedHandler,
-    SessionEndedHandler,
-    CategoryViewedHandler,
-    ProductViewedHandler,
-    ProductAddedToCartHandler,
-    ProductRemovedFromCartHandler,
-    PurchasedHandler
-)
+from confluent_kafka import Message
+
+from .event_handler import (CategoryViewedHandler, EventHandler, ProductAddedToCartHandler,
+                           ProductRemovedFromCartHandler, ProductViewedHandler, PurchasedHandler, SessionEndedHandler,
+                           SessionStartedHandler)
 from .logger_utils import get_logger
 from .models import Event, EventType
 
 
-def _parse_message(message: ConsumerRecord) -> Event:
+def _parse_message(message: Message) -> Event:
     """
     Kafka message parser method.
 
     :param message: Consumed Kafka message.
     :return: Parsed event object.
     """
-    event_json = json.loads(message.value)
+    event_json = json.loads(message.value())
     return Event(**event_json)
 
 
@@ -32,17 +25,18 @@ class MessageHandler:
     """
     Message handler class, that handles the consumed Kafka messages.
     """
+
     def __init__(self):
         self.logger = get_logger(component='message-handler')
         self.event_handlers_map: dict[EventType, EventHandler] = {
-        EventType.SESSION_STARTED: SessionStartedHandler(),
-        EventType.SESSION_ENDED: SessionEndedHandler(),
-        EventType.CATEGORY_VIEWED: CategoryViewedHandler(),
-        EventType.PRODUCT_VIEWED: ProductViewedHandler(),
-        EventType.PRODUCT_ADDED_TO_CART: ProductAddedToCartHandler(),
-        EventType.PRODUCT_REMOVED_FROM_CART: ProductRemovedFromCartHandler(),
-        EventType.PURCHASE: PurchasedHandler()
-    }
+            EventType.SESSION_STARTED: SessionStartedHandler(),
+            EventType.SESSION_ENDED: SessionEndedHandler(),
+            EventType.CATEGORY_VIEWED: CategoryViewedHandler(),
+            EventType.PRODUCT_VIEWED: ProductViewedHandler(),
+            EventType.PRODUCT_ADDED_TO_CART: ProductAddedToCartHandler(),
+            EventType.PRODUCT_REMOVED_FROM_CART: ProductRemovedFromCartHandler(),
+            EventType.PURCHASE: PurchasedHandler()
+        }
 
     def _process_event(self, event: Event):
         """
@@ -55,9 +49,9 @@ class MessageHandler:
         if event_handler:
             event_handler.handle(event)
         else:
-            raise ValueError(f"Unknown event type: {event.event_type}")
+            self.logger.warning(f"Unknown event type: {event.event_type}")
 
-    def handle(self, message: ConsumerRecord):
+    def handle(self, message: Message):
         """
         Handles the consumed Kafka message.
 

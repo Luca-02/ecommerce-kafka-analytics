@@ -1,67 +1,74 @@
 import sys
-import time
 
-from kafka import KafkaProducer
-from kafka.errors import KafkaError
+from confluent_kafka import KafkaException, SerializingProducer
+from confluent_kafka.error import KeySerializationError, ValueSerializationError
+from confluent_kafka.serialization import StringSerializer
 
 from .logger_utils import get_logger
 from .models import Event
-
-CONNECTION_MAX_ATTEMPTS = 10
-CONNECTION_RETRY_DELAY_SECONDS = 5
-
-lambda_encoder = lambda x: x.encode('utf-8') if x else None
 
 
 class Producer:
     """
     Kafka producer for sending events to a Kafka topic.
     """
+
     def __init__(
         self,
         process_id: int,
         bootstrap_servers: str
     ):
-        self.producer: KafkaProducer | None = None
         self.logger = get_logger(component=f'producer-{process_id}')
         self.bootstrap_servers = bootstrap_servers
-        self.producer_config = {
-            'client_id': 'event-simulator-service',
-            'bootstrap_servers': self.bootstrap_servers,
-            'key_serializer': lambda_encoder,
-            'value_serializer': lambda_encoder,
-            'acks': 'all',
-            'retries': 5,
-            'retry_backoff_ms': 1000,
-            'batch_size': 32 * 1024,
-            'linger_ms': 10,
-            'compression_type': 'gzip',
-            'request_timeout_ms': 30000,
-            'delivery_timeout_ms': 120000
+        self.config = {
+            "client.id": f"event-simulator-service",
+            "bootstrap.servers": self.bootstrap_servers,
+            "key.serializer": StringSerializer(),
+            "value.serializer": StringSerializer(),
+            "compression.type": "gzip",
+            "acks": "all",
+            "retries": 10
         }
 
-    def connect_to_kafka(self):
+        # # Se serve autenticazione SASL/SSL
+        # if security_protocol != "PLAINTEXT":
+        #     self.producer_config["security.protocol"] = security_protocol
+        #     if sasl_mechanism:
+        #         self.producer_config["sasl.mechanisms"] = sasl_mechanism
+        #     if sasl_username and sasl_password:
+        #         self.producer_config["sasl.username"] = sasl_username
+        #         self.producer_config["sasl.password"] = sasl_password
+
+        self.producer: SerializingProducer | None = None
+
+    def _delivery_report(self, err, msg):
+        """
+        Callback for delivery report.
+        """
+        if err is not None:
+            self.logger.error(f"Error during message delivery: {err}")
+        else:
+            self.logger.debug(
+                f"Message delivered to topic {msg.topic()} partition [{msg.partition()}] offset {msg.offset()}"
+            )
+
+    def connect_to_kafka(self) -> bool:
         """
         Connects to Kafka using the provided configuration.
+
+        :return: True if connection was successful, False otherwise.
         """
         if self.producer:
             self.logger.info(f"Already connected to Kafka.")
-            return
+            return True
 
-        self.logger.info(f"Connecting to Kafka...")
-        for attempt in range(CONNECTION_MAX_ATTEMPTS):
-            try:
-                self.producer = KafkaProducer(**self.producer_config)
-                self.logger.info(f"Connected to Kafka through: {self.bootstrap_servers}")
-                return
-            except Exception as e:
-                self.logger.error(f"Attempt {attempt + 1} failed: {e}")
-                if attempt < CONNECTION_MAX_ATTEMPTS - 1:
-                    self.logger.info(f"Retrying in {CONNECTION_RETRY_DELAY_SECONDS} seconds...")
-                    time.sleep(CONNECTION_RETRY_DELAY_SECONDS)
-                else:
-                    self.logger.error(f"Impossible to connect to Kafka after {CONNECTION_MAX_ATTEMPTS} attempts.")
-                    sys.exit(1)
+        try:
+            self.producer = SerializingProducer(self.config)
+            self.logger.info(f"Connected to Kafka through: {self.bootstrap_servers}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Error during connection to Kafka: {e}")
+            return False
 
     def produce(self, topic: str, event: Event):
         """
@@ -74,14 +81,24 @@ class Producer:
             self.logger.error(f"Producer is not connected to Kafka.")
             return
 
-        self.logger.info(f"Producing event: {event}")
         try:
-            self.producer.send(
+            self.logger.info(f"Producing event: {event}")
+            self.producer.produce(
                 topic=topic,
                 key=event.session_id,
-                value=event.model_dump_json()
+                value=event.model_dump_json(),
+                on_delivery=self._delivery_report
             )
-        except KafkaError as e:
+            # Wait up to 1 second for events. Callbacks will be invoked during
+            # this method call if the message is acknowledged.
+            self.producer.poll(timeout=1.0)
+        except BufferError as e:
+            self.logger.error(f"Internal producer message queue is full, event discarded: {e}")
+        except KeySerializationError as e:
+            self.logger.error(f"Kafka message key serialization error: {e}")
+        except ValueSerializationError as e:
+            self.logger.error(f"Kafka message value serialization error: {e}")
+        except KafkaException as e:
             self.logger.error(f"Kafka error during event production: {e}")
         except Exception as e:
             self.logger.error(f"General error during event production: {e}")
@@ -94,7 +111,8 @@ class Producer:
         if self.producer:
             try:
                 self.producer.flush(timeout=30)
-                self.producer.close()
                 self.logger.info(f"Producer closed cleanly!")
             except Exception as e:
                 self.logger.error(f"Error during producer close: {e}")
+            finally:
+                self.producer = None

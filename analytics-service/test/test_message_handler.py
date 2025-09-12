@@ -1,11 +1,10 @@
-from unittest.mock import MagicMock
-
-import src.message_handler as message_handler
-
-from kafka.consumer.fetcher import ConsumerRecord
 from datetime import datetime
 from unittest import TestCase
+from unittest.mock import MagicMock
 
+from confluent_kafka import Message
+
+import src.message_handler as message_handler
 from src.message_handler import MessageHandler
 from src.models import (
     Event,
@@ -15,22 +14,10 @@ from src.models import (
 )
 
 
-def _make_mock_record(value: str):
-    return ConsumerRecord(
-        topic="test-topic",
-        partition=0,
-        leader_epoch=0,
-        offset=0,
-        timestamp=0,
-        timestamp_type=0,
-        key=None,
-        value=value,
-        headers=[],
-        checksum=None,
-        serialized_key_size=-1,
-        serialized_value_size=len(value),
-        serialized_header_size=-1,
-    )
+def _make_mock_record(value: str) -> Message:
+    msg = MagicMock(spec=Message)
+    msg.value.return_value = value
+    return msg
 
 
 invalid_mock_record = _make_mock_record("invalid")
@@ -63,13 +50,21 @@ class TestMessageHandler(TestCase):
         self.assertEqual(event, self.mock_event)
 
     def test_handle_event(self):
-        mock_handler = MagicMock()
-        self.handler.event_handlers_map[self.mock_event.event_type] = mock_handler
+        mock_event_handlers_map = MagicMock()
+        self.handler.event_handlers_map[self.mock_event.event_type] = mock_event_handlers_map
 
         self.handler.handle(
             _make_mock_record(self.mock_event.model_dump_json())
         )
 
-        mock_handler.handle.assert_called_once()
-        args, _ = mock_handler.handle.call_args
+        mock_event_handlers_map.handle.assert_called_once()
+        args, _ = mock_event_handlers_map.handle.call_args
         self.assertIsInstance(args[0], Event)
+
+    def test_handle_event_unknown_type(self):
+        mock_logger = MagicMock()
+        self.handler.logger = mock_logger
+
+        self.handler.handle(invalid_mock_record)
+
+        mock_logger.error.assert_called_once()

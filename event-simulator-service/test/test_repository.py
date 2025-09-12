@@ -3,7 +3,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from src.repository import Repository
+from src.repository import MockRepository
 
 user_agents = ["agent1", "agent2", "agent3"]
 payment_methods = ["credit_card", "paypal"]
@@ -78,7 +78,7 @@ class TestRepository(unittest.TestCase):
         patcher = patch("src.repository._load_data", side_effect=mock_load_data)
         self.mock_load_data_patch = patcher.start()
         self.addCleanup(patcher.stop)
-        self.repo = Repository("mock/path")
+        self.repo = MockRepository("mock/path")
 
     def test_repository_initialization(self):
         self.assertEqual(self.repo.user_agents, user_agents)

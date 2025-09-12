@@ -1,14 +1,14 @@
 import signal
-import config
-
 from multiprocessing import Process
 
+import config
 from src.logger_utils import get_logger
 from src.producer import Producer
-from src.repository import Repository
+from src.repository import MockRepository
 from src.simulator import Simulator, SimulatorConfig
 
 logger = get_logger(component='main')
+
 
 def run_simulator(process_id: int):
     """
@@ -20,7 +20,7 @@ def run_simulator(process_id: int):
     simulator = Simulator(
         process_id=process_id,
         event_topic=config.KAFKA_EVENT_TOPIC,
-        repository=Repository(data_path=config.DATA_PATH),
+        repository=MockRepository(data_path=config.DATA_PATH),
         producer=Producer(
             process_id=process_id,
             bootstrap_servers=config.KAFKA_BROKERS,

@@ -5,7 +5,6 @@ from unittest.mock import MagicMock
 from src.models import Location, Product
 from src.user_session import UserSession
 
-
 product = Product(
     id="abc123",
     name="Test Product",

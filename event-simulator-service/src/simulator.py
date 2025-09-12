@@ -1,10 +1,12 @@
 import random
+import sys
 import time
 import uuid
 from datetime import datetime, timedelta
 
 from pydantic import BaseModel
 
+from .logger_utils import get_logger
 from .models import (
     CartParameters,
     CategoryParameters,
@@ -17,7 +19,6 @@ from .models import (
     PurchaseParameters,
     StartSessionParameters
 )
-from .logger_utils import get_logger
 from .producer import Producer
 from .repository import Repository
 from .user_session import UserSession
@@ -52,6 +53,7 @@ class Simulator:
     Simulates user behavior on an e-commerce platform, generating events
     and sending them to Kafka.
     """
+
     def __init__(
         self,
         process_id: int,
@@ -169,7 +171,10 @@ class Simulator:
         simulates user sessions.
         """
         self.logger.info(f"Simulator started...")
-        self.producer.connect_to_kafka()
+        if not self.producer.connect_to_kafka():
+            self.logger.error(f"Failed to connect to Kafka.")
+            return
+
         try:
             while True:
                 sleep(*self.config.session_interval_seconds_range)
@@ -177,9 +182,7 @@ class Simulator:
         except KeyboardInterrupt:
             self.logger.info(f"Simulator stopped by user.")
         finally:
-            self.logger.info(f"Finishing simulator...")
             self.producer.close()
-            self.logger.info(f"Simulator finished.")
 
     def simulate_user_session(self):
         """

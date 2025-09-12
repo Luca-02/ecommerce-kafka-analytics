@@ -7,6 +7,7 @@ class EventHandler(ABC):
     """
     Abstract base class for event handlers.
     """
+
     def __init__(self):
         self.logger = get_logger(component='event-handler')
 
