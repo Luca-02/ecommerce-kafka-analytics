@@ -109,28 +109,28 @@ class MockRepository(Repository):
         self,
         data_path: str
     ):
-        self.user_agents = _load_data(os.path.join(data_path, "user_agents.json"))
-        self.payment_methods = _load_data(os.path.join(data_path, "payment_methods.json"))
-        self.categories = _load_data(os.path.join(data_path, "categories.json"))
-        self.users, self.locations = _load_users_locations(os.path.join(data_path, "users.json"))
-        self.products = _load_entities(os.path.join(data_path, "products.json"), Product, lambda p: p["id"])
+        self._user_agents = _load_data(os.path.join(data_path, "user_agents.json"))
+        self._payment_methods = _load_data(os.path.join(data_path, "payment_methods.json"))
+        self._categories = _load_data(os.path.join(data_path, "categories.json"))
+        self._users, self._locations = _load_users_locations(os.path.join(data_path, "users.json"))
+        self._products = _load_entities(os.path.join(data_path, "products.json"), Product, lambda p: p["id"])
 
     def get_random_user_agent(self) -> str:
-        return random.choice(self.user_agents)
+        return random.choice(self._user_agents)
 
     def get_random_payment_method(self):
-        return random.choice(self.payment_methods)
+        return random.choice(self._payment_methods)
 
     def get_random_user(self) -> tuple[User, Location]:
-        user = random.choice(list(self.users.values()))
-        location = self.locations[user.id]
+        user = random.choice(list(self._users.values()))
+        location = self._locations[user.id]
         return user, location
 
     def get_categories_sample(self, a: int = 1, b: int = 5) -> list[str]:
-        num_categories = min(len(self.categories), random.randint(a, b))
-        return random.sample(self.categories, num_categories)
+        num_categories = min(len(self._categories), random.randint(a, b))
+        return random.sample(self._categories, num_categories)
 
     def get_products_sample_by_category(self, category: str, a: int = 1, b: int = 5) -> list[Product]:
-        products_in_category = [p for p in self.products.values() if p.category == category]
+        products_in_category = [p for p in self._products.values() if p.category == category]
         num_products = min(len(products_in_category), random.randint(a, b))
         return random.sample(products_in_category, num_products) if products_in_category else []

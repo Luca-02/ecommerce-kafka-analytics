@@ -81,12 +81,12 @@ class TestRepository(unittest.TestCase):
         self.repo = MockRepository("mock/path")
 
     def test_repository_initialization(self):
-        self.assertEqual(self.repo.user_agents, user_agents)
-        self.assertEqual(self.repo.payment_methods, payment_methods)
-        self.assertEqual(self.repo.categories, categories)
-        self.assertEqual(len(self.repo.users), len(users))
-        self.assertEqual(len(self.repo.locations), len(users))
-        self.assertEqual(len(self.repo.products), len(products))
+        self.assertEqual(self.repo._user_agents, user_agents)
+        self.assertEqual(self.repo._payment_methods, payment_methods)
+        self.assertEqual(self.repo._categories, categories)
+        self.assertEqual(len(self.repo._users), len(users))
+        self.assertEqual(len(self.repo._locations), len(users))
+        self.assertEqual(len(self.repo._products), len(products))
 
     def test_get_random_user_agent(self):
         agent = self.repo.get_random_user_agent()
@@ -99,7 +99,7 @@ class TestRepository(unittest.TestCase):
     def test_get_categories_sample(self):
         sample = self.repo.get_categories_sample()
         for cat in sample:
-            self.assertIn(cat, self.repo.categories)
+            self.assertIn(cat, self.repo._categories)
 
     def test_get_random_user(self):
         user, location = self.repo.get_random_user()

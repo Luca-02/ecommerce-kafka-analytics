@@ -1,39 +1,39 @@
 import json
 from json import JSONDecodeError
 
-from confluent_kafka import Message
+import time
+from confluent_kafka import Message, TIMESTAMP_NOT_AVAILABLE
 
-from .event_handler import (CategoryViewedHandler, EventHandler, ProductAddedToCartHandler,
-                           ProductRemovedFromCartHandler, ProductViewedHandler, PurchasedHandler, SessionEndedHandler,
-                           SessionStartedHandler)
+from .event_processor import (CategoryViewedHandler, EventHandler, ProductAddedToCartHandler,
+                              ProductRemovedFromCartHandler, ProductViewedHandler, PurchasedHandler,
+                              SessionEndedHandler,
+                              SessionStartedHandler)
 from .logger_utils import get_logger
 from .models import Event, EventType
+from .worker.operation import Operation
+from .worker.scheduler import Scheduler
 
 
-def _parse_message(message: Message) -> Event:
+def _parse_message(payload: bytes) -> Event:
     """
     Kafka message parser method.
 
-    :param message: Consumed Kafka message.
+    :param payload: Message payload to parse.
     :return: Parsed event object.
     """
-    event_json = json.loads(message.value())
+    event_json = json.loads(payload)
     return Event(**event_json)
 
-# TODO i messaggi arrivano in ordine, però vorrei aggiungere parallelismo tra gli eventi delle sessioni, ad esempio
-#  potrei suddividere gli eventi delle sessioni (che possono essere mischiati tra sessioni) in più thread worker tramite
-#  hash partitioning, così che gli eventi ordinati di una stessa sessione vadano nello stesso worker. Un po come funziona già kafka,
-#  che tramite la key che uso nel messaggio spartisce i messaggi kafka tra i nodi consumer che fanno parte dello stesso group_id, in
-#  modo che gli eventi di una stessa sessione vadano nello stesso nodo consumer.
 
 class MessageHandler:
     """
     Message handler class, that handles the consumed Kafka messages.
     """
 
-    def __init__(self):
-        self.logger = get_logger(component='message-handler')
-        self.event_handlers_map: dict[EventType, EventHandler] = {
+    def __init__(self, scheduler: Scheduler):
+        self._logger = get_logger(component='message-handler')
+        self._scheduler = scheduler
+        self._event_handlers_map: dict[EventType, EventHandler] = {
             EventType.SESSION_STARTED: SessionStartedHandler(),
             EventType.SESSION_ENDED: SessionEndedHandler(),
             EventType.CATEGORY_VIEWED: CategoryViewedHandler(),
@@ -49,23 +49,42 @@ class MessageHandler:
 
         :param event: Event object.
         """
-        self.logger.info(f"Processing event {event.event_type} with id: {event.event_id}")
-        event_handler = self.event_handlers_map.get(event.event_type)
+        self._logger.info(f"Processing event {event.event_type} with id: {event.event_id}")
+        event_handler = self._event_handlers_map.get(event.event_type)
         if event_handler:
             event_handler.handle(event)
         else:
-            self.logger.warning(f"Unknown event type: {event.event_type}")
+            self._logger.warning(f"Unknown event type: {event.event_type}")
 
-    def handle(self, message: Message):
+    def message_processor_call(self, msg: Message):
+        try:
+            event = _parse_message(msg.value())
+            self._process_event(event)
+        except JSONDecodeError as e:
+            self._logger.error(f"JSON decoding error for message: {e}")
+        except Exception as e:
+            self._logger.error(f"Error while processing message: {e}")
+
+    def handle(self, msg: Message):
         """
         Handles the consumed Kafka message.
 
-        :param message: Consumed Kafka message.
+        :param msg: Consumed Kafka message.
         """
-        try:
-            event = _parse_message(message)
-            self._process_event(event)
-        except JSONDecodeError as e:
-            self.logger.error(f"JSON decoding error for message: {e}")
-        except Exception as e:
-            self.logger.error(f"Error while processing message: {e}")
+        partition_key = msg.key()
+
+        timestamp_type, timestamp_value = msg.timestamp()
+        if timestamp_type == TIMESTAMP_NOT_AVAILABLE:
+            # If timestamp is not available, use current system time as fallback
+            priority_value = int(time.time() * 1000)
+            self._logger.warning(
+                f"Timestamp not available for message. Using current system time as fallback. "
+            )
+        else:
+            priority_value = timestamp_value
+
+        self._scheduler.schedule(Operation(
+            partition_key=partition_key,
+            priority_value=priority_value,
+            call=lambda: self.message_processor_call(msg),
+        ))

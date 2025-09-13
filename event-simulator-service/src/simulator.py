@@ -1,5 +1,4 @@
 import random
-import sys
 import time
 import uuid
 from datetime import datetime, timedelta
@@ -62,11 +61,11 @@ class Simulator:
         producer: Producer,
         config: SimulatorConfig
     ):
-        self.logger = get_logger(component=f'simulator-{process_id}')
-        self.event_topic = event_topic
-        self.repository = repository
-        self.producer = producer
-        self.config = config
+        self._logger = get_logger(component=f'simulator-{process_id}')
+        self._event_topic = event_topic
+        self._repository = repository
+        self._producer = producer
+        self._config = config
 
     def _start_session_event(self, session: UserSession):
         self._produce_event(
@@ -76,14 +75,14 @@ class Simulator:
         )
 
     def _simulate_browse(self, session: UserSession):
-        for category in self.repository.get_categories_sample():
+        for category in self._repository.get_categories_sample():
             self._produce_event(
                 EventType.CATEGORY_VIEWED,
                 session,
                 CategoryParameters(category=category)
             )
 
-            for product in self.repository.get_products_sample_by_category(category):
+            for product in self._repository.get_products_sample_by_category(category):
                 self._produce_event(
                     EventType.PRODUCT_VIEWED,
                     session,
@@ -92,8 +91,8 @@ class Simulator:
                 self._handle_add_to_cart(session, product)
 
     def _handle_add_to_cart(self, session: UserSession, product: Product):
-        if random.random() < self.config.add_to_cart_probability:
-            quantity = random.randint(*self.config.cart_quantity_range)
+        if random.random() < self._config.add_to_cart_probability:
+            quantity = random.randint(*self._config.cart_quantity_range)
             session.add_to_cart(product, quantity)
             self._produce_event(
                 EventType.PRODUCT_ADDED_TO_CART,
@@ -103,7 +102,7 @@ class Simulator:
 
     def _simulate_cart_modifications(self, session: UserSession):
         for item in list(session.cart.values()):
-            if random.random() < self.config.remove_from_cart_probability:
+            if random.random() < self._config.remove_from_cart_probability:
                 product = item["product"]
                 to_remove = random.randint(1, item["quantity"])
                 session.remove_from_cart(item["product"], to_remove)
@@ -114,7 +113,7 @@ class Simulator:
                 )
 
     def _simulate_purchase(self, session: UserSession):
-        if session.cart and random.random() < self.config.purchase_probability:
+        if session.cart and random.random() < self._config.purchase_probability:
             items = []
             total_products_amount = 0
             for item in session.cart.values():
@@ -132,10 +131,10 @@ class Simulator:
 
             # Apply discount
             discount_amount = self._calculate_discount(total_products_amount)
-            shipping_cost = round(random.uniform(*self.config.shipping_cost_range), 2)
-            payment_method = self.repository.get_random_payment_method()
+            shipping_cost = round(random.uniform(*self._config.shipping_cost_range), 2)
+            payment_method = self._repository.get_random_payment_method()
             estimated_delivery_date = session.last_op_timestamp + timedelta(
-                days=random.randint(*self.config.delivery_days_range)
+                days=random.randint(*self._config.delivery_days_range)
             )
 
             self._produce_event(
@@ -154,7 +153,7 @@ class Simulator:
 
     def _calculate_discount(self, total_amount: float) -> float:
         discount_amount = 0.0
-        if random.random() < self.config.discount_probability:
+        if random.random() < self._config.discount_probability:
             discount_amount = round(random.uniform(0, total_amount / 2), 2)
         return discount_amount
 
@@ -170,27 +169,27 @@ class Simulator:
         Starts the event simulation. Connects to Kafka and continuously
         simulates user sessions.
         """
-        self.logger.info(f"Simulator started...")
-        if not self.producer.connect_to_kafka():
-            self.logger.error(f"Failed to connect to Kafka.")
+        self._logger.info(f"Simulator started...")
+        if not self._producer.connect_to_kafka():
+            self._logger.error(f"Failed to connect to Kafka.")
             return
 
         try:
             while True:
-                sleep(*self.config.session_interval_seconds_range)
+                sleep(*self._config.session_interval_seconds_range)
                 self.simulate_user_session()
         except KeyboardInterrupt:
-            self.logger.info(f"Simulator stopped by user.")
+            self._logger.info(f"Simulator stopped by user.")
         finally:
-            self.producer.close()
+            self._producer.close()
 
     def simulate_user_session(self):
         """
         Simulates a single user session, including viewing categories/products,
         adding/removing from cart, and making a purchase.
         """
-        user, location = self.repository.get_random_user()
-        user_agent = self.repository.get_random_user_agent()
+        user, location = self._repository.get_random_user()
+        user_agent = self._repository.get_random_user_agent()
         session = UserSession(
             session_id=str(uuid.uuid4()),
             user_agent=user_agent,
@@ -199,7 +198,7 @@ class Simulator:
             location=location
         )
 
-        self.logger.info(f"Simulating user session {session.session_id} for user {user.id}...")
+        self._logger.info(f"Simulating user session {session.session_id} for user {user.id}...")
         self._start_session_event(session)
         self._simulate_browse(session)
         self._simulate_cart_modifications(session)
@@ -221,5 +220,5 @@ class Simulator:
             location=session.location,
             parameters=metadata
         )
-        self.producer.produce(self.event_topic, event)
-        sleep(*self.config.event_interval_seconds_range)
+        self._producer.produce(self._event_topic, event)
+        sleep(*self._config.event_interval_seconds_range)
