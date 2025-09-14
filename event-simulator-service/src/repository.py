@@ -3,7 +3,7 @@ import os
 import random
 from abc import ABC, abstractmethod
 
-from .models import Location, Product, User
+from shared.models import Location, Product, User
 
 
 class Repository(ABC):

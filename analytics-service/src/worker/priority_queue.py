@@ -4,7 +4,7 @@ from typing import Callable, Generic, TypeVar
 
 from itertools import count
 
-from ..models import Event
+from shared.models import Event
 
 T = TypeVar("T")
 

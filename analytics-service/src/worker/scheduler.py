@@ -1,8 +1,8 @@
 import hashlib
 
+from shared.logger import get_logger
 from .operation import Operation
 from .worker import Worker
-from ..logger_utils import get_logger
 
 
 class Scheduler:

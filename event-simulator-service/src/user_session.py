@@ -1,7 +1,7 @@
 import random
 from datetime import datetime, timedelta
 
-from .models import Location, Product
+from shared.models import Location, Product
 
 
 class UserSession:

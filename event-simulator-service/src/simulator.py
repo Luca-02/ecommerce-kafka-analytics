@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 
 from pydantic import BaseModel
 
-from .logger_utils import get_logger
-from .models import (
+from shared.logger import get_logger
+from shared.models import (
     CartParameters,
     CategoryParameters,
     EndSessionParameters,

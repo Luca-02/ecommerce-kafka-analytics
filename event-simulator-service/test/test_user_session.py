@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from src.models import Location, Product
+from shared.models import Location, Product
 from src.user_session import UserSession
 
 product = Product(

@@ -1,8 +1,8 @@
 import threading
 
+from shared.logger import get_logger
 from .operation import Operation
 from .priority_queue import BlockingPriorityQueue
-from ..logger_utils import get_logger
 
 
 def _priority_fn(op: Operation):

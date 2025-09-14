@@ -2,10 +2,8 @@ from confluent_kafka import DeserializingConsumer, KafkaError
 from confluent_kafka.error import ConsumeError, KeyDeserializationError, ValueDeserializationError
 from confluent_kafka.serialization import StringDeserializer
 
-from .logger_utils import get_logger
+from shared.logger import get_logger
 from .message_handler import MessageHandler
-from .worker.operation import Operation
-from .worker.scheduler import Scheduler
 
 
 class Consumer:
@@ -25,7 +23,7 @@ class Consumer:
             "bootstrap.servers": self._bootstrap_servers,
             "key.deserializer": StringDeserializer(),
             "value.deserializer": StringDeserializer(),
-            "auto.offset.reset": "earliest",
+            "auto.offset.reset": "latest",
             'on_commit': self._commit_completed
         }
         self._poll_timeout_sec = 1.0

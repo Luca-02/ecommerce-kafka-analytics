@@ -5,13 +5,13 @@ from unittest.mock import MagicMock
 from confluent_kafka import Message
 
 import src.message_handler as message_handler
-from src.message_handler import MessageHandler
-from src.models import (
+from shared.models import (
     Event,
     EventType,
     Location,
     StartSessionParameters
 )
+from src.message_handler import MessageHandler
 
 
 def _make_mock_record(value: str) -> Message:

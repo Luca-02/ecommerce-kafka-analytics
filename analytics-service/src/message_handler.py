@@ -4,12 +4,12 @@ from json import JSONDecodeError
 import time
 from confluent_kafka import Message, TIMESTAMP_NOT_AVAILABLE
 
+from shared.logger import get_logger
+from shared.models import Event, EventType
 from .event_processor import (CategoryViewedHandler, EventHandler, ProductAddedToCartHandler,
                               ProductRemovedFromCartHandler, ProductViewedHandler, PurchasedHandler,
                               SessionEndedHandler,
                               SessionStartedHandler)
-from .logger_utils import get_logger
-from .models import Event, EventType
 from .worker.operation import Operation
 from .worker.scheduler import Scheduler
 

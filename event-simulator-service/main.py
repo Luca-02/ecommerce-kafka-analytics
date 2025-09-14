@@ -1,8 +1,9 @@
 import signal
 from multiprocessing import Process
 
+from shared.logger import get_logger
+
 import config
-from src.logger_utils import get_logger
 from src.producer import Producer
 from src.repository import MockRepository
 from src.simulator import Simulator, SimulatorConfig

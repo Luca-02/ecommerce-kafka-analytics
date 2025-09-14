@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from .logger_utils import get_logger
+from shared.logger import get_logger
 
 
 class EventHandler(ABC):

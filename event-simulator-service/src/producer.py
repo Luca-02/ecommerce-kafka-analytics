@@ -2,8 +2,8 @@ from confluent_kafka import KafkaException, SerializingProducer
 from confluent_kafka.error import KeySerializationError, ValueSerializationError
 from confluent_kafka.serialization import StringSerializer
 
-from .logger_utils import get_logger
-from .models import Event
+from shared.logger import get_logger
+from shared.models import Event
 
 
 class Producer:

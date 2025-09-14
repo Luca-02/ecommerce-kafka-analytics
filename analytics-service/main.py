@@ -1,8 +1,8 @@
 import sys
 
 import config
+from shared.logger import get_logger
 from src.consumer import Consumer
-from src.logger_utils import get_logger
 from src.message_handler import MessageHandler
 from src.worker.scheduler import Scheduler
 
