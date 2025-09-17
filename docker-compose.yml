@@ -49,7 +49,7 @@ services:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-cluster-ui
     ports:
-      - "8080:8080"
+      - "8888:8080"
     depends_on:
       - kafka
     environment:

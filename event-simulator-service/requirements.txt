@@ -4,3 +4,4 @@ confluent-kafka==2.11.1
 loguru==0.7.3
 python-dotenv==1.1.1
 Faker==37.6.0
+pycountry==24.6.1

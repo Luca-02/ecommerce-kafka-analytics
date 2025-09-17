@@ -29,6 +29,45 @@ class Consumer:
         self._poll_timeout_sec = 1.0
         self._consumer: DeserializingConsumer | None = None
 
+    def __enter__(self):
+        self._connect_to_kafka()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._close()
+
+    def _connect_to_kafka(self) -> bool:
+        """
+        Connects to Kafka using the provided configuration.
+
+        :return: True if connection was successful, False otherwise.
+        """
+        if self._consumer:
+            self._logger.info("Already connected to Kafka.")
+            return True
+
+        try:
+            self._consumer = DeserializingConsumer(self._config)
+            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
+            return True
+        except Exception as e:
+            self._logger.error(f"Error during connection to Kafka: {e}")
+            return False
+
+    def _close(self):
+        """
+        Closes the consumer stopping the consumption process.
+        """
+        self._logger.info("Closing consumer...")
+        if self._consumer:
+            try:
+                if self._consumer:
+                    self._consumer.close()
+                    self._consumer = None
+                self._logger.info("Consumer closed cleanly!")
+            except Exception as e:
+                self._logger.error(f"Error during consumer close: {e}")
+
     def _commit_completed(self, err, _):
         if err:
             self._logger.error(f"Error during commit: {err}")
@@ -57,24 +96,6 @@ class Consumer:
         except Exception as e:
             self._logger.error(f"Unknown error during message consumption: {e}")
 
-    def connect_to_kafka(self) -> bool:
-        """
-        Connects to Kafka using the provided configuration.
-
-        :return: True if connection was successful, False otherwise.
-        """
-        if self._consumer:
-            self._logger.info("Already connected to Kafka.")
-            return True
-
-        try:
-            self._consumer = DeserializingConsumer(self._config)
-            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
-            return True
-        except Exception as e:
-            self._logger.error(f"Error during connection to Kafka: {e}")
-            return False
-
     def subscribe_to_topics(self, topics: list[str]) -> bool:
         """
         Subscribes to the provided list of topics.
@@ -82,6 +103,10 @@ class Consumer:
         :param topics: List of topics to subscribe to.
         :return: True if subscription was successful, False otherwise.
         """
+        if self._consumer is None:
+            self._logger.error("Consumer is not connected to Kafka.")
+            return
+
         try:
             self._logger.info(f"Subscribing to topics: {topics}")
             self._consumer.subscribe(topics)
@@ -110,17 +135,3 @@ class Consumer:
             self._logger.info(f"Consumer stopped by user.")
         finally:
             self._consumer.close()
-
-    def close(self):
-        """
-        Closes the consumer stopping the consumption process.
-        """
-        self._logger.info("Closing consumer...")
-        if self._consumer:
-            try:
-                if self._consumer:
-                    self._consumer.close()
-                    self._consumer = None
-                self._logger.info("Consumer closed cleanly!")
-            except Exception as e:
-                self._logger.error(f"Error during consumer close: {e}")

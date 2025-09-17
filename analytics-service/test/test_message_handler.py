@@ -11,6 +11,7 @@ from shared.models import (
     Location,
     StartSessionParameters
 )
+from src.event_processor import get_event_handlers_map
 from src.message_handler import MessageHandler
 
 
@@ -43,7 +44,12 @@ class TestMessageHandler(TestCase):
             )
         )
         self.scheduler = MagicMock()
-        self.handler = MessageHandler(scheduler=self.scheduler)
+        self.repository = MagicMock()
+        self.event_handlers_map = get_event_handlers_map(self.repository)
+        self.handler = MessageHandler(
+            scheduler=self.scheduler,
+            event_handlers_map=self.event_handlers_map
+        )
 
     def test_parse_message(self):
         event = message_handler._parse_message(
@@ -59,8 +65,8 @@ class TestMessageHandler(TestCase):
             _make_mock_record(self.mock_event.model_dump_json())
         )
 
-        mock_event_handlers_map.handle.assert_called_once()
-        args, _ = mock_event_handlers_map.handle.call_args
+        mock_event_handlers_map.process.assert_called_once()
+        args, _ = mock_event_handlers_map.process.call_args
         self.assertIsInstance(args[0], Event)
 
     def test_message_processor_call_unknown_event_type(self):

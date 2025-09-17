@@ -11,3 +11,6 @@ KAFKA_EVENT_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
 
 # Number of worker threads
 WORKER_PROCESS_NUMBER = int(os.getenv('WORKER_PROCESS_NUMBER', 1))
+
+# Firebase
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')

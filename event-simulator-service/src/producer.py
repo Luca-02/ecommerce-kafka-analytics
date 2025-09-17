@@ -38,6 +38,42 @@ class Producer:
         #         self.producer_config["sasl.username"] = sasl_username
         #         self.producer_config["sasl.password"] = sasl_password
 
+    def __enter__(self):
+        self._connect_to_kafka()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._close()
+
+    def _connect_to_kafka(self):
+        """
+        Connects to Kafka using the provided configuration.
+
+        :return: True if connection was successful, False otherwise.
+        """
+        if self._producer:
+            self._logger.info(f"Already connected to Kafka.")
+
+        try:
+            self._producer = SerializingProducer(self._config)
+            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
+        except Exception as e:
+            self._logger.error(f"Error during connection to Kafka: {e}")
+
+    def _close(self):
+        """
+        Closes the producer and flushes any remaining events.
+        """
+        self._logger.info(f"Closing producer...")
+        if self._producer:
+            try:
+                self._producer.flush(timeout=30)
+                self._logger.info(f"Producer closed cleanly!")
+            except Exception as e:
+                self._logger.error(f"Error during producer close: {e}")
+            finally:
+                self._producer = None
+
     def _delivery_report(self, err, msg):
         """
         Callback for delivery report.
@@ -48,24 +84,6 @@ class Producer:
             self._logger.debug(
                 f"Message delivered to topic {msg.topic()} partition [{msg.partition()}] offset {msg.offset()}"
             )
-
-    def connect_to_kafka(self) -> bool:
-        """
-        Connects to Kafka using the provided configuration.
-
-        :return: True if connection was successful, False otherwise.
-        """
-        if self._producer:
-            self._logger.info(f"Already connected to Kafka.")
-            return True
-
-        try:
-            self._producer = SerializingProducer(self._config)
-            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
-            return True
-        except Exception as e:
-            self._logger.error(f"Error during connection to Kafka: {e}")
-            return False
 
     def produce(self, topic: str, event: Event):
         """
@@ -99,17 +117,3 @@ class Producer:
             self._logger.error(f"Kafka error during event production: {e}")
         except Exception as e:
             self._logger.error(f"General error during event production: {e}")
-
-    def close(self):
-        """
-        Closes the producer and flushes any remaining events.
-        """
-        self._logger.info(f"Closing producer...")
-        if self._producer:
-            try:
-                self._producer.flush(timeout=30)
-                self._logger.info(f"Producer closed cleanly!")
-            except Exception as e:
-                self._logger.error(f"Error during producer close: {e}")
-            finally:
-                self._producer = None

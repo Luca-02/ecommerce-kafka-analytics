@@ -6,10 +6,7 @@ from confluent_kafka import Message, TIMESTAMP_NOT_AVAILABLE
 
 from shared.logger import get_logger
 from shared.models import Event, EventType
-from .event_processor import (CategoryViewedHandler, EventHandler, ProductAddedToCartHandler,
-                              ProductRemovedFromCartHandler, ProductViewedHandler, PurchasedHandler,
-                              SessionEndedHandler,
-                              SessionStartedHandler)
+from .event_processor import EventProcessor
 from .worker.operation import Operation
 from .worker.scheduler import Scheduler
 
@@ -30,18 +27,14 @@ class MessageHandler:
     Message handler class, that handles the consumed Kafka messages.
     """
 
-    def __init__(self, scheduler: Scheduler):
+    def __init__(
+        self,
+        scheduler: Scheduler,
+        event_handlers_map: dict[EventType, EventProcessor]
+    ):
         self._logger = get_logger(component='message-handler')
         self._scheduler = scheduler
-        self._event_handlers_map: dict[EventType, EventHandler] = {
-            EventType.SESSION_STARTED: SessionStartedHandler(),
-            EventType.SESSION_ENDED: SessionEndedHandler(),
-            EventType.CATEGORY_VIEWED: CategoryViewedHandler(),
-            EventType.PRODUCT_VIEWED: ProductViewedHandler(),
-            EventType.PRODUCT_ADDED_TO_CART: ProductAddedToCartHandler(),
-            EventType.PRODUCT_REMOVED_FROM_CART: ProductRemovedFromCartHandler(),
-            EventType.PURCHASE: PurchasedHandler()
-        }
+        self._event_handlers_map = event_handlers_map
 
     def _process_event(self, event: Event):
         """
@@ -49,10 +42,10 @@ class MessageHandler:
 
         :param event: Event object.
         """
-        self._logger.info(f"Processing event {event.event_type} with id: {event.event_id}")
+        self._logger.info(f"Processing event {event.event_id}: {event.event_type}")
         event_handler = self._event_handlers_map.get(event.event_type)
         if event_handler:
-            event_handler.handle(event)
+            event_handler.process(event)
         else:
             self._logger.warning(f"Unknown event type: {event.event_type}")
 

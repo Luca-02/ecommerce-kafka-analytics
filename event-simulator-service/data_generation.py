@@ -18,9 +18,59 @@ USER_AGENTS = [
     "Mozilla/5.0 (Linux; Android 12; SAMSUNG SM-G991B) AppleWebKit/537.36 Chrome/112.0.0.0 Mobile Safari/537.36"
 ]
 
-PAYMENTS_METHODS = ["Card", "Gift Card", "PayPal", "Crypto"]
+PAYMENTS_METHODS = [
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Card"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Gift Card"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "PayPal"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Crypto"
+    }
+]
 
-CATEGORIES = ["Shoes", "Clothing", "Accessories", "Electronics", "Home", "Sports", "Toys", "Beauty"]
+CATEGORIES = [
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Shoes"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Clothing"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Accessories"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Electronics"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Home"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Sports"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Toys"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Beauty"
+    }
+]
 
 data_path = os.getenv("DATA_PATH", "./data")
 
@@ -41,7 +91,7 @@ def generate_users_en(n=25):
             "username": fake.user_name(),
             "email": fake.email(),
             "location": {
-                "country": fake.country(),
+                "country": fake.country_code(),
                 "state": fake.state(),
                 "city": fake.city(),
                 "latitude": float(fake.latitude()),

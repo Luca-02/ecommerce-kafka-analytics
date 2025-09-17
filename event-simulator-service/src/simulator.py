@@ -1,7 +1,7 @@
 import random
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from pydantic import BaseModel
 
@@ -142,7 +142,7 @@ class Simulator:
                 session,
                 PurchaseParameters(
                     items=items,
-                    total_amount=total_products_amount - discount_amount + shipping_cost,
+                    total_amount=total_products_amount,
                     discount_amount=discount_amount,
                     shipping_address=session.location,
                     shipping_cost=shipping_cost,
@@ -170,18 +170,12 @@ class Simulator:
         simulates user sessions.
         """
         self._logger.info(f"Simulator started...")
-        if not self._producer.connect_to_kafka():
-            self._logger.error(f"Failed to connect to Kafka.")
-            return
-
         try:
             while True:
                 sleep(*self._config.session_interval_seconds_range)
                 self.simulate_user_session()
         except KeyboardInterrupt:
             self._logger.info(f"Simulator stopped by user.")
-        finally:
-            self._producer.close()
 
     def simulate_user_session(self):
         """
@@ -193,7 +187,7 @@ class Simulator:
         session = UserSession(
             session_id=str(uuid.uuid4()),
             user_agent=user_agent,
-            started_at=datetime.now(),
+            started_at=datetime.now(timezone.utc),
             user_id=user.id,
             location=location
         )

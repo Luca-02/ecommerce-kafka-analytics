@@ -1,6 +1,18 @@
 [
-  "Card",
-  "Gift Card",
-  "PayPal",
-  "Crypto"
+  {
+    "id": "f13196f9-a922-403b-a579-fc802e46669e",
+    "name": "Card"
+  },
+  {
+    "id": "9793c10c-fb8c-4cb4-ac60-aa076d416d81",
+    "name": "Gift Card"
+  },
+  {
+    "id": "dabbe174-b8c0-4bf0-86a8-8310a6476cdf",
+    "name": "PayPal"
+  },
+  {
+    "id": "4bf7484b-46c8-4d02-9f03-876d62a0b8f4",
+    "name": "Crypto"
+  }
 ]

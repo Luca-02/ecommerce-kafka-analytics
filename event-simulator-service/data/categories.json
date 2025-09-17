@@ -1,10 +1,34 @@
 [
-  "Shoes",
-  "Clothing",
-  "Accessories",
-  "Electronics",
-  "Home",
-  "Sports",
-  "Toys",
-  "Beauty"
+  {
+    "id": "b169a0f6-6312-41a2-807c-5adadc843aa1",
+    "name": "Shoes"
+  },
+  {
+    "id": "09ab06ab-810a-4689-a8d1-ea3b68fcf055",
+    "name": "Clothing"
+  },
+  {
+    "id": "64bdccd6-8f69-4d58-b093-834f86e4dd3c",
+    "name": "Accessories"
+  },
+  {
+    "id": "5d1fef11-6d45-4aa5-a95a-11744186ad08",
+    "name": "Electronics"
+  },
+  {
+    "id": "614fefa7-19fd-4c60-ae8c-c38724732ba6",
+    "name": "Home"
+  },
+  {
+    "id": "a5255866-9d8d-472f-9438-80bc4245f021",
+    "name": "Sports"
+  },
+  {
+    "id": "120947c9-fb57-427e-a0ee-28f8b40c3063",
+    "name": "Toys"
+  },
+  {
+    "id": "8649808b-eb83-4a6d-8384-b38e36ec4aba",
+    "name": "Beauty"
+  }
 ]
