@@ -187,7 +187,7 @@ class Simulator:
         session = UserSession(
             session_id=str(uuid.uuid4()),
             user_agent=user_agent,
-            started_at=datetime.now(timezone.utc),
+            started_at=datetime.now(timezone.utc) + timedelta(days=random.randint(-5, 5)),
             user_id=user.id,
             location=location
         )

@@ -52,10 +52,6 @@ class StartSessionParameters(BaseModel):
     user_agent: str
 
 
-class EndSessionParameters(BaseModel):
-    seconds_duration: int
-
-
 class CategoryParameters(BaseModel):
     category: Category
 
@@ -85,13 +81,17 @@ class PurchaseParameters(BaseModel):
     estimated_delivery_date: datetime
 
 
+class EndSessionParameters(BaseModel):
+    seconds_duration: int
+
+
 EventParameters = Union[
     StartSessionParameters,
-    EndSessionParameters,
     CategoryParameters,
     ProductParameters,
     CartParameters,
-    PurchaseParameters
+    PurchaseParameters,
+    EndSessionParameters
 ]
 
 

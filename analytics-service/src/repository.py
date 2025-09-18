@@ -49,18 +49,10 @@ class FirebaseRepository:
         """
         try:
             doc_ref = self._db.collection(collection_name).document(document_id)
-            doc_ref.set(data)
+            doc_ref.set(data, merge=True)
             self._logger.info(f"Document {document_id} set to collection {collection_name}")
         except Exception as e:
             self._logger.error(f"Error setting document to Firebase: {e}")
-
-    def update_document(self, collection_name: str, document_id: str, data: dict):
-        try:
-            doc_ref = self._db.collection(collection_name).document(document_id)
-            doc_ref.update(data, merge=True)
-            self._logger.info(f"Document {document_id} updated in collection {collection_name}")
-        except Exception as e:
-            self._logger.error(f"Error updating document in Firebase: {e}")
 
     def increment_field(self, collection_name: str, document_id: str, field: str, value: int = 1):
         """

@@ -1,6 +1,6 @@
 import config
-from consumer import Consumer
 from shared.logger import get_logger
+from src.consumer import Consumer
 from src.event_processor import get_event_handlers_map
 from src.message_handler import MessageHandler
 from src.repository import FirebaseRepository

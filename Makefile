@@ -9,4 +9,4 @@ docker-clean:
 
 firebase-start:
 	cd analytics-service/firebase && \
-	firebase emulators:start --import=export --export-on-exit=export
+	firebase emulators:start --import=./export --export-on-exit

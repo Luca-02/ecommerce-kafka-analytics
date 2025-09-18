@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta, timezone
 
 import config
-from shared.models import CartParameters, Category, CategoryParameters, Event, EventType, Location, PaymentMethod, \
+from shared.models import CartParameters, Category, CategoryParameters, EndSessionParameters, Event, EventType, \
+    Location, PaymentMethod, \
     Product, \
     ProductParameters, \
     PurchaseItem, PurchaseParameters, StartSessionParameters
 from src.event_processor import CategoryViewedProcessor, ProductAddedToCartProcessor, ProductRemovedFromCartProcessor, \
     ProductViewedProcessor, \
-    PurchaseProcessor, SessionStartedProcessor
+    PurchaseProcessor, SessionEndedProcessor, SessionStartedProcessor
 from src.repository import FirebaseRepository
 
 payment_method1 = PaymentMethod(
@@ -42,7 +43,7 @@ product2 = Product(
 )
 
 
-def test_session_started(repo):
+def session_started(repo):
     processor = SessionStartedProcessor(repo)
     events = [
         Event(
@@ -102,7 +103,7 @@ def test_session_started(repo):
         processor.process(event)
 
 
-def test_category_viewed(repo):
+def category_viewed(repo):
     processor = CategoryViewedProcessor(repo)
     events = [
         Event(
@@ -179,7 +180,7 @@ def test_category_viewed(repo):
         processor.process(event)
 
 
-def test_product_viewed(repo):
+def product_viewed(repo):
     processor = ProductViewedProcessor(repo)
     events = [
         Event(
@@ -256,7 +257,7 @@ def test_product_viewed(repo):
         processor.process(event)
 
 
-def test_added_to_cart(repo):
+def added_to_cart(repo):
     processor = ProductAddedToCartProcessor(repo)
     events = [
         Event(
@@ -337,7 +338,7 @@ def test_added_to_cart(repo):
         processor.process(event)
 
 
-def test_remove_from_cart(repo):
+def remove_from_cart(repo):
     processor = ProductRemovedFromCartProcessor(repo)
     events = [
         Event(
@@ -417,7 +418,8 @@ def test_remove_from_cart(repo):
     for event in events:
         processor.process(event)
 
-def test_purchase(repo):
+
+def purchase(repo):
     processor = PurchaseProcessor(repo)
     events = [
         Event(
@@ -455,14 +457,153 @@ def test_purchase(repo):
                 estimated_delivery_date=datetime.now(timezone.utc) + timedelta(days=10)
             )
         ),
+        Event(
+            event_id="test2",
+            event_type=EventType.PURCHASE,
+            session_id="session-2",
+            timestamp=datetime.now(timezone.utc),
+            user_id="user-2",
+            location=Location(
+                country="US",
+                state="State",
+                city="City",
+                latitude=-3.460597,
+                longitude=121.756339
+            ),
+            parameters=PurchaseParameters(
+                items=[
+                    PurchaseItem(
+                        product=product2,
+                        quantity=35,
+                        subtotal=product2.price * 35
+                    )
+                ],
+                total_amount=(product2.price * 35) - 30 + 20,
+                discount_amount=30,
+                shipping_address=Location(
+                    country="US",
+                    state="State",
+                    city="City",
+                    latitude=-3.460597,
+                    longitude=121.756339
+                ),
+                shipping_cost=20,
+                payment_method=payment_method2,
+                estimated_delivery_date=datetime.now(timezone.utc) + timedelta(days=10)
+            )
+        ),
+        Event(
+            event_id="test3",
+            event_type=EventType.PURCHASE,
+            session_id="session-3",
+            timestamp=datetime.now(timezone.utc) - timedelta(days=1),
+            user_id="user-3",
+            location=Location(
+                country="IT",
+                state="Lombardia",
+                city="Milano",
+                latitude=-3.460597,
+                longitude=121.756339
+            ),
+            parameters=PurchaseParameters(
+                items=[
+                    PurchaseItem(
+                        product=product1,
+                        quantity=243,
+                        subtotal=product1.price * 243
+                    ),
+                    PurchaseItem(
+                        product=product2,
+                        quantity=3,
+                        subtotal=product2.price * 3
+                    )
+                ],
+                total_amount=(product1.price * 243) + (product2.price * 3) - 10 + 5,
+                discount_amount=10,
+                shipping_address=Location(
+                    country="IT",
+                    state="Lombardia",
+                    city="Milano",
+                    latitude=-3.460597,
+                    longitude=121.756339
+                ),
+                shipping_cost=5,
+                payment_method=payment_method2,
+                estimated_delivery_date=datetime.now(timezone.utc) + timedelta(days=10)
+            )
+        )
     ]
 
-    processor.process(events[0])
+    for event in events:
+        processor.process(event)
+
+
+def session_ended(repo):
+    processor = SessionEndedProcessor(repo)
+    events = [
+        Event(
+            event_id="test1",
+            event_type=EventType.SESSION_ENDED,
+            session_id="session-1",
+            timestamp=datetime.now(timezone.utc),
+            user_id="user-1",
+            location=Location(
+                country="IT",
+                state="Lombardia",
+                city="Milano",
+                latitude=-3.460597,
+                longitude=121.756339
+            ),
+            parameters=EndSessionParameters(
+                seconds_duration=3245
+            )
+        ),
+        Event(
+            event_id="test2",
+            event_type=EventType.SESSION_ENDED,
+            session_id="session-2",
+            timestamp=datetime.now(timezone.utc),
+            user_id="user-2",
+            location=Location(
+                country="US",
+                state="State",
+                city="City",
+                latitude=-3.460597,
+                longitude=121.756339
+            ),
+            parameters=EndSessionParameters(
+                seconds_duration=5474
+            )
+        ),
+        Event(
+            event_id="test3",
+            event_type=EventType.SESSION_ENDED,
+            session_id="session-3",
+            timestamp=datetime.now(timezone.utc) - timedelta(days=1),
+            user_id="user-3",
+            location=Location(
+                country="IT",
+                state="Lombardia",
+                city="Milano",
+                latitude=-3.460597,
+                longitude=121.756339
+            ),
+            parameters=EndSessionParameters(
+                seconds_duration=4985
+            )
+        )
+    ]
+
+    for event in events:
+        processor.process(event)
+
+
 
 with FirebaseRepository(config.GOOGLE_APPLICATION_CREDENTIALS) as repository:
-    test_session_started(repository)
-    test_category_viewed(repository)
-    test_product_viewed(repository)
-    test_added_to_cart(repository)
-    test_remove_from_cart(repository)
-    test_purchase(repository)
+    session_started(repository)
+    category_viewed(repository)
+    product_viewed(repository)
+    added_to_cart(repository)
+    remove_from_cart(repository)
+    purchase(repository)
+    session_ended(repository)
