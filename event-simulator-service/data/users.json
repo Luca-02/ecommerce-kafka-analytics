@@ -1,0 +1,327 @@
+[
+  {
+    "id": "35ebf2a9-ec7b-40d0-bf78-3f3d5a3fde7b",
+    "name": "Justin Burton",
+    "username": "medinawilliam",
+    "email": "brian17@example.net",
+    "location": {
+      "country": "FM",
+      "state": "Florida",
+      "city": "New Timothyville",
+      "latitude": -62.745465,
+      "longitude": 125.731858
+    }
+  },
+  {
+    "id": "0a4c3b3a-0aba-4178-a7cd-7ac6e985b62b",
+    "name": "Sabrina Webb",
+    "username": "matthew22",
+    "email": "nancygilbert@example.org",
+    "location": {
+      "country": "RS",
+      "state": "Kansas",
+      "city": "East Gregory",
+      "latitude": 53.5318885,
+      "longitude": -55.683659
+    }
+  },
+  {
+    "id": "79504ae0-d51c-4dc7-bee3-bfa6246b1605",
+    "name": "Christopher Martinez",
+    "username": "chrisbaker",
+    "email": "michael89@example.com",
+    "location": {
+      "country": "DJ",
+      "state": "Virginia",
+      "city": "Jackchester",
+      "latitude": -5.749853,
+      "longitude": 166.170076
+    }
+  },
+  {
+    "id": "52a8462e-0650-432d-9a85-628fb4968b31",
+    "name": "David Newton",
+    "username": "nbrown",
+    "email": "steven78@example.net",
+    "location": {
+      "country": "MG",
+      "state": "Indiana",
+      "city": "Jackside",
+      "latitude": 87.191345,
+      "longitude": 123.055066
+    }
+  },
+  {
+    "id": "d6031cbe-5371-4476-bdb0-2bd1686e7a69",
+    "name": "Candice Flores",
+    "username": "tina11",
+    "email": "bcrane@example.org",
+    "location": {
+      "country": "LV",
+      "state": "Oregon",
+      "city": "West Bradley",
+      "latitude": 35.566944,
+      "longitude": -171.41847
+    }
+  },
+  {
+    "id": "b53b0e68-0fd8-40b9-919d-6db096dcc9be",
+    "name": "Stephanie Crosby",
+    "username": "cooktony",
+    "email": "moodylori@example.com",
+    "location": {
+      "country": "UG",
+      "state": "Utah",
+      "city": "Savageville",
+      "latitude": -37.609166,
+      "longitude": -73.816523
+    }
+  },
+  {
+    "id": "12839c1f-20e9-485f-8f3d-e574a4074b52",
+    "name": "Larry Cox",
+    "username": "tara49",
+    "email": "rebeccachavez@example.org",
+    "location": {
+      "country": "MC",
+      "state": "California",
+      "city": "Matthewview",
+      "latitude": 85.5525505,
+      "longitude": -154.931804
+    }
+  },
+  {
+    "id": "e9dacce5-0b42-4dfa-9dd2-4a71160d323e",
+    "name": "Russell Schmitt",
+    "username": "crystalmendez",
+    "email": "johnmay@example.net",
+    "location": {
+      "country": "BJ",
+      "state": "New Mexico",
+      "city": "South Tammystad",
+      "latitude": -26.390983,
+      "longitude": 64.470986
+    }
+  },
+  {
+    "id": "9f68446b-8531-489f-840f-bffdf1ef6bec",
+    "name": "Amanda Kramer DVM",
+    "username": "jcarlson",
+    "email": "christopher22@example.net",
+    "location": {
+      "country": "LR",
+      "state": "Vermont",
+      "city": "South Jonathanton",
+      "latitude": -53.0935655,
+      "longitude": -108.80879
+    }
+  },
+  {
+    "id": "f03f2d5c-6547-4e91-ad31-38afbbc7d086",
+    "name": "Sean Huynh",
+    "username": "garciatricia",
+    "email": "aaron94@example.net",
+    "location": {
+      "country": "TJ",
+      "state": "Minnesota",
+      "city": "East Stephanieville",
+      "latitude": -20.7220815,
+      "longitude": -26.172158
+    }
+  },
+  {
+    "id": "d6fee884-c5ed-457e-a7cb-199f2f3a09ed",
+    "name": "Derek Mueller",
+    "username": "ftate",
+    "email": "greenchristina@example.com",
+    "location": {
+      "country": "DM",
+      "state": "Massachusetts",
+      "city": "Port Anthony",
+      "latitude": -78.5112915,
+      "longitude": -101.864755
+    }
+  },
+  {
+    "id": "98513761-3454-4524-946b-934c8082275e",
+    "name": "Jennifer Evans",
+    "username": "rebecca02",
+    "email": "michael99@example.com",
+    "location": {
+      "country": "MA",
+      "state": "Kansas",
+      "city": "New Robertbury",
+      "latitude": 67.5786095,
+      "longitude": 166.979863
+    }
+  },
+  {
+    "id": "c106db3e-2c2b-4e0f-a98d-e65652cf9f98",
+    "name": "Steven Garcia",
+    "username": "diazsandra",
+    "email": "pyang@example.net",
+    "location": {
+      "country": "MC",
+      "state": "North Carolina",
+      "city": "Jaredmouth",
+      "latitude": 89.7849475,
+      "longitude": 70.041814
+    }
+  },
+  {
+    "id": "b6e15181-8224-45fe-b490-fd8388ae0217",
+    "name": "Christopher Robinson",
+    "username": "ksmith",
+    "email": "johnsonclifford@example.net",
+    "location": {
+      "country": "JP",
+      "state": "Vermont",
+      "city": "West Courtneyhaven",
+      "latitude": -43.3336175,
+      "longitude": 38.076258
+    }
+  },
+  {
+    "id": "9ccbbf13-ee12-4162-9b02-cb121ff21129",
+    "name": "Carol Martinez",
+    "username": "stokesnancy",
+    "email": "toneal@example.net",
+    "location": {
+      "country": "ML",
+      "state": "New Jersey",
+      "city": "Lake Jacob",
+      "latitude": -5.6240195,
+      "longitude": 21.466678
+    }
+  },
+  {
+    "id": "9e078783-0b60-41a1-9b98-f9b0a50b8d80",
+    "name": "Tammy Oliver",
+    "username": "christianhouston",
+    "email": "boonemicheal@example.net",
+    "location": {
+      "country": "KR",
+      "state": "Virginia",
+      "city": "Lake Preston",
+      "latitude": 13.1563265,
+      "longitude": 85.130139
+    }
+  },
+  {
+    "id": "85f91352-8389-4a94-ba20-697851278257",
+    "name": "Daisy Smith",
+    "username": "laurahernandez",
+    "email": "woodssusan@example.net",
+    "location": {
+      "country": "FR",
+      "state": "Texas",
+      "city": "Christopherstad",
+      "latitude": 78.4177105,
+      "longitude": 112.106343
+    }
+  },
+  {
+    "id": "43293a72-ea9e-441a-8f9f-9f610b9713d6",
+    "name": "Haley Mcclain",
+    "username": "pmckee",
+    "email": "michaeldavis@example.com",
+    "location": {
+      "country": "NZ",
+      "state": "Connecticut",
+      "city": "Port Matthewhaven",
+      "latitude": -81.513686,
+      "longitude": -38.683805
+    }
+  },
+  {
+    "id": "53701af2-c180-4072-a41b-2623234168f5",
+    "name": "Joshua Howard",
+    "username": "kevinphillips",
+    "email": "ericdavis@example.net",
+    "location": {
+      "country": "CA",
+      "state": "Wisconsin",
+      "city": "Theresafurt",
+      "latitude": -59.1435145,
+      "longitude": -3.148817
+    }
+  },
+  {
+    "id": "1f064c1b-6840-4627-b3a1-d35f76d0202a",
+    "name": "Tammy Buckley",
+    "username": "william18",
+    "email": "richardsashley@example.org",
+    "location": {
+      "country": "IR",
+      "state": "Idaho",
+      "city": "North Nancy",
+      "latitude": -73.1855505,
+      "longitude": 14.66673
+    }
+  },
+  {
+    "id": "ae5b7cde-96cc-4f67-ba66-2803dcbfd4e4",
+    "name": "Brittany Davis",
+    "username": "amandamorales",
+    "email": "kcarrillo@example.net",
+    "location": {
+      "country": "AR",
+      "state": "South Dakota",
+      "city": "Andrewport",
+      "latitude": -67.2827375,
+      "longitude": -148.572672
+    }
+  },
+  {
+    "id": "0badd9e2-8417-43ee-aed6-cca2b8cb622f",
+    "name": "Allison Hamilton",
+    "username": "abutler",
+    "email": "ytaylor@example.org",
+    "location": {
+      "country": "SL",
+      "state": "Utah",
+      "city": "North Johnathan",
+      "latitude": 46.921182,
+      "longitude": -129.218118
+    }
+  },
+  {
+    "id": "4e612391-f0f9-4d08-8d8c-44de1b500a2c",
+    "name": "Maria Bowman",
+    "username": "carlclark",
+    "email": "mendozadevin@example.net",
+    "location": {
+      "country": "PL",
+      "state": "Arkansas",
+      "city": "South Jeffreyshire",
+      "latitude": -82.3039095,
+      "longitude": -8.868584
+    }
+  },
+  {
+    "id": "54b1c0a6-d3e8-45a7-b403-28e5b8d5d05c",
+    "name": "David Marquez",
+    "username": "matthewle",
+    "email": "carrie70@example.com",
+    "location": {
+      "country": "SE",
+      "state": "Mississippi",
+      "city": "Coreymouth",
+      "latitude": -61.241514,
+      "longitude": 6.716882
+    }
+  },
+  {
+    "id": "261e8c24-2eb6-4f0d-96ec-6e3e063b808b",
+    "name": "Brandy Foster",
+    "username": "lindsey44",
+    "email": "ocamacho@example.net",
+    "location": {
+      "country": "AF",
+      "state": "Kentucky",
+      "city": "Davidmouth",
+      "latitude": -27.1827275,
+      "longitude": 68.866573
+    }
+  }
+]
