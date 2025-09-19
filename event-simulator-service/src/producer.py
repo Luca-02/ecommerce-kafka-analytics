@@ -14,7 +14,10 @@ class Producer:
     def __init__(
         self,
         process_id: int,
-        bootstrap_servers: str
+        bootstrap_servers: str,
+        ssl_ca_location: str = None,
+        sasl_username: str = None,
+        sasl_password: str = None
     ):
         self._logger = get_logger(component=f'producer-{process_id}')
         self._bootstrap_servers = bootstrap_servers
@@ -27,16 +30,18 @@ class Producer:
             "acks": "all",
             "retries": 10
         }
+        if ssl_ca_location:
+            self._config.update({
+                'ssl.ca.location': ssl_ca_location
+            })
+        if sasl_username and sasl_password:
+            self._config.update({
+                'security.protocol': 'SASL_SSL',
+                'sasl.mechanism': 'SCRAM-SHA-256',
+                'sasl.username': sasl_username,
+                'sasl.password': sasl_password
+            })
         self._producer: SerializingProducer | None = None
-
-        # # Se serve autenticazione SASL/SSL
-        # if security_protocol != "PLAINTEXT":
-        #     self.producer_config["security.protocol"] = security_protocol
-        #     if sasl_mechanism:
-        #         self.producer_config["sasl.mechanisms"] = sasl_mechanism
-        #     if sasl_username and sasl_password:
-        #         self.producer_config["sasl.username"] = sasl_username
-        #         self.producer_config["sasl.password"] = sasl_password
 
     def __enter__(self):
         self._connect_to_kafka()
@@ -56,7 +61,7 @@ class Producer:
 
         try:
             self._producer = SerializingProducer(self._config)
-            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
+            self._logger.info(f"Connecting to Kafka through: {self._bootstrap_servers}")
         except Exception as e:
             self._logger.error(f"Error during connection to Kafka: {e}")
 

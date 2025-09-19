@@ -1,8 +1,8 @@
-import signal
-from multiprocessing import Process
+from concurrent.futures import ProcessPoolExecutor
 
 import config
 from shared.logger import get_logger
+from src.data_generation import generate_data
 from src.producer import Producer
 from src.repository import Repository
 from src.simulator import Simulator, SimulatorConfig
@@ -20,6 +20,9 @@ def run_simulator(process_id: int):
     with Producer(
         process_id=process_id,
         bootstrap_servers=config.KAFKA_BROKERS,
+        ssl_ca_location=config.KAFKA_SSL_CA_LOCATION,
+        sasl_username=config.KAFKA_SASL_USERNAME,
+        sasl_password=config.KAFKA_SASL_PASSWORD
     ) as producer:
         Simulator(
             process_id=process_id,
@@ -41,27 +44,13 @@ def run_simulator(process_id: int):
         ).run()
 
 
-def stop_processes(processes_list: list[Process]):
-    """
-    Stop all running processes cleanly.
-
-    :param processes_list: List of processes to stop.
-    """
-    logger.info("Stopping all processes...")
-    for process in processes_list:
-        if process.is_alive():
-            process.terminate()
-            process.join()
-    logger.info("All processes stopped.")
-
-
 if __name__ == "__main__":
-    num_processes = config.NUMBER_SIMULATION_PROCESSES
-    processes = []
-    for i in range(num_processes):
-        p = Process(target=run_simulator, args=(i,))
-        p.start()
-        processes.append(p)
-
-    signal.signal(signal.SIGINT, lambda sig, frame: stop_processes(processes))
-    signal.signal(signal.SIGTERM, lambda sig, frame: stop_processes(processes))
+    generate_data()
+    try:
+        with ProcessPoolExecutor(max_workers=config.NUMBER_SIMULATION_PROCESSES) as executor:
+            futures = [
+                executor.submit(run_simulator, i)
+                for i in range(config.NUMBER_SIMULATION_PROCESSES)
+            ]
+    except KeyboardInterrupt:
+        logger.info("Simulation interrupted.")

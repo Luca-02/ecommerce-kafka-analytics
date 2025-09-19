@@ -9,9 +9,12 @@ from .message_handler import MessageHandler
 class Consumer:
     def __init__(
         self,
+        message_handler: MessageHandler,
         bootstrap_servers: str,
         group_id: str,
-        message_handler: MessageHandler
+        ssl_ca_location: str = None,
+        sasl_username: str = None,
+        sasl_password: str = None
     ):
         self._logger = get_logger(component=f'consumer')
         self._bootstrap_servers = bootstrap_servers
@@ -26,8 +29,20 @@ class Consumer:
             "auto.offset.reset": "latest",
             'on_commit': self._commit_completed
         }
+        if ssl_ca_location:
+            self._config.update({
+                'ssl.ca.location': ssl_ca_location
+            })
+        if sasl_username and sasl_password:
+            self._config.update({
+                'security.protocol': 'SASL_SSL',
+                'sasl.mechanism': 'SCRAM-SHA-256',
+                'sasl.username': sasl_username,
+                'sasl.password': sasl_password
+            })
         self._poll_timeout_sec = 1.0
         self._consumer: DeserializingConsumer | None = None
+
 
     def __enter__(self):
         self._connect_to_kafka()
@@ -36,7 +51,7 @@ class Consumer:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._close()
 
-    def _connect_to_kafka(self) -> bool:
+    def _connect_to_kafka(self):
         """
         Connects to Kafka using the provided configuration.
 
@@ -44,15 +59,12 @@ class Consumer:
         """
         if self._consumer:
             self._logger.info("Already connected to Kafka.")
-            return True
 
         try:
             self._consumer = DeserializingConsumer(self._config)
-            self._logger.info(f"Connected to Kafka through: {self._bootstrap_servers}")
-            return True
+            self._logger.info(f"Connecting to Kafka through: {self._bootstrap_servers}")
         except Exception as e:
             self._logger.error(f"Error during connection to Kafka: {e}")
-            return False
 
     def _close(self):
         """

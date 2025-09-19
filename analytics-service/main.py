@@ -16,11 +16,14 @@ if __name__ == '__main__':
             google_application_credentials=config.GOOGLE_APPLICATION_CREDENTIALS
         ) as repository, \
         Consumer(
-            bootstrap_servers=config.KAFKA_BROKERS,
-            group_id=config.KAFKA_GROUP_ID,
             message_handler=MessageHandler(
                 scheduler=scheduler,
                 event_handlers_map=get_event_handlers_map(repository)
-            )
+            ),
+            bootstrap_servers=config.KAFKA_BROKERS,
+            group_id=config.KAFKA_GROUP_ID,
+            ssl_ca_location=config.KAFKA_SSL_CA_LOCATION,
+            sasl_username=config.KAFKA_SASL_USERNAME,
+            sasl_password=config.KAFKA_SASL_PASSWORD
         ) as consumer:
         consumer.consume_loop(topics=[config.KAFKA_EVENT_TOPIC])

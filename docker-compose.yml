@@ -1,24 +1,33 @@
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.15
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafka-net
+
   kafka:
     image: confluentinc/cp-kafka:7.8.0
     container_name: kafka
     ports:
       - "19092:19092"
+    depends_on:
+      - zookeeper
     environment:
-      CLUSTER_ID: ${KAFKA_CLUSTER_ID}
       KAFKA_NODE_ID: 1
       TOPIC_AUTO_CREATE: false
-      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       # Defines listeners
-      KAFKA_LISTENERS: INTERNAL://kafka:9092,CONTROLLER://kafka:9093,EXTERNAL://:19092
+      KAFKA_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://:19092
       # What clients should use to reach this broker
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:19092
       # Security protocol for each listener
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # The listener name for internal communication
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      # Listener used for broker-to-broker communication
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       # Replication factor for the internal consumer offset topic that Kafka automatically creates to manage consumer group state
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
@@ -36,7 +45,7 @@ services:
       - kafka
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KAFKA_INIT_TOPICS: ${KAFKA_INIT_TOPICS}
+      KAFKA_INIT_TOPICS: ${KAFKA_EVENT_TOPIC}
       KAFKA_TOPIC_PARTITIONS: 1
       KAFKA_TOPIC_RF: 1
     volumes:
@@ -57,6 +66,45 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     networks:
       - kafka-net
+
+#  producer:
+#    build:
+#      context: .
+#      dockerfile: ./event-simulator-service/Dockerfile
+#    container_name: producer
+#    depends_on:
+#      - kafka
+#    environment:
+#      DATA_PATH: ./data
+#      KAFKA_BROKERS: kafka:9092
+#      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+#      NUMBER_SIMULATION_PROCESSES: 4
+#      MIN_SESSION_INTERVAL_SECONDS: 1
+#      MAX_SESSION_INTERVAL_SECONDS: 10
+#      MIN_EVENT_INTERVAL_SECONDS: 1
+#      MAX_EVENT_INTERVAL_SECONDS: 10
+#    networks:
+#      - kafka-net
+#
+#  consumer:
+#    build:
+#      context: .
+#      dockerfile: ./analytics-service/Dockerfile
+#    container_name: consumer
+#    depends_on:
+#      - kafka
+#    environment:
+#      KAFKA_BROKERS: kafka:9092
+#      KAFKA_GROUP_ID: analytics-service
+#      KAFKA_EVENT_TOPIC: e-commerce-events
+#      WORKER_PROCESS_NUMBER: 8
+#      GOOGLE_APPLICATION_CREDENTIALS: ../secret/serviceAccountKey.json
+#      GCLOUD_PROJECT: ecommerce-kafka-analytic-b9267
+#      FIRESTORE_EMULATOR_HOST: host.docker.internal:8080
+#    volumes:
+#      - ./secret/serviceAccountKey.json:/secret/serviceAccountKey.json
+#    networks:
+#      - kafka-net
 
 networks:
   kafka-net:

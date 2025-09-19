@@ -8,6 +8,9 @@ load_dotenv()
 KAFKA_BROKERS = os.getenv('KAFKA_BROKERS', 'localhost:9092')
 KAFKA_GROUP_ID = os.getenv('KAFKA_GROUP_ID', 'analytics-service')
 KAFKA_EVENT_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
+KAFKA_SSL_CA_LOCATION = os.getenv('KAFKA_SSL_CA_LOCATION')
+KAFKA_SASL_USERNAME = os.getenv('KAFKA_SASL_USERNAME')
+KAFKA_SASL_PASSWORD = os.getenv('KAFKA_SASL_PASSWORD')
 
 # Number of worker threads
 WORKER_PROCESS_NUMBER = int(os.getenv('WORKER_PROCESS_NUMBER', 1))
