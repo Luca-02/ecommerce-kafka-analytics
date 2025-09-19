@@ -9,35 +9,36 @@ DATA_PATH = os.getenv('DATA_PATH', './data')
 
 # Kafka
 KAFKA_BROKERS = os.getenv('KAFKA_BROKERS', 'localhost:9093')
-KAFKA_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
-# KAFKA_USERNAME = os.getenv('KAFKA_USERNAME', 'producerUser')
-# KAFKA_PASSWORD = os.getenv('KAFKA_PASSWORD', 'producerPass')
-# SSL_CAFILE = os.getenv('SSL_CAFILE', '/certs/ca-cert.pem')
-# SSL_CERTFILE = os.getenv('SSL_CERTFILE', '/certs/kafka-cert.pem')
-# SSL_KEYFILE = os.getenv('SSL_KEYFILE', '/certs/kafka-key.pem')
+KAFKA_EVENT_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
+KAFKA_SSL_CA_LOCATION = os.getenv('KAFKA_SSL_CA_LOCATION')
+KAFKA_SASL_USERNAME = os.getenv('KAFKA_SASL_USERNAME')
+KAFKA_SASL_PASSWORD = os.getenv('KAFKA_SASL_PASSWORD')
+
+# Number of simulation processes
+NUMBER_SIMULATION_PROCESSES = int(os.getenv('NUMBER_SIMULATION_PROCESSES', 1))
 
 # Interval between user sessions in seconds
 MIN_SESSION_INTERVAL_SECONDS = float(os.getenv('MIN_SESSION_INTERVAL_SECONDS', 1))
-MAX_SESSION_INTERVAL_SECONDS = float(os.getenv('MAX_SESSION_INTERVAL_SECONDS', 5))
+MAX_SESSION_INTERVAL_SECONDS = float(os.getenv('MAX_SESSION_INTERVAL_SECONDS', 10))
 
 # Interval between events in seconds
 MIN_EVENT_INTERVAL_SECONDS = float(os.getenv('MIN_EVENT_INTERVAL_SECONDS', 1))
-MAX_EVENT_INTERVAL_SECONDS = float(os.getenv('MAX_EVENT_INTERVAL_SECONDS', 5))
+MAX_EVENT_INTERVAL_SECONDS = float(os.getenv('MAX_EVENT_INTERVAL_SECONDS', 10))
 
 # Probabilities
-ADD_TO_CART_PROBABILITY = 0.5
-REMOVE_FROM_CART_PROBABILITY = 0.25
-PURCHASE_PROBABILITY = 0.75
-DISCOUNT_PROBABILITY = 0.1
+ADD_TO_CART_PROBABILITY = float(os.getenv('ADD_TO_CART_PROBABILITY', 0.5))
+REMOVE_FROM_CART_PROBABILITY = float(os.getenv('REMOVE_FROM_CART_PROBABILITY', 0.25))
+PURCHASE_PROBABILITY = float(os.getenv('PURCHASE_PROBABILITY', 0.75))
+DISCOUNT_PROBABILITY = float(os.getenv('DISCOUNT_PROBABILITY', 0.25))
 
 # Quantity limits
-MIN_CART_QUANTITY = 1
-MAX_CART_QUANTITY = 5
+MIN_CART_QUANTITY = int(os.getenv('MIN_CART_QUANTITY', 1))
+MAX_CART_QUANTITY = int(os.getenv('MAX_CART_QUANTITY', 5))
 
-# Shipping
-MIN_SHIPPING_COST = 0
-MAX_SHIPPING_COST = 15.0
+# Shipping cost
+MIN_SHIPPING_COST = float(os.getenv('MIN_SHIPPING_COST', 0))
+MAX_SHIPPING_COST = float(os.getenv('MAX_SHIPPING_COST', 15.0))
 
-# Delivery
-MIN_DELIVERY_DAYS = 2
-MAX_DELIVERY_DAYS = 14
+# Delivery days
+MIN_DELIVERY_DAYS = int(os.getenv('MIN_DELIVERY_DAYS', 2))
+MAX_DELIVERY_DAYS = int(os.getenv('MAX_DELIVERY_DAYS', 14))

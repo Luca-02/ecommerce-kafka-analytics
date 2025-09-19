@@ -2,17 +2,17 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from src.models import Location, Product
+from shared.models import Category, Location, Product
 from src.user_session import UserSession
-
 
 product = Product(
     id="abc123",
     name="Test Product",
-    category="Test Category",
+    category=Category(id="id", name="Test Category"),
     price=10.99,
     currency="USD"
 )
+
 
 class TestUserSession(unittest.TestCase):
     def setUp(self):

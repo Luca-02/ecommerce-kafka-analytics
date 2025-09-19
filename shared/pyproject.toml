@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "shared"
+version = "0.1.0"
+description = "Shared Python code for microservices"
+authors = ["Luca Milanesi <milanesiluca2002@gmail.com>"]
+packages = [{ include = "shared" }]
+license = "MIT License"
+
+[tool.poetry.dependencies]
+python = ">=3.13.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

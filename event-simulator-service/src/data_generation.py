@@ -5,6 +5,11 @@ import uuid
 
 from faker import Faker
 
+from config import DATA_PATH
+from shared.logger import get_logger
+
+logger = get_logger(component='data_generation')
+
 fake = Faker('en_US')
 
 USER_AGENTS = [
@@ -18,17 +23,65 @@ USER_AGENTS = [
     "Mozilla/5.0 (Linux; Android 12; SAMSUNG SM-G991B) AppleWebKit/537.36 Chrome/112.0.0.0 Mobile Safari/537.36"
 ]
 
-PAYMENTS_METHODS = ["Card", "Gift Card", "PayPal", "Crypto"]
+PAYMENTS_METHODS = [
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Card"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Gift Card"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "PayPal"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Crypto"
+    }
+]
 
-CATEGORIES = ["Shoes", "Clothing", "Accessories", "Electronics", "Home", "Sports", "Toys", "Beauty"]
+CATEGORIES = [
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Shoes"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Clothing"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Accessories"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Electronics"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Home"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Sports"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Toys"
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "name": "Beauty"
+    }
+]
 
-data_path = os.getenv("DATA_PATH", "./data")
-
-user_agents_path = os.path.join(data_path, "user_agents.json")
-payments_methods_path = os.path.join(data_path, "payment_methods.json")
-categories_path = os.path.join(data_path, "categories.json")
-users_path = os.path.join(data_path, "users.json")
-products_path = os.path.join(data_path, "products.json")
+user_agents_path = os.path.join(DATA_PATH, "user_agents.json")
+payments_methods_path = os.path.join(DATA_PATH, "payment_methods.json")
+categories_path = os.path.join(DATA_PATH, "categories.json")
+users_path = os.path.join(DATA_PATH, "users.json")
+products_path = os.path.join(DATA_PATH, "products.json")
 
 
 def generate_users_en(n=25):
@@ -41,7 +94,7 @@ def generate_users_en(n=25):
             "username": fake.user_name(),
             "email": fake.email(),
             "location": {
-                "country": fake.country(),
+                "country": fake.country_code(),
                 "state": fake.state(),
                 "city": fake.city(),
                 "latitude": float(fake.latitude()),
@@ -70,12 +123,12 @@ def write_json(file_path, data):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-if __name__ == '__main__':
+def generate_data():
     generated_users = generate_users_en(25)
     generated_products = generate_products_en(100)
-
     write_json(categories_path, CATEGORIES)
     write_json(user_agents_path, USER_AGENTS)
     write_json(payments_methods_path, PAYMENTS_METHODS)
     write_json(users_path, generated_users)
     write_json(products_path, generated_products)
+    logger.info("Data generated successfully")

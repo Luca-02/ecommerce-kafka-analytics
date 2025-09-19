@@ -15,7 +15,7 @@ for broker in "${BROKERS[@]}"; do
     echo "🔁 $broker not ready yet, retrying in $WAIT_TIME sec..."
     sleep $WAIT_TIME
   done
-  echo "✅   $broker is ready"
+  echo "✅ $broker is ready"
 done
 
 echo "🚀 All brokers are up. Proceeding to create topics..."
@@ -26,8 +26,8 @@ for topic in "${TOPIC_LIST[@]}"; do
   kafka-topics --create --if-not-exists \
     --bootstrap-server "${KAFKA_BOOTSTRAP_SERVERS}" \
     --topic "$topic" \
-    --partitions $KAFKA_TOPIC_PARTITIONS \
-    --replication-factor $KAFKA_TOPIC_RF
+    --partitions "$KAFKA_TOPIC_PARTITIONS" \
+    --replication-factor "$KAFKA_TOPIC_RF"
 done
 
 echo "Topics created"

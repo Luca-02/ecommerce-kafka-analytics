@@ -6,8 +6,30 @@ from unittest.mock import patch
 from src.repository import Repository
 
 user_agents = ["agent1", "agent2", "agent3"]
-payment_methods = ["credit_card", "paypal"]
-categories = ["Toys", "Home", "Shoes"]
+payment_methods = [
+    {
+        "id": "id-1",
+        "name": "credit_card"
+    },
+    {
+        "id": "id-2",
+        "name": "paypal"
+    }
+]
+categories = [
+    {
+        "id": "id-1",
+        "name": "Toys"
+    },
+    {
+        "id": "id-2",
+        "name": "Home"
+    },
+    {
+        "id": "id-3",
+        "name": "Shoes"
+    }
+]
 users = [
     {
         "id": "300891aa-8d15-4992-bad9-b71460305008",
@@ -39,22 +61,22 @@ users = [
 products = [
     {
         "id": "95d67adf-128d-487f-ad1d-32638ad25875",
-        "name": "Onto.",
-        "category": "Toys",
+        "name": "Onto",
+        "category": categories[0],
         "price": 144.92,
         "currency": "USD"
     },
     {
         "id": "a1af60d6-9f2a-4e06-be20-63b2c3b013a4",
-        "name": "Look.",
-        "category": "Home",
+        "name": "Look",
+        "category": categories[1],
         "price": 147.98,
         "currency": "USD"
     },
     {
         "id": "99b24f65-f306-44bb-a8fb-242af03e8839",
-        "name": "Remain.",
-        "category": "Shoes",
+        "name": "Remain",
+        "category": categories[2],
         "price": 11.73,
         "currency": "USD"
     }
@@ -81,12 +103,12 @@ class TestRepository(unittest.TestCase):
         self.repo = Repository("mock/path")
 
     def test_repository_initialization(self):
-        self.assertEqual(self.repo.user_agents, user_agents)
-        self.assertEqual(self.repo.payment_methods, payment_methods)
-        self.assertEqual(self.repo.categories, categories)
-        self.assertEqual(len(self.repo.users), len(users))
-        self.assertEqual(len(self.repo.locations), len(users))
-        self.assertEqual(len(self.repo.products), len(products))
+        self.assertEqual(len(self.repo._user_agents), len(user_agents))
+        self.assertEqual(len(self.repo._payment_methods), len(payment_methods))
+        self.assertEqual(len(self.repo._categories), len(categories))
+        self.assertEqual(len(self.repo._users), len(users))
+        self.assertEqual(len(self.repo._locations), len(users))
+        self.assertEqual(len(self.repo._products), len(products))
 
     def test_get_random_user_agent(self):
         agent = self.repo.get_random_user_agent()
@@ -94,21 +116,21 @@ class TestRepository(unittest.TestCase):
 
     def test_get_random_payment_method(self):
         method = self.repo.get_random_payment_method()
-        self.assertIn(method, payment_methods)
+        self.assertIn(method.model_dump(), payment_methods)
 
     def test_get_categories_sample(self):
         sample = self.repo.get_categories_sample()
         for cat in sample:
-            self.assertIn(cat, self.repo.categories)
+            self.assertIn(cat.model_dump(), categories)
 
     def test_get_random_user(self):
         user, location = self.repo.get_random_user()
-        user_location = user.__dict__
-        user_location["location"] = location.__dict__
+        user_location = user.model_dump()
+        user_location["location"] = location.model_dump()
         self.assertIn(user_location, users)
 
     def test_get_products_sample_by_category(self):
-        for cat in categories:
+        for cat in self.repo._categories.values():
             sample = self.repo.get_products_sample_by_category(cat)
             for product in sample:
                 self.assertEqual(product.category, cat)
