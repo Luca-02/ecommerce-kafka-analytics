@@ -30,14 +30,11 @@ class Producer:
             "acks": "all",
             "retries": 10
         }
-        if ssl_ca_location:
-            self._config.update({
-                'ssl.ca.location': ssl_ca_location
-            })
-        if sasl_username and sasl_password:
+        if ssl_ca_location and sasl_username and sasl_password:
             self._config.update({
                 'security.protocol': 'SASL_SSL',
                 'sasl.mechanism': 'SCRAM-SHA-256',
+                'ssl.ca.location': ssl_ca_location,
                 'sasl.username': sasl_username,
                 'sasl.password': sasl_password
             })
