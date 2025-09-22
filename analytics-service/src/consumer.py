@@ -13,6 +13,7 @@ class Consumer:
         bootstrap_servers: str,
         group_id: str,
         ssl_ca_location: str = None,
+        ssl_check_hostname: bool = None,
         sasl_username: str = None,
         sasl_password: str = None
     ):
@@ -35,8 +36,13 @@ class Consumer:
                 'sasl.mechanism': 'SCRAM-SHA-256',
                 'ssl.ca.location': ssl_ca_location,
                 'sasl.username': sasl_username,
-                'sasl.password': sasl_password
+                'sasl.password': sasl_password,
             })
+            # Skip hostname validation in certificate
+            if not ssl_check_hostname:
+                self._config.update({
+                    'ssl.endpoint.identification.algorithm': 'none'
+                })
         self._poll_timeout_sec = 1.0
         self._consumer: DeserializingConsumer | None = None
 

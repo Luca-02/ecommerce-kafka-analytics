@@ -5,18 +5,23 @@ init:
 firebase-start:
 	cd firebase && firebase emulators:start
 
-compose-pull:
-	docker-compose pull
+kafka-up:
+	docker-compose -f docker-compose-kafka.yml up -d
 
-compose-up:
-	docker-compose up -d --build
+kafka-down:
+	docker-compose -f docker-compose-kafka.yml down --volumes
 
-compose-down:
-	docker-compose down --volumes --remove-orphans
+ui-up:
+	docker-compose -f docker-compose-ui.yml up -d
 
-compose-down-up:
-	docker-compose down --volumes --remove-orphans
-	docker-compose up -d --build
+ui-down:
+	docker-compose -f docker-compose-ui.yml down --volumes
+
+services-up:
+	docker-compose -f docker-compose-services.yml up -d --build
+
+services-down:
+	docker-compose -f docker-compose-services.yml down --volumes
 
 docker-clean:
 	docker system prune --volumes -f

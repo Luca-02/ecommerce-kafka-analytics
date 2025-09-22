@@ -52,7 +52,9 @@ echo " the FQDN. Some operating systems call the CN prompt 'first / last name'"
 echo " To learn more about CNs and FQDNs, read:"
 echo " https://docs.oracle.com/javase/7/docs/api/javax/net/ssl/X509ExtendedTrustManager.html"
 rm -rf $KEYSTORE_WORKING_DIRECTORY && mkdir $KEYSTORE_WORKING_DIRECTORY
-while read -r KAFKA_HOST || [ -n "$KAFKA_HOST" ]; do
+IFS=',' read -r -a KAFKA_HOSTS <<< "$(tr -d '\n' < "$KAFKA_HOSTS_FILE")"
+for KAFKA_HOST in "${KAFKA_HOSTS[@]}"; do
+  KAFKA_HOST=$(echo "$KAFKA_HOST" | xargs)
   KEY_STORE_FILE_NAME="$KAFKA_HOST.server.keystore.jks"
   echo
   echo "'$KEYSTORE_WORKING_DIRECTORY/$KEY_STORE_FILE_NAME' will contain a key pair and a self-signed certificate."
@@ -92,7 +94,7 @@ while read -r KAFKA_HOST || [ -n "$KAFKA_HOST" ]; do
   echo " - '$KEYSTORE_SIGNED_CERT': the keystore's certificate, signed by the CA, and stored back"
   echo " into the keystore"
   rm -f $CA_WORKING_DIRECTORY/$KEYSTORE_SIGN_REQUEST_SRL $KEYSTORE_SIGN_REQUEST $KEYSTORE_SIGNED_CERT
-done < "$KAFKA_HOSTS_FILE"
+done
 
 echo
 echo "Now the trust store will be generated from the certificate."
