@@ -1,0 +1,103 @@
+---
+# Utente Admin
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: admin
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: demo-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: admin-credentials
+          key: password
+  authorization:
+    type: simple
+    superUsers:
+      - admin
+
+---
+# Utente Producer
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: producer
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: demo-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: producer-credentials
+          key: password
+  authorization:
+    type: simple
+    acls:
+      # Write permission per topic events
+      - resource:
+          type: topic
+          name: events
+          patternType: literal
+        operations:
+          - Write
+          - Create
+          - Describe
+        host: "*"
+      # Describe per metadata del cluster
+      - resource:
+          type: cluster
+        operations:
+          - Describe
+        host: "*"
+
+---
+# Utente Consumer
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: consumer
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: demo-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: consumer-credentials
+          key: password
+  authorization:
+    type: simple
+    acls:
+      # Read permission per topic events
+      - resource:
+          type: topic
+          name: events
+          patternType: literal
+        operations:
+          - Read
+          - Describe
+        host: "*"
+      # Read permission per consumer group
+      - resource:
+          type: group
+          name: analytics-group
+          patternType: literal
+        operations:
+          - Read
+          - Describe
+        host: "*"
+      # Describe per metadata del cluster
+      - resource:
+          type: cluster
+        operations:
+          - Describe
+        host: "*"

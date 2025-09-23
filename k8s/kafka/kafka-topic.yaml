@@ -1,0 +1,27 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: events
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: demo-cluster
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    # Configurazioni per alta disponibilità
+    min.insync.replicas: 2
+    unclean.leader.election.enable: false
+    
+    # Retention policy (7 giorni)
+    retention.ms: 604800000
+    retention.bytes: 1073741824
+    
+    # Compressione
+    compression.type: "snappy"
+    
+    # Cleanup policy
+    cleanup.policy: "delete"
+    
+    # Segment configuration
+    segment.ms: 86400000  # 1 giorno
