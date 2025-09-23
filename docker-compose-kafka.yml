@@ -1,16 +1,55 @@
 services:
-  zookeeper:
+  zookeeper-1:
     image: bitnami/zookeeper:3.5
-    container_name: zookeeper
+    container_name: zookeeper-1
     ports:
-      - "2181"
+      - "2181:2181"
     environment:
+      ZOO_SERVER_ID: 1
+      ZOO_SERVERS: zookeeper-1:2888:3888,zookeeper-2:2888:3888,zookeeper-3:2888:3888
       ZOO_ENABLE_AUTH: yes
-      ZOO_SERVER_USERS: admin
-      ZOO_SERVER_PASSWORDS: admin-secret
-      ZOO_CLIENT_USER: admin
-      ZOO_CLIENT_PASSWORD: admin-secret
+      ZOO_ENABLE_SASL: yes
       ZOO_LISTEN_ALL_IPS: yes
+      ZOO_SERVER_USERS: ${ADMIN_USER}
+      ZOO_SERVER_PASSWORDS: ${ADMIN_PASSWORD}
+      ZOO_CLIENT_USER: ${ADMIN_USER}
+      ZOO_CLIENT_PASSWORD: ${ADMIN_PASSWORD}
+    networks:
+      - kafka-net
+
+  zookeeper-2:
+    image: bitnami/zookeeper:3.5
+    container_name: zookeeper-2
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_SERVER_ID: 2
+      ZOO_SERVERS: zookeeper-1:2888:3888,zookeeper-2:2888:3888,zookeeper-3:2888:3888
+      ZOO_ENABLE_AUTH: yes
+      ZOO_ENABLE_SASL: yes
+      ZOO_LISTEN_ALL_IPS: yes
+      ZOO_SERVER_USERS: ${ADMIN_USER}
+      ZOO_SERVER_PASSWORDS: ${ADMIN_PASSWORD}
+      ZOO_CLIENT_USER: ${ADMIN_USER}
+      ZOO_CLIENT_PASSWORD: ${ADMIN_PASSWORD}
+    networks:
+      - kafka-net
+
+  zookeeper-3:
+    image: bitnami/zookeeper:3.5
+    container_name: zookeeper-3
+    ports:
+      - "2183:2181"
+    environment:
+      ZOO_SERVER_ID: 3
+      ZOO_SERVERS: zookeeper-1:2888:3888,zookeeper-2:2888:3888,zookeeper-3:2888:3888
+      ZOO_ENABLE_AUTH: yes
+      ZOO_ENABLE_SASL: yes
+      ZOO_LISTEN_ALL_IPS: yes
+      ZOO_SERVER_USERS: ${ADMIN_USER}
+      ZOO_SERVER_PASSWORDS: ${ADMIN_PASSWORD}
+      ZOO_CLIENT_USER: ${ADMIN_USER}
+      ZOO_CLIENT_PASSWORD: ${ADMIN_PASSWORD}
     networks:
       - kafka-net
 
@@ -18,17 +57,24 @@ services:
     image: bitnami/kafka:2.8.1
     container_name: kafka-0
     ports:
-      - "29093:29093"
+      - "19093:19093"
     depends_on:
-      - zookeeper
+      - zookeeper-1
+      - zookeeper-2
+      - zookeeper-3
     environment:
       KAFKA_CFG_BROKER_ID: 0
-      ALLOW_PLAINTEXT_LISTENER: yes
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
 
+      # Zookeeper connection with SASL authentication
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
+      KAFKA_ZOOKEEPER_PROTOCOL: SASL
+      KAFKA_ZOOKEEPER_USER: ${ADMIN_USER}
+      KAFKA_ZOOKEEPER_PASSWORD: ${ADMIN_PASSWORD}
+
+      # Security Protocol Map
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SASL_SSL:SASL_SSL,EXTERNAL:SASL_SSL
-      KAFKA_CFG_LISTENERS: SSL://:9093,SASL_SSL://:9094,EXTERNAL://:29093
-      KAFKA_CFG_ADVERTISED_LISTENERS: SSL://kafka-0:9093,SASL_SSL://kafka-0:9094,EXTERNAL://localhost:29093
+      KAFKA_CFG_LISTENERS: SSL://:9093,SASL_SSL://:9094,EXTERNAL://:19093
+      KAFKA_CFG_ADVERTISED_LISTENERS: SSL://kafka-0:9093,SASL_SSL://kafka-0:9094,EXTERNAL://localhost:19093
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: SSL
 
       # SSL Configuration
@@ -40,16 +86,111 @@ services:
 
       # SASL Configuration
       KAFKA_CFG_SASL_ENABLED_MECHANISMS: SCRAM-SHA-256
+      KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
       KAFKA_CFG_SUPER_USERS: User:admin
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
     volumes:
-      - ./keystore/kafka-0.server.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
-      - ./truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
-      - ./config/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
-      - ./config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
+      - ./generated/keystore/kafka-0.server.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./generated/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./generated/config/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
+      - ./generated/config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
+    networks:
+      - kafka-net
+
+  kafka-1:
+    image: bitnami/kafka:2.8.1
+    container_name: kafka-1
+    ports:
+      - "29093:29093"
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+      - zookeeper-3
+    environment:
+      KAFKA_CFG_BROKER_ID: 1
+
+      # Zookeeper connection with SASL authentication
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
+      KAFKA_ZOOKEEPER_PROTOCOL: SASL
+      KAFKA_ZOOKEEPER_USER: ${ADMIN_USER}
+      KAFKA_ZOOKEEPER_PASSWORD: ${ADMIN_PASSWORD}
+
+      # Security Protocol Map
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SASL_SSL:SASL_SSL,EXTERNAL:SASL_SSL
+      KAFKA_CFG_LISTENERS: SSL://:9093,SASL_SSL://:9094,EXTERNAL://:29093
+      KAFKA_CFG_ADVERTISED_LISTENERS: SSL://kafka-1:9093,SASL_SSL://kafka-1:9094,EXTERNAL://localhost:29093
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: SSL
+
+      # SSL Configuration
+      KAFKA_CFG_SSL_KEYSTORE_LOCATION: /opt/bitnami/kafka/config/certs/kafka.keystore.jks
+      KAFKA_CFG_SSL_TRUSTSTORE_LOCATION: /opt/bitnami/kafka/config/certs/kafka.truststore.jks
+      KAFKA_CFG_SSL_KEYSTORE_PASSWORD: ${KAFKA_SSL_PASSWORD}
+      KAFKA_CFG_SSL_KEY_PASSWORD: ${KAFKA_SSL_PASSWORD}
+      KAFKA_CFG_SSL_TRUSTSTORE_PASSWORD: ${KAFKA_SSL_PASSWORD}
+
+      # SASL Configuration
+      KAFKA_CFG_SASL_ENABLED_MECHANISMS: SCRAM-SHA-256
+      KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
+
+      # ACL Configuration
+      KAFKA_CFG_SUPER_USERS: User:admin
+      KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
+    volumes:
+      - ./generated/keystore/kafka-1.server.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./generated/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./generated/config/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
+      - ./generated/config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
+    networks:
+      - kafka-net
+
+  kafka-2:
+    image: bitnami/kafka:2.8.1
+    container_name: kafka-2
+    ports:
+      - "39093:39093"
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+      - zookeeper-3
+    environment:
+      KAFKA_CFG_BROKER_ID: 2
+
+      # Zookeeper connection with SASL authentication
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
+      KAFKA_ZOOKEEPER_PROTOCOL: SASL
+      KAFKA_ZOOKEEPER_USER: ${ADMIN_USER}
+      KAFKA_ZOOKEEPER_PASSWORD: ${ADMIN_PASSWORD}
+
+      # Security Protocol Map
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SASL_SSL:SASL_SSL,EXTERNAL:SASL_SSL
+      KAFKA_CFG_LISTENERS: SSL://:9093,SASL_SSL://:9094,EXTERNAL://:39093
+      KAFKA_CFG_ADVERTISED_LISTENERS: SSL://kafka-2:9093,SASL_SSL://kafka-2:9094,EXTERNAL://localhost:39093
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: SSL
+
+      # SSL Configuration
+      KAFKA_CFG_SSL_KEYSTORE_LOCATION: /opt/bitnami/kafka/config/certs/kafka.keystore.jks
+      KAFKA_CFG_SSL_TRUSTSTORE_LOCATION: /opt/bitnami/kafka/config/certs/kafka.truststore.jks
+      KAFKA_CFG_SSL_KEYSTORE_PASSWORD: ${KAFKA_SSL_PASSWORD}
+      KAFKA_CFG_SSL_KEY_PASSWORD: ${KAFKA_SSL_PASSWORD}
+      KAFKA_CFG_SSL_TRUSTSTORE_PASSWORD: ${KAFKA_SSL_PASSWORD}
+
+      # SASL Configuration
+      KAFKA_CFG_SASL_ENABLED_MECHANISMS: SCRAM-SHA-256
+      KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
+
+      # ACL Configuration
+      KAFKA_CFG_SUPER_USERS: User:admin
+      KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
+    volumes:
+      - ./generated/keystore/kafka-2.server.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./generated/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./generated/config/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
+      - ./generated/config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
     networks:
       - kafka-net
 
@@ -59,12 +200,24 @@ services:
     restart: "no"
     depends_on:
       - kafka-0
+      - kafka-1
+      - kafka-2
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka-0:9093
+      KAFKA_BOOTSTRAP_SERVERS: kafka-0:9093,kafka-1:9093,kafka-2:9093
       COMMAND_PROPERTIES: /opt/bitnami/kafka/config/command.properties
+      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+      KAFKA_EVENT_TOPIC_PARTITIONS: 3
+      KAFKA_EVENT_TOPIC_REPLICATION_FACTOR: 1
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PRODUCER_USER: ${PRODUCER_USER}
+      PRODUCER_PASSWORD: ${PRODUCER_PASSWORD}
+      CONSUMER_USER: ${CONSUMER_USER}
+      CONSUMER_PASSWORD: ${CONSUMER_PASSWORD}
+      KAFKA_CONSUMER_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID}
     volumes:
-      - ./truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
-      - ./config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
+      - ./generated/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./generated/config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
       - ./scripts/kafka-init.sh:/kafka-init.sh:ro
     command: [ "bash", "/kafka-init.sh" ]
     networks:

@@ -6,19 +6,19 @@ services:
     container_name: producer
     environment:
       DATA_PATH: ./data
-      KAFKA_BROKERS: kafka-0:9094
-      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+      KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
       KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
       KAFKA_SSL_CHECK_HOSTNAME: true
-      KAFKA_SASL_USERNAME: producer-user
-      KAFKA_SASL_PASSWORD: producer-secret
+      KAFKA_SASL_USERNAME: ${PRODUCER_USER}
+      KAFKA_SASL_PASSWORD: ${PRODUCER_PASSWORD}
       NUMBER_SIMULATION_PROCESSES: 4
+      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
       MIN_SESSION_INTERVAL_SECONDS: 1
       MAX_SESSION_INTERVAL_SECONDS: 10
       MIN_EVENT_INTERVAL_SECONDS: 1
       MAX_EVENT_INTERVAL_SECONDS: 10
     volumes:
-      - ./pem/ca-root.pem:/pem/ca-root.pem
+      - ./generated/pem/ca-root.pem:/pem/ca-root.pem
     networks:
       - kafka-net
 
@@ -28,23 +28,23 @@ services:
       dockerfile: ./analytics-service/Dockerfile
     container_name: consumer
     environment:
-      KAFKA_BROKERS: kafka-0:9094
-      KAFKA_GROUP_ID: analytics-service
-      KAFKA_EVENT_TOPIC: e-commerce-events
+      KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
       KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
       KAFKA_SSL_CHECK_HOSTNAME: true
-      KAFKA_SASL_USERNAME: consumer-user
-      KAFKA_SASL_PASSWORD: consumer-secret
+      KAFKA_SASL_USERNAME: ${CONSUMER_USER}
+      KAFKA_SASL_PASSWORD: ${CONSUMER_PASSWORD}
       WORKER_PROCESS_NUMBER: 8
+      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+      KAFKA_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID}
       GOOGLE_APPLICATION_CREDENTIALS: /secret/serviceAccountKey.json
-      GCLOUD_PROJECT: ecommerce-kafka-analytic-b9267
-      FIRESTORE_EMULATOR_HOST: host.docker.internal:8080
+      GCLOUD_PROJECT: ${GCLOUD_PROJECT}
+      FIRESTORE_EMULATOR_HOST: ${FIRESTORE_EMULATOR_HOST}
     volumes:
-      - ./pem/ca-root.pem:/pem/ca-root.pem
+      - ./generated/pem/ca-root.pem:/pem/ca-root.pem
       - ./secret/serviceAccountKey.json:/secret/serviceAccountKey.json
     networks:
       - kafka-net
-      - default
+      - default # for Firestore cloud if emulator is not used
 
 networks:
   kafka-net:

@@ -1,6 +1,7 @@
 init:
 	cd analytics-service && python -m venv .venv && call .venv/Scripts/activate && pip install -r requirements.dev.txt
 	cd event-simulator-service && python -m venv .venv && call .venv/Scripts/activate && pip install -r requirements.dev.txt
+	bash ./scripts/generate.sh
 
 firebase-start:
 	cd firebase && firebase emulators:start
@@ -22,6 +23,9 @@ services-up:
 
 services-down:
 	docker-compose -f docker-compose-services.yml down --volumes
+
+all-down:
+	docker-compose -f docker-compose-kafka.yml -f docker-compose-ui.yml -f docker-compose-services.yml down
 
 docker-clean:
 	docker system prune --volumes -f
