@@ -1,0 +1,88 @@
+---
+# Producer User
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: producer-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # Permessi per scrivere sui topic
+      - resource:
+          type: topic
+          name: "*"
+        operations: ["Write", "Create", "Describe"]
+      # Permessi per consumer group (per idempotent producer)
+      - resource:
+          type: group
+          name: "*"
+        operations: ["Read"]
+      # Permessi per transazioni
+      - resource:
+          type: transactionalId
+          name: "*"
+        operations: ["Write", "Describe"]
+
+---
+# Consumer User  
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: consumer-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # Permessi per leggere dai topic
+      - resource:
+          type: topic
+          name: "*"
+        operations: ["Read", "Describe"]
+      # Permessi per consumer group
+      - resource:
+          type: group
+          name: "*"
+        operations: ["Read"]
+
+---
+# Admin User (per gestione topic e configurazioni)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: admin-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # Permessi completi per amministrazione
+      - resource:
+          type: topic
+          name: "*"
+        operations: ["All"]
+      - resource:
+          type: group
+          name: "*"
+        operations: ["All"]
+      - resource:
+          type: cluster
+        operations: ["All"]
+      - resource:
+          type: transactionalId
+          name: "*"
+        operations: ["All"]

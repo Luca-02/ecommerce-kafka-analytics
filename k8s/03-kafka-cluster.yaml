@@ -1,0 +1,81 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: kafka-cluster
+  namespace: kafka
+spec:
+  kafka:
+    version: 3.6.0
+    replicas: 3
+    listeners:
+      # Listener interno per comunicazione tra broker (TLS)
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+      # Listener per client esterni (SASL_SSL SCRAM)
+      - name: external
+        port: 9094
+        type: nodeport
+        tls: true
+        authentication:
+          type: scram-sha-512
+    authorization:
+      type: simple
+    config:
+      # Configurazioni standard per 3 repliche
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      # Configurazioni per performance
+      num.network.threads: 3
+      num.io.threads: 8
+      socket.send.buffer.bytes: 102400
+      socket.receive.buffer.bytes: 102400
+      socket.request.max.bytes: 104857600
+      # Log retention
+      log.retention.hours: 168
+      log.segment.bytes: 1073741824
+      log.retention.check.interval.ms: 300000
+    storage:
+      type: jbod
+      volumes:
+      - id: 0
+        type: persistent-claim
+        size: 5Gi
+        deleteClaim: false
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 500m
+      limits:
+        memory: 2Gi
+        cpu: 1000m
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 2Gi
+      deleteClaim: false
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 250m
+      limits:
+        memory: 1Gi
+        cpu: 500m
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+    tlsSidecar:
+      resources:
+        requests:
+          cpu: 200m
+          memory: 64Mi
+        limits:
+          cpu: 500m
+          memory: 128Mi
