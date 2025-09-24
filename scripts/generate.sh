@@ -7,8 +7,7 @@ source .env
 set +a
 
 
-# Common Name (CN) is the identity of the entity the certificate is issued to.
-# In this case, it is the name of the Kafka cluster administrator.
+CN="kafka-admin"
 PASSWORD=$(echo "$KAFKA_SSL_PASSWORD" | tr -d '\r')
 ADMIN_USER=$(echo "$ADMIN_USER" | tr -d '\r')
 ADMIN_PASSWORD=$(echo "$ADMIN_PASSWORD" | tr -d '\r')
