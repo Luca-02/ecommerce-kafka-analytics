@@ -1,18 +1,18 @@
 [
   {
-    "id": "e0946d53-503b-4974-adc5-5c1a35d8b12b",
+    "id": "7db1f0bd-f0b8-4788-a32d-edc99d3a0664",
     "name": "Card"
   },
   {
-    "id": "4491f2cd-c664-4514-aaa6-c41412aecab4",
+    "id": "4318dcc1-ad5a-41b8-a46b-392f2125a535",
     "name": "Gift Card"
   },
   {
-    "id": "ba1ba3ff-764c-45f9-97b2-0e3ea1b23fff",
+    "id": "bded84fe-2b80-4299-95a4-61fb78714d70",
     "name": "PayPal"
   },
   {
-    "id": "ac864e6d-82ef-4419-a274-7eb00c542e8d",
+    "id": "8b429415-b654-4cc8-a4d7-4c627b5d2364",
     "name": "Crypto"
   }
 ]

@@ -91,6 +91,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
+      # Authorize Common Name of Kafka brokers and Kafka-init container.
+      # CN is the Common Name of the certificate is the identity of the entity the certificate is issued to.
       KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
 
@@ -144,6 +146,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
+      # Authorize Common Name of Kafka brokers and Kafka-init container.
+      # CN is the Common Name of the certificate is the identity of the entity the certificate is issued to.
       KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
 
@@ -197,6 +201,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
+      # Authorize Common Name of Kafka brokers and Kafka-init container.
+      # CN is the Common Name of the certificate is the identity of the entity the certificate is issued to.
       KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
 
