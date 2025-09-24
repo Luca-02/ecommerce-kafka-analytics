@@ -36,3 +36,7 @@ all-down:
 
 docker-clean:
 	docker system prune --volumes -f
+
+docker-build:
+	docker build -t ecommerce-kafka-analytics/analytics-service:latest -f analytics-service/Dockerfile .
+	docker build -t ecommerce-kafka-analytics/event-simulator:latest -f event-simulator-service/Dockerfile .

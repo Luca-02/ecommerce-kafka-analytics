@@ -7,7 +7,6 @@ set -a
 source .env
 set +a
 
-
 CN="kafka-admin"
 PASSWORD=$(echo "$KAFKA_SSL_PASSWORD" | tr -d '\r')
 ADMIN_USER=$(echo "$ADMIN_USER" | tr -d '\r')
