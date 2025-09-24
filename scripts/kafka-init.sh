@@ -1,6 +1,24 @@
 #!/bin/bash
 cd /opt/bitnami/kafka/bin/ || exit
 
+function broker_ready() {
+  ./kafka-topics.sh --bootstrap-server "$1" --list --command-config "$COMMAND_PROPERTIES" > /dev/null 2>&1
+}
+
+echo "🔄 Waiting for Kafka brokers to be ready..."
+
+IFS=',' read -ra BROKERS <<< "$KAFKA_BOOTSTRAP_SERVERS"
+for broker in "${BROKERS[@]}"; do
+  echo "⏳ Waiting for broker $broker to be ready..."
+  until broker_ready "$broker"; do
+    echo "🔁 $broker not ready yet, retrying in $WAIT_TIME sec..."
+    sleep 5
+  done
+  echo "✅ $broker is ready"
+done
+
+echo "🚀 All brokers are up. Proceeding to create topics..."
+
 echo "Creating event topic..."
 ./kafka-topics.sh --bootstrap-server "$KAFKA_BOOTSTRAP_SERVERS" \
     --create --topic "$KAFKA_EVENT_TOPIC" --if-not-exists \

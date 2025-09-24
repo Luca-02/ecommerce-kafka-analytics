@@ -17,6 +17,7 @@ class Producer:
         bootstrap_servers: str,
         ssl_ca_location: str = None,
         ssl_check_hostname: bool = None,
+        sasl_mechanism: str = None,
         sasl_username: str = None,
         sasl_password: str = None
     ):
@@ -31,10 +32,10 @@ class Producer:
             "acks": "all",
             "retries": 10
         }
-        if ssl_ca_location and sasl_username and sasl_password:
+        if ssl_ca_location and sasl_mechanism and sasl_username and sasl_password:
             self._config.update({
                 'security.protocol': 'SASL_SSL',
-                'sasl.mechanism': 'SCRAM-SHA-256',
+                'sasl.mechanism': sasl_mechanism,
                 'ssl.ca.location': ssl_ca_location,
                 'sasl.username': sasl_username,
                 'sasl.password': sasl_password,

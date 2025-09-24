@@ -123,7 +123,6 @@ if [ $TO_GENERATE_PEM == "yes" ]; then
     -rfc -file $PEM_WORKING_DIRECTORY/ca-root.pem -storepass $PASSWORD
 fi
 
-# SEZIONE AGGIUNTA - Generazione file di configurazione
 if [ $TO_GENERATE_CONFIG == "yes" ]; then
   echo
   echo "Now generating configuration files for Kafka SSL and SASL setup"
@@ -157,6 +156,14 @@ KafkaClient {
   username="$ADMIN_USER"
   password="$ADMIN_PASSWORD";
 };
+EOF
+
+  echo
+  echo "Creating command.properties file..."
+  cat > $CONFIG_WORKING_DIRECTORY/command.properties << EOF
+security.protocol=SSL
+ssl.truststore.location=/opt/bitnami/kafka/config/certs/kafka.truststore.jks
+ssl.truststore.password=$PASSWORD
 EOF
 
   echo

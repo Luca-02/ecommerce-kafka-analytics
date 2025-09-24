@@ -5,28 +5,47 @@ services:
       dockerfile: ./event-simulator-service/Dockerfile
     container_name: producer
     environment:
-      DATA_PATH: ./data
       KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
       KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
       KAFKA_SSL_CHECK_HOSTNAME: true
       KAFKA_SASL_USERNAME: ${PRODUCER_USER}
       KAFKA_SASL_PASSWORD: ${PRODUCER_PASSWORD}
-      NUMBER_SIMULATION_PROCESSES: 4
+      NUMBER_SIMULATION_PROCESSES: 8
       KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
-      MIN_SESSION_INTERVAL_SECONDS: 1
-      MAX_SESSION_INTERVAL_SECONDS: 10
-      MIN_EVENT_INTERVAL_SECONDS: 1
-      MAX_EVENT_INTERVAL_SECONDS: 10
     volumes:
       - ./generated/pem/ca-root.pem:/pem/ca-root.pem
     networks:
       - kafka-net
 
-  consumer:
+  consumer-0:
     build:
       context: .
       dockerfile: ./analytics-service/Dockerfile
-    container_name: consumer
+    container_name: consumer-0
+    environment:
+      KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
+      KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
+      KAFKA_SSL_CHECK_HOSTNAME: true
+      KAFKA_SASL_USERNAME: ${CONSUMER_USER}
+      KAFKA_SASL_PASSWORD: ${CONSUMER_PASSWORD}
+      WORKER_PROCESS_NUMBER: 16
+      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+      KAFKA_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID}
+      GOOGLE_APPLICATION_CREDENTIALS: /secret/serviceAccountKey.json
+      GCLOUD_PROJECT: ${GCLOUD_PROJECT}
+      FIRESTORE_EMULATOR_HOST: ${FIRESTORE_EMULATOR_HOST}
+    volumes:
+      - ./generated/pem/ca-root.pem:/pem/ca-root.pem
+      - ./secret/serviceAccountKey.json:/secret/serviceAccountKey.json
+    networks:
+      - kafka-net
+      - default
+
+  consumer-1:
+    build:
+      context: .
+      dockerfile: ./analytics-service/Dockerfile
+    container_name: consumer-1
     environment:
       KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
       KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
@@ -44,7 +63,31 @@ services:
       - ./secret/serviceAccountKey.json:/secret/serviceAccountKey.json
     networks:
       - kafka-net
-      - default # for Firestore cloud if emulator is not used
+      - default
+
+  consumer-2:
+    build:
+      context: .
+      dockerfile: ./analytics-service/Dockerfile
+    container_name: consumer-2
+    environment:
+      KAFKA_BROKERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
+      KAFKA_SSL_CA_LOCATION: /pem/ca-root.pem
+      KAFKA_SSL_CHECK_HOSTNAME: true
+      KAFKA_SASL_USERNAME: ${CONSUMER_USER}
+      KAFKA_SASL_PASSWORD: ${CONSUMER_PASSWORD}
+      WORKER_PROCESS_NUMBER: 8
+      KAFKA_EVENT_TOPIC: ${KAFKA_EVENT_TOPIC}
+      KAFKA_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID}
+      GOOGLE_APPLICATION_CREDENTIALS: /secret/serviceAccountKey.json
+      GCLOUD_PROJECT: ${GCLOUD_PROJECT}
+      FIRESTORE_EMULATOR_HOST: ${FIRESTORE_EMULATOR_HOST}
+    volumes:
+      - ./generated/pem/ca-root.pem:/pem/ca-root.pem
+      - ./secret/serviceAccountKey.json:/secret/serviceAccountKey.json
+    networks:
+      - kafka-net
+      - default
 
 networks:
   kafka-net:
