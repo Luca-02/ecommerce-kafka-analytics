@@ -91,9 +91,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
-      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2
+      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-#      KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
 
       # Replication Configuration
       KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
@@ -145,9 +144,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
-      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2
+      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-#      KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
 
       # Replication Configuration
       KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
@@ -199,9 +197,8 @@ services:
       KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
 
       # ACL Configuration
-      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2
+      KAFKA_CFG_SUPER_USERS: User:admin;User:CN=kafka-0;User:CN=kafka-1;User:CN=kafka-2;User:CN=kafka-init
       KAFKA_CFG_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-#      KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND: true
 
       # Replication Configuration
       KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
@@ -237,39 +234,41 @@ services:
       CONSUMER_PASSWORD: ${CONSUMER_PASSWORD}
       KAFKA_CONSUMER_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID}
     volumes:
+      - ./generated/keystore/kafka-init.server.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
       - ./generated/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./generated/config/kafka_jaas.conf:/opt/bitnami/kafka/config/kafka_jaas.conf:ro
       - ./generated/config/command.properties:/opt/bitnami/kafka/config/command.properties:ro
       - ./scripts/kafka-init.sh:/kafka-init.sh:ro
     command: [ "bash", "/kafka-init.sh" ]
     networks:
       - kafka-net
-#
-#  kafka-ui:
-#    image: provectuslabs/kafka-ui:latest
-#    container_name: kafka-ui
-#    ports:
-#      - "8888:8080"
-#    depends_on:
-#      - kafka-0
-#      - kafka-1
-#      - kafka-2
-#    environment:
-#      KAFKA_CLUSTERS_0_NAME: local
-#      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
-#      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
-#      KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-256
-#      KAFKA_CLUSTERS_0_PROPERTIES_PROTOCOL: SASL
-#      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: |
-#        org.apache.kafka.common.security.scram.ScramLoginModule required
-#        username=${ADMIN_USER}
-#        password=${ADMIN_PASSWORD};
-#      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
-#      KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION: /kafka.truststore.jks
-#      KAFKA_CLUSTERS_0_SSL_TRUSTSTOREPASSWORD: ${KAFKA_SSL_PASSWORD}
-#    volumes:
-#      - ./generated/truststore/kafka.truststore.jks:/kafka.truststore.jks:ro
-#    networks:
-#      - kafka-net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8888:8080"
+    depends_on:
+      - kafka-0
+      - kafka-1
+      - kafka-2
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-0:9094,kafka-1:9094,kafka-2:9094
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-256
+      KAFKA_CLUSTERS_0_PROPERTIES_PROTOCOL: SASL
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: |
+        org.apache.kafka.common.security.scram.ScramLoginModule required
+        username=${ADMIN_USER}
+        password=${ADMIN_PASSWORD};
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
+      KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION: /kafka.truststore.jks
+      KAFKA_CLUSTERS_0_SSL_TRUSTSTOREPASSWORD: ${KAFKA_SSL_PASSWORD}
+    volumes:
+      - ./generated/truststore/kafka.truststore.jks:/kafka.truststore.jks:ro
+    networks:
+      - kafka-net
 
 networks:
   kafka-net:

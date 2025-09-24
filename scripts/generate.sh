@@ -162,8 +162,11 @@ EOF
   echo "Creating command.properties file..."
   cat > $CONFIG_WORKING_DIRECTORY/command.properties << EOF
 security.protocol=SSL
+ssl.key.password=$PASSWORD
 ssl.truststore.location=/opt/bitnami/kafka/config/certs/kafka.truststore.jks
 ssl.truststore.password=$PASSWORD
+ssl.keystore.location=/opt/bitnami/kafka/config/certs/kafka.keystore.jks
+ssl.keystore.password=$PASSWORD
 EOF
 
   echo
