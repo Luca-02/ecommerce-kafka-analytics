@@ -58,7 +58,6 @@ kubectl apply -f k8s/bad-producer-deployment.yml -n kafka
 # kubectl get kafkauser -n kafka
 # kubectl get kafkatopic -n kafka
 
-
 # # Test Kafka fault tolerance
 # # Delete pod
 # kubectl delete pod <pod-name> -n kafka
