@@ -10,22 +10,16 @@ kafka-up:
 	docker-compose -f docker-compose-kafka.yml up -d
 
 kafka-down:
-	docker-compose -f docker-compose-kafka.yml down --volumes
-
-ui-up:
-	docker-compose -f docker-compose-ui.yml up -d
-
-ui-down:
-	docker-compose -f docker-compose-ui.yml down --volumes
+	docker-compose -f docker-compose-kafka.yml down --v
 
 services-up:
 	docker-compose -f docker-compose-services.yml up -d --build
 
 services-down:
-	docker-compose -f docker-compose-services.yml down --volumes
+	docker-compose -f docker-compose-services.yml down --v
 
 all-down:
-	docker-compose -f docker-compose-kafka.yml -f docker-compose-ui.yml -f docker-compose-services.yml down
+	docker-compose -f docker-compose-kafka.yml -f docker-compose-services.yml down --v
 
 docker-clean:
 	docker system prune --volumes -f

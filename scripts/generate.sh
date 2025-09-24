@@ -10,7 +10,6 @@ CN="kafka-admin"
 PASSWORD=$(echo "$KAFKA_SSL_PASSWORD" | tr -d '\r')
 ADMIN_USER=$(echo "$ADMIN_USER" | tr -d '\r')
 ADMIN_PASSWORD=$(echo "$ADMIN_PASSWORD" | tr -d '\r')
-KAFKA_HOSTS=$(echo "$KAFKA_HOSTS" | tr -d '\r')
 
 TO_GENERATE_PEM="yes"
 TO_GENERATE_CONFIG="yes"
@@ -29,6 +28,13 @@ DEFAULT_TRUSTSTORE_FILE="kafka.truststore.jks"
 KEYSTORE_SIGN_REQUEST="cert-file"
 KEYSTORE_SIGN_REQUEST_SRL="ca-cert.srl"
 KEYSTORE_SIGNED_CERT="cert-signed"
+
+KAFKA_HOSTS_FILE="kafka-hosts.txt"
+
+if [ ! -f "$KAFKA_HOSTS_FILE" ]; then
+  echo "'$KAFKA_HOSTS_FILE' does not exists. Create this file"
+  exit 1
+fi
 
 echo "Welcome to the Kafka SSL certificate authority, key store and trust store generator script."
 
@@ -53,7 +59,7 @@ else
 fi
 
 echo
-echo "A keystore will be generated for each host in $KAFKA_HOSTS as each broker and logical client needs its own keystore"
+echo "A keystore will be generated for each host in $KAFKA_HOSTS_FILE as each broker and logical client needs its own keystore"
 echo
 echo " NOTE: currently in Kafka, the Common Name (CN) does not need to be the FQDN of"
 echo " this host. However, at some point, this may change. As such, make the CN"
@@ -61,9 +67,8 @@ echo " the FQDN. Some operating systems call the CN prompt 'first / last name'"
 echo " To learn more about CNs and FQDNs, read:"
 echo " https://docs.oracle.com/javase/7/docs/api/javax/net/ssl/X509ExtendedTrustManager.html"
 rm -rf $KEYSTORE_WORKING_DIRECTORY && mkdir $KEYSTORE_WORKING_DIRECTORY
-
-IFS=',' read -ra KAFKA_HOSTS <<< "$KAFKA_HOSTS"
-for KAFKA_HOST in "${KAFKA_HOSTS[@]}"; do
+IFS=',' read -r -a HOSTS <<< "$(cat "$KAFKA_HOSTS_FILE")"
+for KAFKA_HOST in "${HOSTS[@]}"; do
   KAFKA_HOST=$(echo "$KAFKA_HOST" | xargs)
   KEY_STORE_FILE_NAME="$KAFKA_HOST.server.keystore.jks"
   echo
@@ -83,7 +88,6 @@ for KAFKA_HOST in "${KAFKA_HOSTS[@]}"; do
     -CAkey $CA_WORKING_DIRECTORY/$CA_KEY_FILE \
     -in $KEYSTORE_SIGN_REQUEST -out $KEYSTORE_SIGNED_CERT \
     -days $VALIDITY_IN_DAYS -CAcreateserial
-  # creates $CA_WORKING_DIRECTORY/$KEYSTORE_SIGN_REQUEST_SRL which is never used or needed.
 
   echo
   echo "Now the CA will be imported into the keystore."
