@@ -35,9 +35,9 @@ kubectl create secret generic firebase-credentials --from-file=serviceAccountKey
 #minikube docker-env | Invoke-Expression
 
 # Build and load image
-docker build -t ecommerce-kafka-analytics/event-simulator:latest -f event-simulator-service/Dockerfile .
+docker build -t ecommerce-kafka-analytics/event-simulator-service:latest -f event-simulator-service/Dockerfile .
 docker build -t ecommerce-kafka-analytics/analytics-service:latest -f analytics-service/Dockerfile .
-minikube image load ecommerce-kafka-analytics/event-simulator:latest
+minikube image load ecommerce-kafka-analytics/event-simulator-service:latest
 minikube image load ecommerce-kafka-analytics/analytics-service:latest
 # List images
 minikube image ls

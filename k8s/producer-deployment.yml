@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: event-simulator-service
-        image: docker.io/ecommerce-kafka-analytics/event-simulator:latest
+        image: docker.io/ecommerce-kafka-analytics/event-simulator-service:latest
         imagePullPolicy: Never
         env:
           - name: KAFKA_BROKERS
