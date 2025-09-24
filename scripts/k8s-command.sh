@@ -63,3 +63,6 @@ kubectl get kafkatopic -n kafka
 # Delete pod
 kubectl delete pod <pod-name> -n kafka
 kubectl get pods -n kafka
+
+# Delete namespace
+kubectl delete namespace kafka
