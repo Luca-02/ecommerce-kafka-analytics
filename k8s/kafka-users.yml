@@ -1,0 +1,83 @@
+# Admin
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: admin
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: cluster
+        operation: All
+      - resource:
+          type: topic
+          name: "*"
+        operation: All
+      - resource:
+          type: group
+          name: "*"
+        operation: All
+---
+# Producer
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: producer-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: e-commerce-events
+        operation: Write
+      - resource:
+          type: topic
+          name: e-commerce-events
+        operation: Create
+      - resource:
+          type: topic
+          name: e-commerce-events
+        operation: Describe
+---
+# Consumer
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: consumer-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: e-commerce-events
+        operation: Read
+      - resource:
+          type: topic
+          name: e-commerce-events
+        operation: Describe
+      - resource:
+          type: group
+          name: analytics-service
+        operation: Read
+      - resource:
+          type: group
+          name: analytics-service
+        operation: Describe
