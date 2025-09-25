@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-analytics-service
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-analytics-service
+  template:
+    metadata:
+      labels:
+        app: bad-analytics-service
+    spec:
+      containers:
+      - name: bad-analytics-service
+        image: docker.io/ecommerce-kafka-analytics/analytics-service:latest
+        imagePullPolicy: Never
+        env:
+          - name: KAFKA_BROKERS
+            value: my-cluster-kafka-bootstrap.kafka.svc:9093
+          - name: KAFKA_SSL_CA_LOCATION
+            value: /etc/ssl/ca/ca-root.pem
+          - name: KAFKA_SSL_CHECK_HOSTNAME
+            value: "true"
+          - name: KAFKA_SASL_MECHANISM
+            value: SCRAM-SHA-512
+          - name: KAFKA_SASL_USERNAME
+            value: consumer-user
+          - name: KAFKA_SASL_PASSWORD
+            value: bad-password
+          - name: WORKER_PROCESS_NUMBER
+            value: "16"
+          - name: KAFKA_EVENT_TOPIC
+            value: e-commerce-events
+          - name: KAFKA_GROUP_ID
+            value: analytics-service
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /etc/firebase/serviceAccountKey.json
+          - name: GCLOUD_PROJECT
+            value: ecommerce-kafka-analytic-b9267
+          - name: FIRESTORE_EMULATOR_HOST
+            value: host.docker.internal:8080
+        volumeMounts:
+          - name: cluster-ca
+            mountPath: /etc/ssl/ca
+            readOnly: true
+          - name: firebase-credentials
+            mountPath: /etc/firebase
+            readOnly: true
+      volumes:
+        - name: cluster-ca
+          secret:
+            secretName: my-cluster-cluster-ca-cert
+            items:
+              - key: ca.crt
+                path: ca-root.pem
+        - name: firebase-credentials
+          secret:
+            secretName: firebase-credentials
