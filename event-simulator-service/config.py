@@ -2,6 +2,8 @@ import os
 
 from dotenv import load_dotenv
 
+bool_map = {"true": True, "false": False}
+
 load_dotenv()
 
 # Data path
@@ -11,6 +13,12 @@ DATA_PATH = os.getenv('DATA_PATH', './data')
 KAFKA_BROKERS = os.getenv('KAFKA_BROKERS', 'localhost:9093')
 KAFKA_EVENT_TOPIC = os.getenv('KAFKA_EVENT_TOPIC', 'e-commerce-events')
 KAFKA_SSL_CA_LOCATION = os.getenv('KAFKA_SSL_CA_LOCATION')
+KAFKA_SSL_CHECK_HOSTNAME = os.getenv('KAFKA_SSL_CHECK_HOSTNAME')
+if KAFKA_SSL_CHECK_HOSTNAME:
+    KAFKA_SSL_CHECK_HOSTNAME = bool_map.get(os.getenv('KAFKA_SSL_CHECK_HOSTNAME').strip().lower(), False)
+else:
+    KAFKA_SSL_CHECK_HOSTNAME = False
+KAFKA_SASL_MECHANISM = os.getenv('KAFKA_SASL_MECHANISM', 'SCRAM-SHA-256')
 KAFKA_SASL_USERNAME = os.getenv('KAFKA_SASL_USERNAME')
 KAFKA_SASL_PASSWORD = os.getenv('KAFKA_SASL_PASSWORD')
 

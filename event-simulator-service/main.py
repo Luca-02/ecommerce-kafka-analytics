@@ -21,6 +21,8 @@ def run_simulator(process_id: int):
         process_id=process_id,
         bootstrap_servers=config.KAFKA_BROKERS,
         ssl_ca_location=config.KAFKA_SSL_CA_LOCATION,
+        ssl_check_hostname=config.KAFKA_SSL_CHECK_HOSTNAME,
+        sasl_mechanism=config.KAFKA_SASL_MECHANISM,
         sasl_username=config.KAFKA_SASL_USERNAME,
         sasl_password=config.KAFKA_SASL_PASSWORD
     ) as producer:

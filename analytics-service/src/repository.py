@@ -25,7 +25,10 @@ class FirebaseRepository:
     def _initialize_firebase_firestore(self) -> bool:
         try:
             self._logger.info("Initializing Firebase Firestore connection...")
-            cred = credentials.Certificate(self.google_application_credentials)
+            if self.google_application_credentials:
+                cred = credentials.Certificate(self.google_application_credentials)
+            else:
+                cred = credentials.ApplicationDefault()
             self._app = firebase_admin.initialize_app(cred)
             self._logger.info("Firebase initialized successfully.")
             self._db = firestore.client()

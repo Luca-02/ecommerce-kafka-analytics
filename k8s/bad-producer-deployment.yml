@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-event-simulator-service
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-event-simulator-service
+  template:
+    metadata:
+      labels:
+        app: bad-event-simulator-service
+    spec:
+      containers:
+      - name: bad-event-simulator-service
+        image: docker.io/ecommerce-kafka-analytics/event-simulator-service:latest
+        imagePullPolicy: Never
+        env:
+          - name: KAFKA_BROKERS
+            value: my-cluster-kafka-bootstrap.kafka.svc:9093
+          - name: KAFKA_SSL_CA_LOCATION
+            value: /etc/ssl/ca/ca-root.pem
+          - name: KAFKA_SSL_CHECK_HOSTNAME
+            value: "true"
+          - name: KAFKA_SASL_MECHANISM
+            value: SCRAM-SHA-512
+          - name: KAFKA_SASL_USERNAME
+            value: producer-user
+          - name: KAFKA_SASL_PASSWORD
+            value: bad-password
+          - name: NUMBER_SIMULATION_PROCESSES
+            value: "8"
+          - name: KAFKA_EVENT_TOPIC
+            value: e-commerce-events
+        volumeMounts:
+          - name: cluster-ca
+            mountPath: /etc/ssl/ca
+            readOnly: true
+      volumes:
+        - name: cluster-ca
+          secret:
+            secretName: my-cluster-cluster-ca-cert
+            items:
+              - key: ca.crt
+                path: ca-root.pem

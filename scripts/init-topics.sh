@@ -1,7 +1,4 @@
 #!/bin/bash
-
-WAIT_TIME=5
-
 function broker_ready() {
   kafka-topics --bootstrap-server "$1" --list > /dev/null 2>&1
 }
@@ -13,7 +10,7 @@ for broker in "${BROKERS[@]}"; do
   echo "⏳ Waiting for broker $broker to be ready..."
   until broker_ready "$broker"; do
     echo "🔁 $broker not ready yet, retrying in $WAIT_TIME sec..."
-    sleep $WAIT_TIME
+    sleep 5
   done
   echo "✅ $broker is ready"
 done
