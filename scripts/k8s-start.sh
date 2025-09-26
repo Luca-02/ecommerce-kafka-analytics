@@ -45,23 +45,24 @@ minikube image ls
 
 kubectl apply -f k8s/producer-deployment.yml -n kafka
 kubectl apply -f k8s/consumer-deployment.yml -n kafka
-kubectl apply -f k8s/bad-consumer-deployment.yml -n kafka
-kubectl apply -f k8s/bad-producer-deployment.yml -n kafka
-
-# kubectl -n kafka get secret producer-user -o jsonpath='{.data.password}'
-# kubectl -n kafka get secret consumer-user -o jsonpath='{.data.password}'
-# kubectl get secret my-cluster-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}'
-
-# # Useful commands
-# kubectl get pods -n kafka
-# kubectl get kafka -n kafka
-# kubectl get kafkauser -n kafka
-# kubectl get kafkatopic -n kafka
 
 # # Test Kafka fault tolerance
 # # Delete pod
 # kubectl delete pod <pod-name> -n kafka
 # kubectl get pods -n kafka
 
+# Test security
+#kubectl apply -f k8s/bad-consumer-deployment.yml -n kafka
+#kubectl apply -f k8s/bad-producer-deployment.yml -n kafka
+
 # # Delete namespace
 # kubectl delete namespace kafka
+
+# # Useful commands
+# kubectl get pods -n kafka
+# kubectl get kafka -n kafka
+# kubectl get kafkauser -n kafka
+# kubectl get kafkatopic -n kafka
+# kubectl -n kafka get secret producer-user -o jsonpath='{.data.password}'
+# kubectl -n kafka get secret consumer-user -o jsonpath='{.data.password}'
+# kubectl get secret my-cluster-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}'
