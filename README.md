@@ -151,7 +151,7 @@ This starts:
 - **Firebase Emulator UI**: Available at `http://localhost:4000`
 - **Logs**: Available through `docker-compose logs`
 
-## 🔧 Tecnologie Utilizzate
+## 🔧 Technologies Used
 
 - **Python**: Main programming language
 - **Apache Kafka**: Message streaming platform
